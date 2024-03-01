@@ -1,0 +1,2 @@
+[workspace]
+members = ["App", "compiler", "server", "storge", "triadic_logic"]
