@@ -1,2 +1,3 @@
 [workspace]
-members = ["App", "compiler", "server", "storge", "triadic_logic"]
+members = ["app", "compiler", "server", "storge", "triadic_logic"]
+resolver = "2"

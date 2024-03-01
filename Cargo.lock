@@ -3,8 +3,14 @@
 version = 3
 
 [[package]]
-name = "App"
+name = "app"
 version = "0.1.0"
+dependencies = [
+ "compiler",
+ "server",
+ "storge",
+ "triadic_logic",
+]
 
 [[package]]
 name = "compiler"

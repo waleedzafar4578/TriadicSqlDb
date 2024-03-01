@@ -1,0 +1,11 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+compiler = { version = "0.1.0", path = "../compiler" }
+server = { version = "0.1.0", path = "../server" }
+storge = { version = "0.1.0", path = "../storge" }
+triadic_logic = { version = "0.1.0", path = "../triadic_logic" }
