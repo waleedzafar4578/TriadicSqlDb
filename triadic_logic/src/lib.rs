@@ -1,5 +1,5 @@
 pub mod degree;
 
-pub mod datatype;
+ mod datatype;
 
 pub mod tri_var;

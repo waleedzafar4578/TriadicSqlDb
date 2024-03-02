@@ -17,6 +17,9 @@ fn main() {
     println!("Status of the value is: {}",value);
 
      */
+
+    //#3
+
     let value=TriData::t_int(40,Degree::T);
     println!("Integer things: {}",value);
     let value=TriData::t_bool(true,Degree::T);
@@ -27,6 +30,7 @@ fn main() {
     println!("Float things: {}",value);
     let value=TriData::t_string("waleed".to_string(),Degree::T);
     println!("String things: {}",value);
+
 
 
 }
