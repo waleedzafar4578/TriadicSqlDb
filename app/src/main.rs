@@ -1,5 +1,9 @@
+//use triadic_logic::degree::Degree;
+//use triadic_logic::tri_var::TriData;
+
+use storge::column::Column;
+use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
-use triadic_logic::tri_var::TriData;
 
 fn main() {
     //#1
@@ -19,7 +23,7 @@ fn main() {
      */
 
     //#3
-
+/*
     let value=TriData::t_int(40,Degree::T);
     println!("Integer things: {}",value);
     let value=TriData::t_bool(true,Degree::T);
@@ -31,6 +35,16 @@ fn main() {
     let value=TriData::t_string("waleed".to_string(),Degree::T);
     println!("String things: {}",value);
 
+ */
+    //#4
+    let mut value=Column::new("Id",AttributeType::TInt);
+    value.set_int_cell(1,Degree::T);
+    value.set_int_cell(2,Degree::L);
+    value.set_int_cell(3,Degree::T);
+    value.set_int_cell(4,Degree::F);
+    value.set_int_cell(5,Degree::L);
+    println!("Full Column:\n{}",value);
+    println!("Specific value:{}",value.get_column_data(2).unwrap());
 
 
 }
