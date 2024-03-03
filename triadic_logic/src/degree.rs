@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::fmt::Formatter;
 
-#[derive(Serialize,Deserialize,Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum Degree{
     //Here T is represented status of value is true
     //Here F is represented status of value is false

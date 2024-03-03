@@ -1,9 +1,9 @@
 use serde::{Serialize,Deserialize};
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone,PartialEq)]
 pub enum AttributeType{
     TBool,TInt,TFloat,TChar,TString,
 }
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone,PartialEq)]
 pub enum AttributeTypeValue{
     BoolIng(bool),
     IntIng(i32),

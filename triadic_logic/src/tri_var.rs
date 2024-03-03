@@ -3,7 +3,7 @@ use std::fmt::Formatter;
 use serde::{Serialize, Deserialize};
 use crate::datatype::AttributeTypeValue;
 use crate::degree::Degree;
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct TriData{
     value:Option<AttributeTypeValue>,
     status:Degree,

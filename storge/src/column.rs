@@ -5,7 +5,7 @@ use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriData;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize,Clone)]
 pub struct Column {
     name: String,
     type_status: AttributeType,

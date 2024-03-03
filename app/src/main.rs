@@ -2,6 +2,7 @@
 //use triadic_logic::tri_var::TriData;
 
 use storge::column::Column;
+use storge::table::Table;
 use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
 
@@ -37,6 +38,7 @@ fn main() {
 
  */
     //#4
+    /*
     let mut value=Column::new("Id",AttributeType::TInt);
     value.set_int_cell(1,Degree::T);
     value.set_int_cell(2,Degree::L);
@@ -46,5 +48,9 @@ fn main() {
     println!("Full Column:\n{}",value);
     println!("Specific value:{}",value.get_column_data(2).unwrap());
 
+     */
+    //#5
+    let mut value=Table::new("Student");
 
+    println!("{}",value);
 }
