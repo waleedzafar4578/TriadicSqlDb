@@ -4,6 +4,7 @@
 use storge::column::Column;
 use storge::table::Table;
 use triadic_logic::datatype::AttributeType;
+use triadic_logic::datatype::AttributeType::TInt;
 use triadic_logic::degree::Degree;
 
 fn main() {
@@ -51,6 +52,6 @@ fn main() {
      */
     //#5
     let mut value=Table::new("Student");
-
+    value.add_column(Column::new("id",TInt));
     println!("{}",value);
 }

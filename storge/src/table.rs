@@ -37,7 +37,7 @@ impl Table{
     pub fn table_name(self)->String{
         self.table_name
     }
-    pub fn add_column(&mut self,col:Column){
+    pub fn add_column(&mut self,col: Column){
         self.table_column.push(col);
     }
     pub fn add_col_data(&mut self, n:&str ,col:&str,d:Degree)->&mut Table{
