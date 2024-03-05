@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "compiler",
  "server",
+ "storagecontroller",
  "storge",
  "triadic_logic",
 ]
@@ -56,6 +57,10 @@ dependencies = [
 
 [[package]]
 name = "server"
+version = "0.1.0"
+
+[[package]]
+name = "storagecontroller"
 version = "0.1.0"
 
 [[package]]

@@ -52,6 +52,7 @@ fn main() {
 
      */
     //#5
+    /*
     let mut value=Table::new("Student");
     value.add_column(Column::new("id",TInt));
     value.add_column(Column::new("name",TString));
@@ -61,4 +62,8 @@ fn main() {
     value.add_col_data("name","wali",T);
 
     println!("{}",value);
+
+     */
+    storagecontroller::hello();
+
 }
