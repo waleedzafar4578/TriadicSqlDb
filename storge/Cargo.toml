@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 triadic_logic = { version = "0.1.0", path = "../triadic_logic" }
 serde = "1.0.197"
+serde_json = "1.0.114"

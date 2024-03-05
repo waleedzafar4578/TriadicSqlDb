@@ -64,6 +64,19 @@ fn main() {
     println!("{}",value);
 
      */
+    //#6
     storagecontroller::hello();
+    let mut value=Table::new("Student");
+    value.add_column(Column::new("id",TInt));
+    value.add_column(Column::new("name",TString));
+    value.add_col_data("id","1",T);
+    value.add_col_data("id","2",L);
+    value.add_col_data("id","3",F);
+    value.add_col_data("name","wali",T);
+
+    value.save_to_file("../".to_string());
+    let mut checking:Table=Table::new("");
+    checking=checking.load_to_file("../".to_string(),"Student".to_string());
+    println!("Load from the file: {}",checking);
 
 }

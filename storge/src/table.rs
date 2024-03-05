@@ -1,9 +1,12 @@
 use std::fmt;
 use std::fmt::Formatter;
+use std::fs::OpenOptions;
+use std::io::{Read, Write};
 use serde::{Serialize, Deserialize};
+//use serde_json::Value::String;
 use triadic_logic::degree::Degree;
 use crate::column::Column;
-
+use std::string::String;
 #[derive(Serialize,Deserialize)]
 pub struct Table{
      table_name:String,
@@ -122,5 +125,27 @@ impl fmt::Display for Table{
             println!();
         }
         Ok(())
+    }
+}
+
+
+impl Table {
+    pub fn save_to_file(self,path:String){
+        let file_name=path+&*self.table_name+".json";
+        let mut file =OpenOptions::new()
+            .write(true).read(false).create(true).truncate(true).open(file_name)
+            .expect("failed to open file!");
+        let streem =serde_json::to_string_pretty(&self).unwrap();
+        file.write_all(streem.as_bytes()).unwrap();
+    }
+    pub fn load_to_file(&mut self, path:String, file_name:String) -> Table {
+        let p_file_name=path+ &*file_name+".json";
+        let mut file=OpenOptions::new()
+            .write(false).read(true).create(false).truncate(false)
+            .open(p_file_name).expect("Failed to open file!");
+        let mut streem=String::new();
+        file.read_to_string(&mut streem).unwrap();
+        let object:Table=serde_json::from_str(&streem).unwrap();
+        return object;
     }
 }

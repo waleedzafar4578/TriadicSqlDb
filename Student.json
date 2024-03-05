@@ -1,0 +1,43 @@
+{
+  "table_name": "Student",
+  "table_column": [
+    {
+      "name": "id",
+      "type_status": "TInt",
+      "size_status": 3,
+      "value": [
+        {
+          "value": {
+            "IntIng": 1
+          },
+          "status": "T"
+        },
+        {
+          "value": {
+            "IntIng": 2
+          },
+          "status": "L"
+        },
+        {
+          "value": {
+            "IntIng": 3
+          },
+          "status": "F"
+        }
+      ]
+    },
+    {
+      "name": "name",
+      "type_status": "TString",
+      "size_status": 1,
+      "value": [
+        {
+          "value": {
+            "Stringing": "wali"
+          },
+          "status": "T"
+        }
+      ]
+    }
+  ]
+}
