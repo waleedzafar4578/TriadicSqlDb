@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use std::fmt::{Formatter};
+use std::fmt::Formatter;
 use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriData;
 
-#[derive(Serialize, Deserialize,Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Column {
     name: String,
     type_status: AttributeType,
@@ -15,10 +15,10 @@ pub struct Column {
 
 impl Column {
     //noinspection ALL
-    pub fn new(n: &str, t: AttributeType) -> Self {
+    pub fn new(n: &str, t: &AttributeType) -> Self {
         Self {
             name: n.to_string(),
-            type_status: t, //here some issue
+            type_status: t.clone(), //here some issue
             size_status: 0,
             value: vec![],
         }
@@ -29,8 +29,8 @@ impl Column {
         match self.type_status {
             AttributeType::TBool => {}
             AttributeType::TInt => {
-                self.size_status+=1;
-                self.value.push(TriData::t_int(value,d))
+                self.size_status += 1;
+                self.value.push(TriData::t_int(value, d))
             }
             AttributeType::TFloat => {}
             AttributeType::TChar => {}
@@ -42,8 +42,8 @@ impl Column {
             AttributeType::TBool => {}
             AttributeType::TInt => {}
             AttributeType::TFloat => {
-                self.size_status+=1;
-                self.value.push(TriData::t_float(value,d))
+                self.size_status += 1;
+                self.value.push(TriData::t_float(value, d))
             }
             AttributeType::TChar => {}
             AttributeType::TString => {}
@@ -55,8 +55,8 @@ impl Column {
             AttributeType::TInt => {}
             AttributeType::TFloat => {}
             AttributeType::TChar => {
-                self.size_status+=1;
-                self.value.push(TriData::t_char(value,d))
+                self.size_status += 1;
+                self.value.push(TriData::t_char(value, d))
             }
             AttributeType::TString => {}
         }
@@ -64,8 +64,8 @@ impl Column {
     pub fn set_bool_cell(&mut self, value: bool, d: Degree) {
         match self.type_status {
             AttributeType::TBool => {
-                self.size_status+=1;
-                self.value.push(TriData::t_bool(value,d))
+                self.size_status += 1;
+                self.value.push(TriData::t_bool(value, d))
             }
             AttributeType::TInt => {}
             AttributeType::TFloat => {}
@@ -80,12 +80,11 @@ impl Column {
             AttributeType::TFloat => {}
             AttributeType::TChar => {}
             AttributeType::TString => {
-                self.size_status+=1;
-                self.value.push(TriData::t_string(value,d))
+                self.size_status += 1;
+                self.value.push(TriData::t_string(value, d))
             }
         }
     }
-
 }
 
 impl Column {

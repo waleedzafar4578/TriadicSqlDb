@@ -1,12 +1,7 @@
-//use triadic_logic::degree::Degree;
-//use triadic_logic::tri_var::TriData;
-
-use storge::column::Column;
-use storge::table::Table;
+use storagecontroller::BaseControl;
 use triadic_logic::datatype::AttributeType;
-use triadic_logic::datatype::AttributeType::{TInt, TString};
 use triadic_logic::degree::Degree;
-use triadic_logic::degree::Degree::{F, L, T};
+
 
 fn main() {
     //#1
@@ -26,19 +21,19 @@ fn main() {
      */
 
     //#3
-/*
-    let value=TriData::t_int(40,Degree::T);
-    println!("Integer things: {}",value);
-    let value=TriData::t_bool(true,Degree::T);
-    println!("Bool things: {}",value);
-    let value=TriData::t_char('A',Degree::T);
-    println!("Character things: {}",value);
-    let value=TriData::t_float(45.5,Degree::T);
-    println!("Float things: {}",value);
-    let value=TriData::t_string("waleed".to_string(),Degree::T);
-    println!("String things: {}",value);
+    /*
+       let value=TriData::t_int(40,Degree::T);
+       println!("Integer things: {}",value);
+       let value=TriData::t_bool(true,Degree::T);
+       println!("Bool things: {}",value);
+       let value=TriData::t_char('A',Degree::T);
+       println!("Character things: {}",value);
+       let value=TriData::t_float(45.5,Degree::T);
+       println!("Float things: {}",value);
+       let value=TriData::t_string("waleed".to_string(),Degree::T);
+       println!("String things: {}",value);
 
- */
+    */
     //#4
     /*
     let mut value=Column::new("Id",AttributeType::TInt);
@@ -65,6 +60,7 @@ fn main() {
 
      */
     //#6
+    /*
     storagecontroller::hello();
     let mut value=Table::new("Student");
     value.add_column(Column::new("id",TInt));
@@ -79,4 +75,56 @@ fn main() {
     checking=checking.load_to_file("../".to_string(),"Student".to_string());
     println!("Load from the file: {}",checking);
 
+     */
+    //#7
+
+    //creating main controler for client
+    let mut subhan=BaseControl::new();
+
+
+    //initiate the database path
+    subhan.initiate_database("../Testing/");
+    //create database
+    subhan.create_the_database("subhan");
+    subhan.create_the_database("Hospital");
+    subhan.create_the_database("UCP");
+    subhan.create_the_database("UMT");
+    subhan.create_the_database("LUMS");
+    //search database
+    if subhan.find_this_database("subhan"){
+        println!("This database is found");
+    }
+    //list of database
+    subhan.list_down_the_name_database();
+    //use database
+    subhan.use_this_database("UCP");
+    //rename database
+    subhan.rename_the_database("ali");
+    //remove database
+    subhan.remove_the_database();
+    //make table
+    subhan.use_this_database("UMT");
+    //insert data into table
+    subhan.add_table("UMT_STUDENT", vec!["ID","Name","Email"], vec![AttributeType::TInt,AttributeType::TString,AttributeType::TString]);
+    subhan.insert_to_table("UMT_STUDENT", "ID", "1", Degree::T);
+    subhan.insert_to_table("UMT_STUDENT", "Name", "Jon", Degree::T);
+    subhan.insert_to_table("UMT_STUDENT", "Email", "jon11@gmial.com", Degree::F);
+
+    for i in 10..=40 {
+        let id = i.to_string();
+        let name = format!("Student{}", i);
+        let email = format!("student{}@example.com", i);
+
+        subhan.insert_to_table("UMT_STUDENT", "ID", &id, Degree::T);
+        subhan.insert_to_table("UMT_STUDENT", "Name", &name, Degree::L);
+        subhan.insert_to_table("UMT_STUDENT", "Email", &email, Degree::F);
+    }
+    //show full data table
+    //show selective column
+    println!("{}",subhan.get_column("UMT_STUDENT".to_string(), "Name".to_string()).unwrap());
+    //delete table
+    subhan.drop_table("UMT_STUDENT");
+    //
+
+    println!("{}",subhan);
 }

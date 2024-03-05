@@ -85,6 +85,12 @@ version = "0.1.0"
 [[package]]
 name = "storagecontroller"
 version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "storge",
+ "triadic_logic",
+]
 
 [[package]]
 name = "storge"
