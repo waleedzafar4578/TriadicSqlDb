@@ -1,7 +1,8 @@
 use actix_web::{web, App, HttpServer, HttpRequest, HttpResponse, Result};
 use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+use compiler::sql_runner;
+use storagecontroller::BaseControl;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct InputData {
@@ -15,8 +16,9 @@ struct OutputData {
 fn process_json_data(data: InputData) -> OutputData {
     // Perform any modifications on the data if needed
     // For example, reverse the message
-    let mem:String=data.message;
-
+    let mut mem:String=data.message;
+    let mut value=BaseControl::new();
+    mem=sql_runner(mem.as_str(),&mut value);
     // Create a modified OutputData with the reversed message
     let modified_output = OutputData {
         reversed_message: mem.to_string(),

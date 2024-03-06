@@ -7,5 +7,7 @@ edition = "2021"
 [dependencies]
 actix-cors = { version = "0.7.0",features = ["draft-private-network-access"] }
 actix-web = { version = "4.5.1",features = ["default"] }
+compiler = { version = "0.1.0", path = "../compiler" }
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
+storagecontroller = { version = "0.1.0", path = "../storagecontroller" }
