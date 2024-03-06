@@ -1,6 +1,6 @@
 use compiler::sql_runner;
 use storagecontroller::BaseControl;
-fn main() {
+fn main(){
     //#1
     //compiler::hello();
     //server::hello();

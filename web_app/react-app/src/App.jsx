@@ -28,17 +28,18 @@ function App() {
 
   return (
       <div>
-        <h1>React App Sending and Receiving JSON</h1>
+        <h1>TRIADIC SQL DATABASE</h1>
+        <h3>TextEditor</h3>
         <label>
-          Input Message:
-          <input
+          <textarea
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
           />
         </label>
-        <button onClick={handleButtonClick}>Send to Server</button>
-        <p>Output Message: {outputMessage}</p>
+        <button onClick={handleButtonClick}>-></button>
+        <p>Result:</p>
+        <h4>{outputMessage}</h4>
       </div>
   );
 }
