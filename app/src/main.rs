@@ -1,13 +1,10 @@
-use storagecontroller::BaseControl;
-use triadic_logic::datatype::AttributeType;
-use triadic_logic::degree::Degree;
-
+use compiler::{sql_runner};
 
 fn main() {
     //#1
     //compiler::hello();
     //server::hello();
-    //storge::hello();
+    //storage::hello();
     //triadic_logic::hello();
 
     //#2
@@ -77,54 +74,70 @@ fn main() {
 
      */
     //#7
+    /*
+       //creating main controller for client
+       let mut subhan=BaseControl::new();
 
-    //creating main controler for client
-    let mut subhan=BaseControl::new();
 
+       //initiate the database path
+       subhan.initiate_database("../Testing/");
+       //create database
+       subhan.create_the_database("subhan");
+       subhan.create_the_database("Hospital");
+       subhan.create_the_database("UCP");
+       subhan.create_the_database("UMT");
+       subhan.create_the_database("LUMS");
+       //search database
+       if subhan.find_this_database("subhan"){
+           println!("This database is found");
+       }
+       //list of database
+       subhan.list_down_the_name_database();
+       //use database
+       subhan.use_this_database("UCP");
+       //rename database
+       subhan.rename_the_database("ali");
+       //remove database
+       subhan.remove_the_database();
+       //make table
+       subhan.use_this_database("UMT");
+       //insert data into table
+       subhan.add_table("UMT_STUDENT", vec!["ID","Name","Email"], vec![AttributeType::TInt,AttributeType::TString,AttributeType::TString]);
+       subhan.insert_to_table("UMT_STUDENT", "ID", "1", Degree::T);
+       subhan.insert_to_table("UMT_STUDENT", "Name", "Jon", Degree::T);
+       subhan.insert_to_table("UMT_STUDENT", "Email", "jon11@gmial.com", Degree::F);
 
-    //initiate the database path
-    subhan.initiate_database("../Testing/");
-    //create database
-    subhan.create_the_database("subhan");
-    subhan.create_the_database("Hospital");
-    subhan.create_the_database("UCP");
-    subhan.create_the_database("UMT");
-    subhan.create_the_database("LUMS");
-    //search database
-    if subhan.find_this_database("subhan"){
-        println!("This database is found");
+       for i in 10..=40 {
+           let id = i.to_string();
+           let name = format!("Student{}", i);
+           let email = format!("student{}@example.com", i);
+
+           subhan.insert_to_table("UMT_STUDENT", "ID", &id, Degree::T);
+           subhan.insert_to_table("UMT_STUDENT", "Name", &name, Degree::L);
+           subhan.insert_to_table("UMT_STUDENT", "Email", &email, Degree::F);
+       }
+       //show full data table
+       //show selective column
+       println!("{}",subhan.get_column("UMT_STUDENT".to_string(), "Name".to_string()).unwrap());
+       //delete table
+       subhan.drop_table("UMT_STUDENT");
+       //
+
+       println!("{}",subhuman);
+
+    */
+    let query =vec![
+       "CREATE DATABASE ucp;",
+        "RENAME DATABASE UMT;",
+        "DROP DATABASE ucp;",
+    ] ;
+    for i
+    in
+    query {
+        println!(
+            "{}",
+            sql_runner(i)
+        )
     }
-    //list of database
-    subhan.list_down_the_name_database();
-    //use database
-    subhan.use_this_database("UCP");
-    //rename database
-    subhan.rename_the_database("ali");
-    //remove database
-    subhan.remove_the_database();
-    //make table
-    subhan.use_this_database("UMT");
-    //insert data into table
-    subhan.add_table("UMT_STUDENT", vec!["ID","Name","Email"], vec![AttributeType::TInt,AttributeType::TString,AttributeType::TString]);
-    subhan.insert_to_table("UMT_STUDENT", "ID", "1", Degree::T);
-    subhan.insert_to_table("UMT_STUDENT", "Name", "Jon", Degree::T);
-    subhan.insert_to_table("UMT_STUDENT", "Email", "jon11@gmial.com", Degree::F);
 
-    for i in 10..=40 {
-        let id = i.to_string();
-        let name = format!("Student{}", i);
-        let email = format!("student{}@example.com", i);
-
-        subhan.insert_to_table("UMT_STUDENT", "ID", &id, Degree::T);
-        subhan.insert_to_table("UMT_STUDENT", "Name", &name, Degree::L);
-        subhan.insert_to_table("UMT_STUDENT", "Email", &email, Degree::F);
-    }
-    //show full data table
-    //show selective column
-    println!("{}",subhan.get_column("UMT_STUDENT".to_string(), "Name".to_string()).unwrap());
-    //delete table
-    subhan.drop_table("UMT_STUDENT");
-    //
-
-    println!("{}",subhan);
 }
