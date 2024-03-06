@@ -1,4 +1,5 @@
-use compiler::{sql_runner};
+use compiler::sql_runner;
+use storagecontroller::BaseControl;
 
 fn main() {
     //#1
@@ -81,7 +82,7 @@ fn main() {
 
        //initiate the database path
        subhan.initiate_database("../Testing/");
-       //create database
+       //create_parse database
        subhan.create_the_database("subhan");
        subhan.create_the_database("Hospital");
        subhan.create_the_database("UCP");
@@ -126,18 +127,11 @@ fn main() {
        println!("{}",subhuman);
 
     */
-    let query =vec![
-       "CREATE DATABASE ucp;",
-        "RENAME DATABASE UMT;",
-        "DROP DATABASE ucp;",
-    ] ;
-    for i
-    in
-    query {
-        println!(
-            "{}",
-            sql_runner(i)
-        )
-    }
+    let mut value: BaseControl = BaseControl::new();
+    let query = vec!["CREATE DATABASE ucp;"];
 
+    for i in query {
+        let mut answer = sql_runner(i, &mut value);
+        println!("{}", answer);
+    }
 }

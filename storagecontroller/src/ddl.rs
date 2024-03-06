@@ -6,10 +6,10 @@ impl BaseControl {
         if self.initiate_lock == true {
             /*
             Here cloning the value to temp variable which use for fs::create_dir_all
-            Here question is why we use create dir all instead of only create dir?
-            create dir=> /database(/database/subhuman school)
+            Here question is why we use create_parse dir all instead of only create_parse dir?
+            create_parse dir=> /database(/database/subhuman school)
             (/database) => /database/school/subhuman for handling multiple folder hierarchy.
-            fs::create function return ok if the folder is created vice versa .
+            fs::create_parse function return ok if the folder is created vice versa .
             And e.kind help to identify the actual Error.
              */
             let temp = self.system_path.clone() + path;
