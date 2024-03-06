@@ -1,4 +1,5 @@
 use storagecontroller::BaseControl;
+use triadic_error::Compiler;
 use crate::lexical::Lexer;
 use crate::syntax::{AstNode, Parser};
 
@@ -9,13 +10,13 @@ pub fn hello() {
 }
 
 
-pub fn sql_runner(query:&str, mut controller: &mut BaseControl) ->String{
+pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
     controller.initiate_database("../Testing/");
     let input=query.trim();
     let mut lexer=Lexer::new(input);
     let tokens=lexer.tokenize();
     let mut parser=Parser::new(&tokens);
-    let (ast,db_name)=parser.parse();
+    let (ast,error_type)=parser.parse();
     match ast {
         AstNode::SelectStatement => {}
         AstNode::CreateTableStatement => {}
@@ -30,7 +31,27 @@ pub fn sql_runner(query:&str, mut controller: &mut BaseControl) ->String{
         AstNode::ShowDatabaseStatement => {}
         AstNode::UseDatabaseStatement(_) => {}
         AstNode::Nothing => {
-            return "Wrong statement".to_string();
+            match error_type {
+                None => {}
+                Some(ty) => {
+                    return match
+                    ty {
+                        Compiler::NotAKeyword => {
+                            "Query Must Start From Sql Keyword!".to_string()
+                        }
+                        Compiler::CREATE => {
+                            "Please write proper Sql Keyword after CREATE\nList of Sql keywords which use after CREATE [DATABASE,TABLE]".to_string()
+                        }
+                        Compiler::CreateDatabase => {
+                            "Please write the name of database which you want to create!".to_string()
+                        }
+                        Compiler::CreateDatabaseIdentifier => {
+                            "Query Must be ended with semicolon!".to_string()
+                        }
+
+                    }
+                }
+            }
         }
     }
     "Error".to_string()

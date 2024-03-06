@@ -8,7 +8,7 @@ impl<'a> Parser<'a>{
             current_token: 0,
         }
     }
-    pub fn parse(&mut self)->(AstNode,Option<String>){
+    pub fn parse(&mut self)->(AstNode,Option<triadic_error::Compiler>){
         //First check that first token is sql keyword
         if let Some(Token::Keyword(ref keyword))=
             self.tokens.get(self.current_token){
@@ -20,8 +20,7 @@ impl<'a> Parser<'a>{
                 "RENAME"=>panic!(),
                 "SEARCH"=>panic!(),
                 _ => {
-                    println!("Unsupported SQL Statement");
-                    (AstNode::Nothing, None)
+                    (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword))
                 }
             }
         }else {

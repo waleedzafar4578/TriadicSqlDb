@@ -6,3 +6,4 @@ edition = "2021"
 
 [dependencies]
 storagecontroller = { version = "0.1.0", path = "../storagecontroller" }
+triadic_error = { version = "0.1.0", path = "../triadic_error" }

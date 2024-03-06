@@ -19,6 +19,7 @@ name = "compiler"
 version = "0.1.0"
 dependencies = [
  "storagecontroller",
+ "triadic_error",
 ]
 
 [[package]]

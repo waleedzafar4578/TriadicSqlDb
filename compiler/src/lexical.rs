@@ -18,7 +18,7 @@ pub struct Lexer<'a> {
     input: &'a str,
     position: usize,
 }
-
+#[allow(dead_code)]
 impl<'a> Lexer<'a> {
     pub fn new(input: &'a str) -> Self {
         Lexer { input, position: 0 }

@@ -1,6 +1,5 @@
 use compiler::sql_runner;
 use storagecontroller::BaseControl;
-
 fn main() {
     //#1
     //compiler::hello();
@@ -128,15 +127,19 @@ fn main() {
 
     */
     //#8
-    /*
+
     let mut value: BaseControl = BaseControl::new();
-    let query = vec!["CREATE DATABASE ucp;"];
+    let query = vec![
+        "CREATE",
+        "CREATE DATABASE",
+        "CREATE DATABASE ucp",
+        "CREATE DATABASE ucp;"];
 
     for i in query {
-        let mut answer = sql_runner(i, &mut value);
+        let  answer = sql_runner(i, &mut value);
         println!("{}", answer);
     }
 
-     */
-    triadic_error::hello();
+
+
 }
