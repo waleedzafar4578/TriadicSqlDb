@@ -127,6 +127,8 @@ fn main() {
        println!("{}",subhuman);
 
     */
+    //#8
+    /*
     let mut value: BaseControl = BaseControl::new();
     let query = vec!["CREATE DATABASE ucp;"];
 
@@ -134,4 +136,7 @@ fn main() {
         let mut answer = sql_runner(i, &mut value);
         println!("{}", answer);
     }
+
+     */
+    triadic_error::hello();
 }

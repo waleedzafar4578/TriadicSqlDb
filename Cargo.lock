@@ -10,6 +10,7 @@ dependencies = [
  "server",
  "storagecontroller",
  "storge",
+ "triadic_error",
  "triadic_logic",
 ]
 
@@ -114,6 +115,10 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
+
+[[package]]
+name = "triadic_error"
+version = "0.1.0"
 
 [[package]]
 name = "triadic_logic"

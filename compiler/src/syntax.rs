@@ -15,7 +15,6 @@ pub enum AstNode{
     Nothing,
     // ...Continue other Sql statement here.
 }
-
 pub struct Parser<'a>{
     tokens:& 'a[Token] ,
     current_token:usize,
