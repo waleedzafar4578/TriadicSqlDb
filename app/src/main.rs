@@ -127,7 +127,7 @@ fn main(){
 
     */
     //#8
-
+/*
     let mut value: BaseControl = BaseControl::new();
     let query = vec![
         "CREATE",
@@ -140,6 +140,8 @@ fn main(){
         println!("{}", answer);
     }
 
+
+ */
 
 
 }

@@ -25,13 +25,16 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
         }
         AstNode::DropDatabaseStatement(name) => {
             controller.remove_the_database();
-            return format!("Database is Create with the Name of: {}",name)
+            return format!("Database is Delete with the Name of: {}",name)
         }
         AstNode::SearchDatabaseStatement(_) => {}
         AstNode::RemoveDatabaseStatement(_) => {}
         AstNode::RenameDatabaseStatement(_) => {}
         AstNode::ShowDatabaseStatement => {}
-        AstNode::UseDatabaseStatement(_) => {}
+        AstNode::UseDatabaseStatement(name) => {
+            controller.use_this_database(name.as_str());
+            return format!("{} This database is selected",name)
+        }
         AstNode::Nothing => {
             match error_type {
                 None => {}
@@ -58,6 +61,15 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
                             "!".to_string()
                         }
                         Compiler::DropDatabaseIdentifier => {
+                            "!".to_string()
+                        }
+                        Compiler::Use => {
+                            "!".to_string()
+                        }
+                        Compiler::UseDatabase => {
+                            "!".to_string()
+                        }
+                        Compiler::UseDatabaseIdentifier => {
                             "!".to_string()
                         }
                     }

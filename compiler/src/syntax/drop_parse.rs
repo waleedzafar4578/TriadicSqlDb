@@ -19,7 +19,7 @@ impl<'a> Parser<'a> {
             self.advance();
             return if let Some(Token::Punctuation(';')) = self.tokens.get(self.current_token) {
                 //Successfully parsed DROP DATABASE statement
-                (AstNode::CreateDatabaseStatement(db_name.clone()), None)
+                (AstNode::DropDatabaseStatement(db_name.clone()), None)
             } else {
                 (
                     AstNode::Nothing,

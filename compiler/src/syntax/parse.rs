@@ -14,8 +14,8 @@ impl<'a> Parser<'a>{
             self.tokens.get(self.current_token){
             match keyword.to_uppercase().as_str() {
                 "CREATE"=>self.parse_create_statement(),
-                "DROP"=>  panic!(),
-                "USE"=>   panic!(),
+                "DROP"=>  self.parse_drop_statement(),
+                "USE"=>   self.parse_use_statement(),
                 "SHOW"=>  panic!(),
                 "RENAME"=>panic!(),
                 "SEARCH"=>panic!(),
