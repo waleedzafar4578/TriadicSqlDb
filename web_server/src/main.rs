@@ -50,7 +50,8 @@ async fn handle_json(
     let base_control = base_controls
         .entry(client_ip.clone())
         .or_insert_with(|| BaseControl::new());
-
+    let path=format!("../Testing/{}/",client_ip);
+    base_control.initiate_database(path.as_str());
     // Perform modifications on the received data
     let modified_data = process_json_data(input_data, base_control);
     println!("{}",base_control);
