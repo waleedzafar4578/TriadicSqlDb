@@ -1,4 +1,4 @@
-use actix_web::{web, App, HttpServer, HttpRequest, HttpResponse, Result};
+use actix_web::{web, App, HttpServer, HttpRequest, HttpResponse, Result, Responder};
 use actix_cors::Cors;
 use serde::{Deserialize, Serialize};
 use compiler::sql_runner;
@@ -40,14 +40,34 @@ async fn handle_json(input: web::Json<InputData>) -> Result<HttpResponse> {
         .json(modified_data))
 }
 
+async fn health_check() -> impl Responder {
+    HttpResponse::Ok().finish()
+}
+
+async fn editor() -> impl Responder {
+    HttpResponse::Ok().body("Editor Page")
+}
+
+async fn result() -> impl Responder {
+    HttpResponse::Ok().body("Result Page")
+}
+
+async fn help() -> impl Responder {
+    HttpResponse::Ok().body("Help Page")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(Cors::permissive())
+            .service(web::resource("/editor").route(web::get().to(editor)))
+            .service(web::resource("/result").route(web::get().to(result)))
+            .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
+            .service(web::resource("/health_check").route(web::get().to(health_check))) // Add this line
     })
-        .bind("127.0.0.1:8080")?
+        .bind("0.0.0.0:8080")?
         .run()
         .await
 }

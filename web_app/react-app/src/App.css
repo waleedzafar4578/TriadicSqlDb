@@ -8,4 +8,59 @@
 textarea{
   width: 900px;
   height: 200px;
+
+}
+button{
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.8;
+}
+button:active {
+  transform: translatex(12px);
+  transform-style: preserve-3d;
+
+}
+
+nav {
+  background-color: #939191; /* Adjust the background color as needed */
+  padding: 10px;
+  text-align: center;
+}
+
+nav a {
+  color: #ffffff; /* Adjust the text color as needed */
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #737373; /* Adjust the hover color as needed */
+}
+
+/* styles.css */
+/* Add these styles to handle the connection status colors */
+.connection-status {
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+
+.connected {
+  background-color: #2ecc71; /* Green color for connected status */
+}
+
+.disconnected {
+  background-color: #e74c3c; /* Red color for disconnected status */
 }

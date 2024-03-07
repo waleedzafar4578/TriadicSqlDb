@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import './App.css'
+import Navbar from './navi.jsx';
+import ConnectionChecker from "./chaecker.jsx";
+import AppRouter from "./Route.jsx";
 function App() {
   const [inputMessage, setInputMessage] = useState('');
   const [outputMessage, setOutputMessage] = useState('');
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/process_json', {
+      const response = await fetch('http://192.168.18.45:8080/process_json', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,17 +32,9 @@ function App() {
   return (
       <div>
         <h1>TRIADIC SQL DATABASE</h1>
-        <h3>TextEditor</h3>
-        <label>
-          <textarea
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-          />
-        </label>
-        <button onClick={handleButtonClick}>-></button>
-        <p>Result:</p>
-        <h4>{outputMessage}</h4>
+        <AppRouter/>
+          <ConnectionChecker/>
+
       </div>
   );
 }
