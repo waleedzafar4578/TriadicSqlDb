@@ -24,7 +24,10 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
             controller.create_the_database(name.as_str());
             return format!("Database is Create with the Name of: {}",name)
         }
-        AstNode::DropDatabaseStatement(_) => {}
+        AstNode::DropDatabaseStatement(name) => {
+            controller.remove_the_database();
+            return format!("Database is Create with the Name of: {}",name)
+        }
         AstNode::SearchDatabaseStatement(_) => {}
         AstNode::RemoveDatabaseStatement(_) => {}
         AstNode::RenameDatabaseStatement(_) => {}
@@ -49,6 +52,15 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
                             "Query Must be ended with semicolon!".to_string()
                         }
 
+                        Compiler::Drop => {
+                            "!".to_string()
+                        }
+                        Compiler::DropDatabase => {
+                            "!".to_string()
+                        }
+                        Compiler::DropDatabaseIdentifier => {
+                            "!".to_string()
+                        }
                     }
                 }
             }

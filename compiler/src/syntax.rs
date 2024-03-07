@@ -1,6 +1,7 @@
 use crate::lexical::Token;
 pub mod parse;
 pub mod create_parse;
+pub mod drop_parse;
 #[derive(Debug)]
 pub enum AstNode{
     SelectStatement,
@@ -13,7 +14,7 @@ pub enum AstNode{
     ShowDatabaseStatement,
     UseDatabaseStatement(String),
     Nothing,
-    // ...Continue other Sql statement here.
+    // ...Continue another Sql statement here.
 }
 pub struct Parser<'a>{
     tokens:& 'a[Token] ,

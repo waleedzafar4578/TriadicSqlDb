@@ -2,8 +2,14 @@ use actix_cors::Cors;
 use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder, Result};
 use compiler::sql_runner;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
 
+#[derive(Default,Clone)]
+struct AppState {
+    base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
+}
 #[derive(Debug, Serialize, Deserialize)]
 struct InputData {
     message: String,
@@ -13,12 +19,11 @@ struct InputData {
 struct OutputData {
     reversed_message: String,
 }
-fn process_json_data(data: InputData, con: &BaseControl) -> OutputData {
-    // Perform any modifications on the data if needed
+fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
+    // Perform any modifications on the data if needed,
     // For example, reverse the message
     let mut mem: String = data.message;
-    let mut value = BaseControl::new();
-    mem = sql_runner(mem.as_str(), &mut value);
+    mem = sql_runner(mem.as_str(), con);
     // Create a modified OutputData with the reversed message
     let modified_output = OutputData {
         reversed_message: mem.to_string(),
@@ -28,16 +33,27 @@ fn process_json_data(data: InputData, con: &BaseControl) -> OutputData {
 }
 async fn handle_json(
     input: web::Json<InputData>,
-    base_control: web::Data<BaseControl>,
+    req: HttpRequest,
+    data: web::Data<AppState>,
 ) -> Result<HttpResponse> {
-    // Deserialize the received JSON string
     let input_data: InputData = input.into_inner();
     println!("Received JSON Data: {:?}", input_data);
-    let base_control_ref = base_control.get_ref();
+
+    let client_ip = req
+        .peer_addr()
+        .map(|addr| addr.ip().to_string())
+        .unwrap_or_default();
+
+    let base_controls = data.base_controls.clone(); // Clone the Arc for access
+    let mut base_controls = base_controls.write().unwrap(); // Acquire a write lock
+
+    let base_control = base_controls
+        .entry(client_ip.clone())
+        .or_insert_with(|| BaseControl::new());
 
     // Perform modifications on the received data
-    let modified_data = process_json_data(input_data, base_control_ref);
-
+    let modified_data = process_json_data(input_data, base_control);
+    println!("{}",base_control);
     // Serialize the modified data to a JSON response
     Ok(HttpResponse::Ok()
         .content_type("application/json")
@@ -56,8 +72,8 @@ async fn health_check(req: HttpRequest) -> impl Responder {
         .unwrap_or_default();
 
     // Log or use client information as needed
-    println!("Client IP: {}", client_ip);
-    println!("User-Agent: {}", user_agent);
+    //println!("Client IP: {}", client_ip);
+    //println!("User-Agent: {}", user_agent);
 
     HttpResponse::Ok().finish()
 }
@@ -74,22 +90,22 @@ async fn help() -> impl Responder {
     HttpResponse::Ok().body("Help Page")
 }
 
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let val = BaseControl::new();
-    let base = web::Data::new(val);
+    let app_state = AppState::default();
+
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
-            .app_data(base.clone())
+            .app_data(web::Data::new(app_state.clone())) // Clone the Arc for each App instance
             .service(web::resource("/editor").route(web::get().to(editor)))
             .service(web::resource("/result").route(web::get().to(result)))
             .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
-        // Add this line
     })
-    .bind("0.0.0.0:8080")?
-    .run()
-    .await
+        .bind("0.0.0.0:8080")?
+        .run()
+        .await
 }

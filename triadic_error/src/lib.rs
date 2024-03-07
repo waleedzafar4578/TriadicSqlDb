@@ -3,7 +3,7 @@ pub fn hello(){
 }
 
 pub enum Compiler{
-    NotAKeyword,CREATE,
-    CreateDatabase,
-    CreateDatabaseIdentifier,
+    NotAKeyword,
+    CREATE,CreateDatabase,CreateDatabaseIdentifier,
+    Drop,DropDatabase,DropDatabaseIdentifier
 }
