@@ -6,5 +6,8 @@ pub enum Compiler{
     NotAKeyword,
     CREATE,CreateDatabase,CreateDatabaseIdentifier,
     Drop,DropDatabase,DropDatabaseIdentifier,
-    Use,UseDatabase,UseDatabaseIdentifier
+    Use,UseDatabase,UseDatabaseIdentifier,
+    Show,ShowDatabase,
+    Rename,RenameDatabase,RenameDatabaseIdentifier,
+    Search,SearchDatabase,SearchDatabaseIdentifier,
 }

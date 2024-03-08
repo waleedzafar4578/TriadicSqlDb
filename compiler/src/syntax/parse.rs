@@ -16,8 +16,8 @@ impl<'a> Parser<'a>{
                 "CREATE"=>self.parse_create_statement(),
                 "DROP"=>  self.parse_drop_statement(),
                 "USE"=>   self.parse_use_statement(),
-                "SHOW"=>  panic!(),
-                "RENAME"=>panic!(),
+                "SHOW"=>  self.parse_show_statement(),
+                "RENAME"=>self.parse_rename_statement(),
                 "SEARCH"=>panic!(),
                 _ => {
                     (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword))

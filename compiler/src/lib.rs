@@ -72,6 +72,30 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
                         Compiler::UseDatabaseIdentifier => {
                             "!".to_string()
                         }
+                        Compiler::Show => {
+                            "!".to_string()
+                        }
+                        Compiler::ShowDatabase => {
+                            "!".to_string()
+                        }
+                        Compiler::Rename => {
+                            "!".to_string()
+                        }
+                        Compiler::RenameDatabase => {
+                            "!".to_string()
+                        }
+                        Compiler::RenameDatabaseIdentifier => {
+                            "!".to_string()
+                        }
+                        Compiler::Search => {
+                            "!".to_string()
+                        }
+                        Compiler::SearchDatabase => {
+                            "!".to_string()
+                        }
+                        Compiler::SearchDatabaseIdentifier => {
+                            "!".to_string()
+                        }
                     }
                 }
             }
