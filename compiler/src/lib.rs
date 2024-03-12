@@ -30,7 +30,10 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
         AstNode::SearchDatabaseStatement(_) => {}
         AstNode::RemoveDatabaseStatement(_) => {}
         AstNode::RenameDatabaseStatement(_) => {}
-        AstNode::ShowDatabaseStatement => {}
+        AstNode::ShowDatabaseStatement => {
+            controller.list_down_the_name_database();
+
+        }
         AstNode::UseDatabaseStatement(name) => {
             controller.use_this_database(name.as_str());
             return format!("{} This database is selected",name)

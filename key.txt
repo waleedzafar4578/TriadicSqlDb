@@ -1,0 +1,1 @@
+ngrok http --domain=hopeful-lasting-boa.ngrok-free.app --host-header=rewrite 3000

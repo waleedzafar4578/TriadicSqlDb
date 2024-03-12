@@ -9,7 +9,7 @@ const EditorPage = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch('http://192.168.18.45:8080/process_json', {
+            const response = await fetch('http://localhost:8080/process_json', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

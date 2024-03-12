@@ -1,0 +1,51 @@
+nav{
+    background-color: #262626;
+    border-radius: 15px;
+}
+.Head_bar{
+    background-color: #f8be2b;
+    width: 1000px;
+    height: 60px;
+}
+.Tool_bar{
+    background-color: #737373;
+    width: 1000px;
+    height: 40px;
+}
+.Body_bar{
+    background-color: #9d867e;
+    width: 1000px;
+    height: 450px;
+    flex-direction: column;
+}
+.Footer_bar{
+    background-color: rgba(255, 127, 80, 0.38);
+    width: 1000px;
+    height: 50px;
+}
+.Text_bar{
+    background-color: rgb(134, 248, 200);
+    width: 1950px;
+    height: 450px;
+
+
+}
+.view_bar{
+    background-color: rgb(248, 125, 0);
+    width: 250px;
+    height: 100px;
+}
+
+.main_window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.BarsContainer {
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px; /* Adjust the max-width as needed */
+    margin: 0 auto;
+}

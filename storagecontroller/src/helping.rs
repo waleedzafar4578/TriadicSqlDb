@@ -31,7 +31,7 @@ impl BaseControl {
                 if let Ok(metadata) = entry.metadata() {
                     if metadata.is_dir() {
                         if let Some(name) = entry.file_name().to_str() {
-                            println!("Folder: {}", name);
+                            format!("Folder: {}", name);
                         }
                     }
                 }
