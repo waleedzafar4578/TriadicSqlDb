@@ -1,4 +1,5 @@
 // Router.js
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
 import EditorPage from './EditorPage';
@@ -10,7 +11,7 @@ const AppRouter = () => {
         <Router>
             <nav>
                 <Link to="/editor">Editor</Link>
-                <Link to="/result">Result</Link>
+                <Link to="/result">Result History</Link>
                 <Link to="/help">Help</Link>
             </nav>
             <Routes>

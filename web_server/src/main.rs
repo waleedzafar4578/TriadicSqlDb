@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
+use serde_json::json;
+
 
 #[derive(Default,Clone)]
 struct AppState {
@@ -80,15 +82,28 @@ async fn health_check(req: HttpRequest) -> impl Responder {
 }
 
 async fn editor() -> impl Responder {
+
     HttpResponse::Ok().body("Editor Page")
 }
 
 async fn result() -> impl Responder {
-    HttpResponse::Ok().body("Result Page")
+    let result_data = json!({
+        "message": "Resul history from server"
+    });
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(result_data)
 }
 
 async fn help() -> impl Responder {
-    HttpResponse::Ok().body("Help Page")
+    let help_data = json!({
+        "message": "Help Page from server"
+    });
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(help_data)
 }
 
 
@@ -106,7 +121,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
     })
-        .bind("0.0.0.0:8080")?
+        .bind("localhost:8080")?
         .run()
         .await
 }
