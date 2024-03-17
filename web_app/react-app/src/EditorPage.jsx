@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState } from 'react'
-import Navbar from "./navi.jsx";
-import AppRouter from "./Route.jsx";
-import ConnectionChecker from "./chaecker.jsx";
+import  { useState } from 'react';
+import MyEditor from "./editor.jsx";
+
+
 const EditorPage = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [outputMessage, setOutputMessage] = useState('');
@@ -28,17 +27,17 @@ const EditorPage = () => {
     const handleButtonClick = () => {
         fetchData();
     };
+
     return (
         <div>
             <h3>TextEditor</h3>
-            <label>
-          <textarea
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-          />
-            </label>
             <button onClick={handleButtonClick}>Run</button>
+            <button onClick={handleButtonClick}>Run All</button>
+            <MyEditor
+                value={inputMessage}
+                onChange={(value) => setInputMessage(value)}
+            />
+
             <p>Result:</p>
             <h4>{outputMessage}</h4>
         </div>

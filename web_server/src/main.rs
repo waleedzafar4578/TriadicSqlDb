@@ -21,6 +21,12 @@ struct InputData {
 struct OutputData {
     reversed_message: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+struct FileData {
+    coming:Vec<String>,
+    going:Vec<String>
+}
 fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
     // Perform any modifications on the data if needed,
     // For example, reverse the message
@@ -120,6 +126,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
+
     })
         .bind("localhost:8080")?
         .run()
