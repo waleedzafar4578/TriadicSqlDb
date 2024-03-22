@@ -6,8 +6,12 @@ pub mod use_parse;
 pub mod show_parse;
 pub mod rename_parse;
 pub mod search_parse;
+pub mod connect;
+
 #[derive(Debug)]
 pub enum AstNode{
+    AddUser(String),
+    CheckUser(String),
     SelectStatement,
     CreateTableStatement,
     CreateDatabaseStatement(String),

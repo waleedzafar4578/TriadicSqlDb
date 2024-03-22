@@ -19,8 +19,13 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode,S
         AstNode::SelectStatement => {}
         AstNode::CreateTableStatement => {}
         AstNode::CreateDatabaseStatement(name) => {
-            controller.create_the_database(name.as_str());
-            return (FrontSendCode::QOkDDLC,format!("Database is Create with the Name of: {}",name))
+            if controller.create_the_database(name.as_str()) ==true{
+                return (FrontSendCode::QOkDDLC,format!("Database is Create with the Name of: {}",name))
+            }
+            else{
+                return (FrontSendCode::QOkDDLC,format!("Please First Connect your system with server"))
+            }
+
         }
         AstNode::DropDatabaseStatement(name) => {
             controller.remove_the_database();
@@ -97,9 +102,31 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode,S
                         Compiler::SearchDatabaseIdentifier => {
                             (FrontSendCode::QERRDDLSE2,query.to_string())
                         }
-                    }
+                       Compiler::AddUser => {
+                           (FrontSendCode::QERRDDLSE2,query.to_string())
+                       }
+                       Compiler::CheckUser => {
+                           (FrontSendCode::QERRDDLSE2,query.to_string())
+                       }
+                   }
 
                 }
+            }
+        }
+        AstNode::AddUser(name) => {
+            let path=format!("../Testing/{}/",name);
+            return if controller.initiate_database(path.as_str()) == true {
+                (FrontSendCode::QOkDDLC, "".to_string())
+            } else {
+                (FrontSendCode::QOkDDLC, format!("Faild to Add User into Server"))
+            }
+        }
+        AstNode::CheckUser(name) => {
+            let path=format!("../Testing/{}/",name);
+            return if controller.initiate_database(path.as_str()) == true {
+                (FrontSendCode::QOkDDLC, "".to_string())
+            } else {
+                (FrontSendCode::QOkDDLC, format!("Faild to Check User into Server"))
             }
         }
     }

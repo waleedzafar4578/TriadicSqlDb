@@ -115,7 +115,7 @@ impl<'a> Lexer<'a> {
         //Define SQL keywords inside the tokenize function
         let sql_keywords = vec![
             "CREATE", "DROP", "SHOW", "TABLE", "DATABASE", "ALTER", "RENAME", "UPDATE", "SEARCH",
-            "USE","TRUNCATE","INSERT","DELETE","SELECT","FROM","GRANT","REVOKE"
+            "USE","TRUNCATE","INSERT","DELETE","SELECT","FROM","GRANT","REVOKE","ADDUSER","CHECKUSER"
         ];
         let mut tokens = Vec::new();
         while let Some(ch) = self.peek() {

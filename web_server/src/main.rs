@@ -28,8 +28,6 @@ struct FileData {
     going: Vec<String>,
 }
 fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
-    // Perform any modifications on the data if needed,
-    // For example, reverse the message
     let mut mem: String = data.message;
     let mut sts:FrontSendCode;
     (sts,mem) = sql_runner(mem.as_str(), con);
@@ -60,8 +58,8 @@ async fn handle_json(
     let base_control = base_controls
         .entry(client_ip.clone())
         .or_insert_with(|| BaseControl::new());
-    let path = format!("../Testing/{}/", client_ip);
-    base_control.initiate_database(path.as_str());
+    //let path = format!("../Testing/{}/", client_ip);
+    //base_control.initiate_database(path.as_str());
     // Perform modifications on the received data
     let modified_data = process_json_data(input_data, base_control);
     println!("{}", base_control);
@@ -83,8 +81,8 @@ async fn health_check(req: HttpRequest) -> impl Responder {
         .unwrap_or_default();
 
     // Log or use client information as needed
-    println!("Client IP: {}", client_ip);
-    println!("User-Agent: {}", user_agent);
+    //println!("Client IP: {}", client_ip);
+    //println!("User-Agent: {}", user_agent);
 
     HttpResponse::Ok().finish()
 }
@@ -113,6 +111,7 @@ async fn help() -> impl Responder {
         .json(help_data)
 }
 
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_state = AppState::default();
@@ -126,6 +125,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
+
     })
     .bind("localhost:8080")?
     .run()

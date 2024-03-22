@@ -12,6 +12,7 @@ pub enum Compiler{
     Show,ShowDatabase,
     Rename,RenameDatabase,RenameDatabaseIdentifier,
     Search,SearchDatabase,SearchDatabaseIdentifier,
+    AddUser,CheckUser
 }
 #[derive(Debug)]
 pub enum FrontSendCode{
@@ -22,6 +23,7 @@ pub enum FrontSendCode{
     QOkDDLU,QERRDDLU0,QERRDDLU1,QERRDDLU2,
     QOkDDLR,QERRDDLR0,QERRDDLR1,QERRDDLR2,
     QOkDDLSE,QERRDDLSE0,QERRDDLSE1,QERRDDLSE2,
+    QOkSYSA,QOkSYSA0,QOkSYSC,QOkSYSC0,
 }
 
 impl ToString for FrontSendCode {
@@ -101,6 +103,18 @@ impl ToString for FrontSendCode {
             }
             FrontSendCode::QERRDDLSE2 => {
                 String::from("QERRDDLSE2")
+            }
+            FrontSendCode::QOkSYSA => {
+                String::from("QOkSYSA")
+            }
+            FrontSendCode::QOkSYSA0 => {
+                String::from("QOkSYSA0")
+            }
+            FrontSendCode::QOkSYSC => {
+                String::from("QOkSYSC")
+            }
+            FrontSendCode::QOkSYSC0 => {
+                String::from("QOkSYSC0")
             }
         }
     }
