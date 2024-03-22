@@ -6,7 +6,7 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
-
+use triadic_error::{Compiler, FrontSendCode};
 #[derive(Default, Clone)]
 struct AppState {
     base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
@@ -31,11 +31,12 @@ fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
     // Perform any modifications on the data if needed,
     // For example, reverse the message
     let mut mem: String = data.message;
-    mem = sql_runner(mem.as_str(), con);
+    let mut sts:FrontSendCode;
+    (sts,mem) = sql_runner(mem.as_str(), con);
     // Create a modified OutputData with the reversed message
     let modified_output = OutputData {
         reversed_message: mem.to_string(),
-        status: "DDL".to_string(),
+        status: sts.to_string(),
     };
 
     return modified_output;
@@ -82,8 +83,8 @@ async fn health_check(req: HttpRequest) -> impl Responder {
         .unwrap_or_default();
 
     // Log or use client information as needed
-    //println!("Client IP: {}", client_ip);
-    //println!("User-Agent: {}", user_agent);
+    println!("Client IP: {}", client_ip);
+    println!("User-Agent: {}", user_agent);
 
     HttpResponse::Ok().finish()
 }
