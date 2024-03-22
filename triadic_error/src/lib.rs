@@ -11,3 +11,7 @@ pub enum Compiler{
     Rename,RenameDatabase,RenameDatabaseIdentifier,
     Search,SearchDatabase,SearchDatabaseIdentifier,
 }
+#[derive(Debug)]
+pub enum FrontSendCode{
+    OkDDLC,ERRDDLC0,ERRDDLC1,ERRDDLC2
+}

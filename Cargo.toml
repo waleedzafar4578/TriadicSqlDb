@@ -1,4 +1,4 @@
 [workspace]
-members = [ "TriadicServer","app", "compiler", "storagecontroller", "storge", "triadic_error", "triadic_logic", "web_server"]
+members = ["compiler", "storagecontroller", "storge", "triadic_error", "triadic_logic", "web_server"]
 resolver = "2"
-default-run=["app"]
+

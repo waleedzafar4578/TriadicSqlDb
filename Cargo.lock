@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "TriadicServer"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-web",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "actix-codec"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -256,17 +246,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94fb8275041c72129eb51b7d0322c29b8387a0386127718b096429201a5d6ece"
 dependencies = [
  "alloc-no-stdlib",
-]
-
-[[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "compiler",
- "storagecontroller",
- "storge",
- "triadic_error",
- "triadic_logic",
 ]
 
 [[package]]

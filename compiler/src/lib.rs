@@ -1,7 +1,7 @@
-use storagecontroller::BaseControl;
-use triadic_error::Compiler;
 use crate::lexical::Lexer;
 use crate::syntax::{AstNode, Parser};
+use storagecontroller::BaseControl;
+use triadic_error::Compiler;
 
 pub mod lexical;
 pub mod syntax;
@@ -9,13 +9,12 @@ pub fn hello() {
     println!("Hello from compiler side");
 }
 
-
-pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
-    let input=query.trim();
-    let mut lexer=Lexer::new(input);
-    let tokens=lexer.tokenize();
-    let mut parser=Parser::new(&tokens);
-    let (ast,error_type)=parser.parse();
+pub fn sql_runner(query: &str, controller: &mut BaseControl) -> String {
+    let input = query.trim();
+    let mut lexer = Lexer::new(input);
+    let tokens = lexer.tokenize();
+    let mut parser = Parser::new(&tokens);
+    let (ast, error_type) = parser.parse();
     match ast {
         AstNode::SelectStatement => {}
         AstNode::CreateTableStatement => {}
@@ -31,8 +30,9 @@ pub fn sql_runner(query:&str,  controller: &mut BaseControl) ->String{
         AstNode::RemoveDatabaseStatement(_) => {}
         AstNode::RenameDatabaseStatement(_) => {}
         AstNode::ShowDatabaseStatement => {
-            controller.list_down_the_name_database();
-
+            let ans=controller.list_down_the_name_database();
+            let ath=ans.join(" ");
+            return ath;
         }
         AstNode::UseDatabaseStatement(name) => {
             controller.use_this_database(name.as_str());

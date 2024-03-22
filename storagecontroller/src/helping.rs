@@ -19,19 +19,21 @@ impl BaseControl {
         }
         false
     }
-    pub fn list_down_the_name_database(&self) -> bool {
+    pub fn list_down_the_name_database(&self) -> Vec<String> {
         /*
         fs::read dir function return all inside dir of given path
            then use For loop to iterate each dir and then compare the metadata which help to
            identify whether it is dir or file
            after identify dir display on console
          */
+        let mut answer: Vec<String> = vec![];
+
         if let Ok(entries) = fs::read_dir(self.system_path.clone()) {
             for entry in entries.flatten() {
                 if let Ok(metadata) = entry.metadata() {
                     if metadata.is_dir() {
                         if let Some(name) = entry.file_name().to_str() {
-                            format!("Folder: {}", name);
+                            answer.push(name.to_string());
                         }
                     }
                 }
@@ -39,13 +41,12 @@ impl BaseControl {
         } else {
             eprintln!("Error reading directory '{}'", &self.system_path);
         }
-        return true;
+        return answer;
     }
-    pub fn list_of_tables(&self){
-        for cl in &self.all_table{
-            println!("Table Name: {}",cl.get_table_name());
+    pub fn list_of_tables(&self) {
+        for cl in &self.all_table {
+            println!("Table Name: {}", cl.get_table_name());
         }
-
     }
     pub fn tables_name(self) -> Vec<String> {
         let mut ret: Vec<String> = Vec::new();

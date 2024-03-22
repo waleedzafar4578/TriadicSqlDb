@@ -2,13 +2,12 @@ use actix_cors::Cors;
 use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder, Result};
 use compiler::sql_runner;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
-use serde_json::json;
 
-
-#[derive(Default,Clone)]
+#[derive(Default, Clone)]
 struct AppState {
     base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
 }
@@ -20,12 +19,13 @@ struct InputData {
 #[derive(Debug, Serialize, Deserialize)]
 struct OutputData {
     reversed_message: String,
+    status: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct FileData {
-    coming:Vec<String>,
-    going:Vec<String>
+    coming: Vec<String>,
+    going: Vec<String>,
 }
 fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
     // Perform any modifications on the data if needed,
@@ -35,6 +35,7 @@ fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
     // Create a modified OutputData with the reversed message
     let modified_output = OutputData {
         reversed_message: mem.to_string(),
+        status: "DDL".to_string(),
     };
 
     return modified_output;
@@ -58,11 +59,11 @@ async fn handle_json(
     let base_control = base_controls
         .entry(client_ip.clone())
         .or_insert_with(|| BaseControl::new());
-    let path=format!("../Testing/{}/",client_ip);
+    let path = format!("../Testing/{}/", client_ip);
     base_control.initiate_database(path.as_str());
     // Perform modifications on the received data
     let modified_data = process_json_data(input_data, base_control);
-    println!("{}",base_control);
+    println!("{}", base_control);
     // Serialize the modified data to a JSON response
     Ok(HttpResponse::Ok()
         .content_type("application/json")
@@ -88,7 +89,6 @@ async fn health_check(req: HttpRequest) -> impl Responder {
 }
 
 async fn editor() -> impl Responder {
-
     HttpResponse::Ok().body("Editor Page")
 }
 
@@ -112,7 +112,6 @@ async fn help() -> impl Responder {
         .json(help_data)
 }
 
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_state = AppState::default();
@@ -126,9 +125,8 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
-
     })
-        .bind("localhost:8080")?
-        .run()
-        .await
+    .bind("localhost:8080")?
+    .run()
+    .await
 }
