@@ -7,7 +7,7 @@ use std::io::{Read, Write};
 use crate::column::Column;
 use std::string::String;
 use triadic_logic::degree::Degree;
-#[derive(Serialize, Deserialize,Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Table {
     table_name: String,
     table_column: Vec<Column>,
@@ -43,35 +43,23 @@ impl Table {
     }
     pub fn add_col_data(&mut self, n: &str, col: &str, d: Degree) -> &mut Table {
         for i in &mut self.table_column {
-            if *i.clone().get_column_name() == n.to_string() {
-                match string_to_integer(col) {
-                    Ok(value) => {
-                        i.set_int_cell(value, d);
-                    }
-                    _ => {}
+            if i.clone().get_column_name() == &n.to_string() {
+                if let Ok(value) = string_to_integer(col) {
+                    i.set_int_cell(value, d);
                 }
-                match string_to_float(col) {
-                    Ok(value) => {
-                        i.set_float_cell(value, d);
-                    }
-                    _ => {}
+                if let Ok(value) = string_to_float(col) {
+                    i.set_float_cell(value, d);
                 }
-                match string_to_char(col) {
-                    Ok(value) => {
-                        i.set_char_cell(value, d);
-                    }
-                    _ => {}
+                if let Ok(value) = string_to_char(col) {
+                    i.set_char_cell(value, d);
                 }
-                match string_to_bool(col) {
-                    Ok(value) => {
-                        i.set_bool_cell(value, d);
-                    }
-                    _ => {}
+                if let Ok(value) = string_to_bool(col) {
+                    i.set_bool_cell(value, d);
                 }
                 i.set_string_cell(col.to_string(), d);
             }
         }
-        return self;
+        self
     }
 }
 
@@ -101,7 +89,7 @@ impl fmt::Display for Table {
         for col in self.table_column.clone() {
             write!(f, "{}     ", col.get_column_name())?;
         }
-        println!();
+        let _ = writeln!(f, "{:?}", ..);
 
         //here find max size of column data
         let mut size: usize = 0;
@@ -126,7 +114,7 @@ impl fmt::Display for Table {
                 }
             }
             i += 1;
-            println!();
+            let _ = writeln!(f, "{:?}", ..);
         }
         Ok(())
     }
@@ -142,8 +130,8 @@ impl Table {
             .truncate(true)
             .open(file_name)
             .expect("failed to open file!");
-        let streem = serde_json::to_string_pretty(&self).unwrap();
-        file.write_all(streem.as_bytes()).unwrap();
+        let stream = serde_json::to_string_pretty(&self).unwrap();
+        file.write_all(stream.as_bytes()).unwrap();
     }
     pub fn load_to_file(&mut self, path: String, file_name: String) -> Table {
         let p_file_name = path + &*file_name + ".json";
@@ -154,9 +142,9 @@ impl Table {
             .truncate(false)
             .open(p_file_name)
             .expect("Failed to open file!");
-        let mut streem = String::new();
-        file.read_to_string(&mut streem).unwrap();
-        let object: Table = serde_json::from_str(&streem).unwrap();
-        return object;
+        let mut stream = String::new();
+        file.read_to_string(&mut stream).unwrap();
+        let object: Table = serde_json::from_str(&stream).unwrap();
+         object
     }
 }

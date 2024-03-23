@@ -13,20 +13,20 @@ impl<'a> Parser<'a> {
                 self.parse_show_database_statement()
             } else {
                 (AstNode::Nothing, Some(triadic_error::Compiler::Show))
-            }
+            };
         }
-        return (AstNode::Nothing, None);
+         (AstNode::Nothing, None)
     }
 
     fn parse_show_database_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         // Check if the next token is a semicolon
         if let Some(Token::Punctuation(';')) = self.tokens.get(self.current_token) {
             // Successfully parsed a show DATABASE statement
-            return (
-                AstNode::ShowDatabaseStatement,
-                None,
-            );
+            return (AstNode::ShowDatabaseStatement, None);
         }
-        return (AstNode::Nothing, Some(triadic_error::Compiler::ShowDatabase));
+         (
+            AstNode::Nothing,
+            Some(triadic_error::Compiler::ShowDatabase),
+        )
     }
 }

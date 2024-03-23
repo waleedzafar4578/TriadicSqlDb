@@ -24,7 +24,7 @@ impl<'a> Parser<'a> {
             }
         } else {
             println!("Unexpected token");
-            return (AstNode::Nothing, None);
+             (AstNode::Nothing, None)
         }
     }
     pub(crate) fn advance(&mut self) {

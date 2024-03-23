@@ -4,7 +4,7 @@ use std::io::{Read, Write};
 
 impl BaseControl {
     pub fn save_to_file(self) {
-        let file_name = (&*self.system_path).to_owned() + &*self.database_name + ".json";
+        let file_name = (*self.system_path).to_owned() + &*self.database_name + ".json";
         let mut file = OpenOptions::new()
             .write(true)
             .create(true)

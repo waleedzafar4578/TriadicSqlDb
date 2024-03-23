@@ -1,7 +1,6 @@
 use crate::lexical::Token;
 use crate::syntax::{AstNode, Parser};
 impl<'a> Parser<'a> {
-
     pub(crate) fn parse_rename_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         self.advance(); // Move to the next token
 
@@ -14,11 +13,10 @@ impl<'a> Parser<'a> {
                 self.parse_rename_database_statement()
             } else {
                 (AstNode::Nothing, Some(triadic_error::Compiler::Rename))
-            }
-
+            };
         }
 
-        return (AstNode::Nothing,None)
+         (AstNode::Nothing, None)
     }
     fn parse_rename_database_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         // Check if the next token is an identifier (database name)
@@ -26,18 +24,20 @@ impl<'a> Parser<'a> {
             self.advance(); // Move to the next token
 
             // Check if the next token is a semicolon
-            if let Some(Token::Punctuation(';')) = self.tokens.get(self.current_token) {
+            return if let Some(Token::Punctuation(';')) = self.tokens.get(self.current_token) {
                 // Successfully parsed a RENAME DATABASE statement
-                return (
-                    AstNode::RenameDatabaseStatement(db_name.clone()),
-                    None,
-                );
-            }
-            else{
-                return (AstNode::Nothing,Some(triadic_error::Compiler::RenameDatabaseIdentifier))
+                (AstNode::RenameDatabaseStatement(db_name.clone()), None)
+            } else {
+                (
+                    AstNode::Nothing,
+                    Some(triadic_error::Compiler::RenameDatabaseIdentifier),
+                )
             }
         }
 
-        return (AstNode::Nothing,Some(triadic_error::Compiler::RenameDatabase))
+         (
+            AstNode::Nothing,
+            Some(triadic_error::Compiler::RenameDatabase),
+        )
     }
 }

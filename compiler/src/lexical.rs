@@ -1,12 +1,12 @@
 use std::string::String;
-#[derive(PartialEq,Debug)]
+#[derive(PartialEq, Debug)]
 pub enum Literal {
     Numeric(String),
     String(String),
     Boolean(String),
 }
 
-#[derive(PartialEq,Debug)]
+#[derive(PartialEq, Debug)]
 pub enum Token {
     Keyword(String),
     Identifier(String),
@@ -55,7 +55,7 @@ impl<'a> Lexer<'a> {
     fn read_numeric_literal(&mut self) -> String {
         let mut numeric_literal = String::new();
         while let Some(ch) = self.peek() {
-            if ch.is_digit(10) || ch == '.' {
+            if ch.is_ascii_digit() || ch == '.' {
                 numeric_literal.push(ch);
                 self.advance()
             } else {
@@ -114,8 +114,25 @@ impl<'a> Lexer<'a> {
     pub fn tokenize(&mut self) -> Vec<Token> {
         //Define SQL keywords inside the tokenize function
         let sql_keywords = vec![
-            "CREATE", "DROP", "SHOW", "TABLE", "DATABASE", "ALTER", "RENAME", "UPDATE", "SEARCH",
-            "USE","TRUNCATE","INSERT","DELETE","SELECT","FROM","GRANT","REVOKE","ADDUSER","CHECKUSER"
+            "CREATE",
+            "DROP",
+            "SHOW",
+            "TABLE",
+            "DATABASE",
+            "ALTER",
+            "RENAME",
+            "UPDATE",
+            "SEARCH",
+            "USE",
+            "TRUNCATE",
+            "INSERT",
+            "DELETE",
+            "SELECT",
+            "FROM",
+            "GRANT",
+            "REVOKE",
+            "ADDUSER",
+            "CHECKUSER",
         ];
         let mut tokens = Vec::new();
         while let Some(ch) = self.peek() {
@@ -134,22 +151,21 @@ impl<'a> Lexer<'a> {
                     }
                 };
                 tokens.push(token);
-            }else if ch.is_digit(10)||ch=='.' {
-                let numerical_literal=self.read_numeric_literal();
+            } else if ch.is_ascii_digit() || ch == '.' {
+                let numerical_literal = self.read_numeric_literal();
                 tokens.push(Token::Literal(Literal::Numeric(numerical_literal)));
-            }else if ch =='\'' {
-                let string_literal=self.read_string_literal();
+            } else if ch == '\'' {
+                let string_literal = self.read_string_literal();
                 tokens.push(Token::Literal(Literal::String(string_literal)));
-            }else if "+-*/=<>&|".contains(ch) {
-                let operator=self.read_operator();
+            } else if "+-*/=<>&|".contains(ch) {
+                let operator = self.read_operator();
                 tokens.push(Token::Operator(operator));
-            }else if ",;()".contains(ch) {
-                let punctuation =self.read_punctuation();
+            } else if ",;()".contains(ch) {
+                let punctuation = self.read_punctuation();
                 tokens.push(Token::Punctuation(punctuation));
-            }else {
+            } else {
                 self.advance();
             }
-
         }
 
         tokens

@@ -98,7 +98,7 @@ impl Column {
         self.size_status
     }
     pub fn get_column(&self) -> &Column {
-        &self
+        self
     }
 }
 

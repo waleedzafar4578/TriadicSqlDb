@@ -4,16 +4,22 @@ use std::fmt::Formatter;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum Degree {
-    //Here T is represented status of value is true
-    //Here F is represented status of value is false
+    //Here T is represented status of value is true, 
+    //Here F is represented status of value is false, 
     //Here L is represented status of value is limit
     T,
     F,
     L,
 }
+
+impl Default for Degree{
+    fn default() -> Self {
+        Self::new()
+    }
+}
 #[allow(dead_code)]
 impl Degree {
-    pub fn default() -> Self {
+    pub fn new() -> Self {
         Degree::L
     }
 }

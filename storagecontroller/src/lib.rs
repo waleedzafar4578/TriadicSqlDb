@@ -27,13 +27,17 @@ impl fmt::Display for BaseControl {
         writeln!(
             f,
             "-----------------------------------------------------------"
-        ).expect("Failed to show on console");
+        )
+        .expect("Failed to show on console");
         writeln!(f, "Initiated Path: {}", self.system_path).expect("Failed to show on console");
-        writeln!(f, "Select Database Name: {}", self.database_name).expect("Failed to show on console");
-        writeln!(f, "Lock value of Selected Database: {}", self.db_select).expect("Failed to show on console");
-        writeln!(f, "Lock value of initiate Path: {}", self.initiate_lock).expect("Failed to show on console");
-        writeln!(f, "").expect("Failed to show on console");
-        if self.all_table.len() > 0 {
+        writeln!(f, "Select Database Name: {}", self.database_name)
+            .expect("Failed to show on console");
+        writeln!(f, "Lock value of Selected Database: {}", self.db_select)
+            .expect("Failed to show on console");
+        writeln!(f, "Lock value of initiate Path: {}", self.initiate_lock)
+            .expect("Failed to show on console");
+        writeln!(f).expect("Failed to show on console");
+        if !self.all_table.is_empty() {
             for tb in &self.all_table {
                 write!(f, "\n\n{}\n\n", tb).expect("Failed to show on console");
             }
@@ -41,5 +45,3 @@ impl fmt::Display for BaseControl {
         Ok(())
     }
 }
-
-

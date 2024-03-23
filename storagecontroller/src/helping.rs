@@ -1,6 +1,12 @@
 use crate::BaseControl;
 use std::fs;
 
+impl Default for BaseControl {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl BaseControl {
     pub fn new() -> BaseControl {
         Self {
@@ -12,7 +18,7 @@ impl BaseControl {
         }
     }
     pub fn initiate_database(&mut self, path: &str) -> bool {
-        if self.initiate_lock == false {
+        if !self.initiate_lock {
             self.initiate_lock = true;
             self.system_path = path.to_string();
             return true;
@@ -41,7 +47,7 @@ impl BaseControl {
         } else {
             eprintln!("Error reading directory '{}'", &self.system_path);
         }
-        return answer;
+        answer
     }
     pub fn list_of_tables(&self) {
         for cl in &self.all_table {
@@ -80,10 +86,10 @@ impl BaseControl {
         } else {
             eprintln!("Error reading directory '{}'", &mut self.system_path);
         }
-        return false;
+        false
     }
     pub fn use_this_database(&mut self, path: &str) -> bool {
-        if self.db_select == false && self.initiate_lock == true {
+        if !self.db_select && self.initiate_lock {
             if let Ok(entries) = fs::read_dir(self.system_path.clone()) {
                 for entry in entries.flatten() {
                     if let Ok(metadata) = entry.metadata() {
@@ -102,6 +108,6 @@ impl BaseControl {
             self.db_select = true;
             return true;
         }
-        return false;
+        false
     }
 }

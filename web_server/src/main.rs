@@ -6,7 +6,7 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
-use triadic_error::{Compiler, FrontSendCode};
+use triadic_error::{FrontSendCode};
 #[derive(Default, Clone)]
 struct AppState {
     base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
@@ -29,15 +29,13 @@ struct FileData {
 }
 fn process_json_data(data: InputData, con: &mut BaseControl) -> OutputData {
     let mut mem: String = data.message;
-    let mut sts:FrontSendCode;
-    (sts,mem) = sql_runner(mem.as_str(), con);
+    let sts: FrontSendCode;
+    (sts, mem) = sql_runner(mem.as_str(), con);
     // Create a modified OutputData with the reversed message
-    let modified_output = OutputData {
+    OutputData {
         reversed_message: mem.to_string(),
         status: sts.to_string(),
-    };
-
-    return modified_output;
+    }
 }
 async fn handle_json(
     input: web::Json<InputData>,
@@ -55,9 +53,7 @@ async fn handle_json(
     let base_controls = data.base_controls.clone(); // Clone the Arc for access
     let mut base_controls = base_controls.write().unwrap(); // Acquire a write lock
 
-    let base_control = base_controls
-        .entry(client_ip.clone())
-        .or_insert_with(|| BaseControl::new());
+    let base_control = base_controls.entry(client_ip.clone()).or_default();
     //let path = format!("../Testing/{}/", client_ip);
     //base_control.initiate_database(path.as_str());
     // Perform modifications on the received data
@@ -69,17 +65,20 @@ async fn handle_json(
         .json(modified_data))
 }
 
-async fn health_check(req: HttpRequest) -> impl Responder {
-    let client_ip = req
+async fn health_check(_req: HttpRequest) -> impl Responder {
+    /*
+    let client_ip = _req
         .peer_addr()
         .map(|addr| addr.ip().to_string())
         .unwrap_or_default();
-    let user_agent = req
+    let user_agent = _req
         .headers()
         .get("user-agent")
         .map(|value| value.to_str().unwrap_or_default())
         .unwrap_or_default();
 
+
+     */
     // Log or use client information as needed
     //println!("Client IP: {}", client_ip);
     //println!("User-Agent: {}", user_agent);
@@ -111,7 +110,6 @@ async fn help() -> impl Responder {
         .json(help_data)
 }
 
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_state = AppState::default();
@@ -125,7 +123,6 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/help").route(web::get().to(help)))
             .service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
-
     })
     .bind("localhost:8080")?
     .run()

@@ -1,15 +1,15 @@
 use crate::lexical::Token;
-pub mod parse;
+pub mod connect;
 pub mod create_parse;
 pub mod drop_parse;
-pub mod use_parse;
-pub mod show_parse;
+pub mod parse;
 pub mod rename_parse;
 pub mod search_parse;
-pub mod connect;
+pub mod show_parse;
+pub mod use_parse;
 
 #[derive(Debug)]
-pub enum AstNode{
+pub enum AstNode {
     AddUser(String),
     CheckUser(String),
     SelectStatement,
@@ -24,30 +24,7 @@ pub enum AstNode{
     Nothing,
     // ...Continue another Sql statement here.
 }
-pub struct Parser<'a>{
-    tokens:& 'a[Token] ,
-    current_token:usize,
+pub struct Parser<'a> {
+    tokens: &'a [Token],
+    current_token: usize,
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
