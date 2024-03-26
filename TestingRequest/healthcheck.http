@@ -1,0 +1,22 @@
+###
+GET http://localhost:8080/health_check
+Accept: application/json
+
+###
+GET http://localhost:8080/help
+
+###
+POST http://localhost:8080/process_json
+Content-Type: application/json
+
+{
+  "message": "CREATE DATABASE jawad;"
+}
+
+###
+POST http://localhost:8080/process_json
+Content-Type: application/json
+
+{
+  "message": "CONNECT(subhan);"
+}

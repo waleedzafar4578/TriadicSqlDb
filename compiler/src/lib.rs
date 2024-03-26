@@ -5,6 +5,7 @@ use triadic_error::{Compiler, FrontSendCode};
 
 pub mod lexical;
 pub mod syntax;
+
 pub fn hello() {
     println!("Hello from compiler side");
 }

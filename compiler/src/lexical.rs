@@ -1,4 +1,10 @@
+use std::fs::{File};
+use std::io::Read;
 use std::string::String;
+use serde::Deserialize;
+
+
+
 #[derive(PartialEq, Debug)]
 pub enum Literal {
     Numeric(String),
@@ -112,28 +118,16 @@ impl<'a> Lexer<'a> {
         }
     }
     pub fn tokenize(&mut self) -> Vec<Token> {
+
+        let m:Hebi=converter();
+        let ky=m.keyword.clone();
+       
+       
         //Define SQL keywords inside the tokenize function
-        let sql_keywords = vec![
-            "CREATE",
-            "DROP",
-            "SHOW",
-            "TABLE",
-            "DATABASE",
-            "ALTER",
-            "RENAME",
-            "UPDATE",
-            "SEARCH",
-            "USE",
-            "TRUNCATE",
-            "INSERT",
-            "DELETE",
-            "SELECT",
-            "FROM",
-            "GRANT",
-            "REVOKE",
-            "ADDUSER",
-            "CHECKUSER",
-        ];
+        let sql_keywords: Vec<&str>=ky.iter().map(|s| s.as_str()).collect();
+        
+        
+        
         let mut tokens = Vec::new();
         while let Some(ch) = self.peek() {
             if ch.is_whitespace() {
@@ -170,4 +164,17 @@ impl<'a> Lexer<'a> {
 
         tokens
     }
+}
+
+
+
+#[derive(Deserialize, Debug)]
+pub struct Hebi {
+    keyword: Vec<String>,
+}
+pub fn converter()-> Hebi{
+    let  file = File::open("Syskeywords.json");
+    let mut contents = String::new();
+    file.expect("Failed to open").read_to_string(&mut contents).expect("Failed to read data from file!!");
+    serde_json::from_str(&contents).unwrap()
 }

@@ -1,0 +1,24 @@
+{
+  "keyword": [
+    "CREATE",
+    "DROP",
+    "SHOW",
+    "TABLE",
+    "DATABASE",
+    "ALTER",
+    "RENAME",
+    "UPDATE",
+    "SEARCH",
+    "USE",
+    "TRUNCATE",
+    "INSERT",
+    "DELETE",
+    "SELECT",
+    "FROM",
+    "GRANT",
+    "REVOKE",
+    "ADDUSER",
+    "CHECKUSER",
+    "CONNECT"
+  ]
+}
