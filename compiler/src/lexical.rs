@@ -119,7 +119,7 @@ impl<'a> Lexer<'a> {
     }
     pub fn tokenize(&mut self) -> Vec<Token> {
 
-        let m:Hebi=converter();
+        let m: KeywordHolder =converter();
         let ky=m.keyword.clone();
        
        
@@ -169,10 +169,10 @@ impl<'a> Lexer<'a> {
 
 
 #[derive(Deserialize, Debug)]
-pub struct Hebi {
+pub struct KeywordHolder {
     keyword: Vec<String>,
 }
-pub fn converter()-> Hebi{
+pub fn converter()-> KeywordHolder {
     let  file = File::open("Syskeywords.json");
     let mut contents = String::new();
     file.expect("Failed to open").read_to_string(&mut contents).expect("Failed to read data from file!!");

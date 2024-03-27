@@ -18,5 +18,13 @@ POST http://localhost:8080/process_json
 Content-Type: application/json
 
 {
+  "message": "create DATABASE jawad;"
+}
+
+###
+POST http://localhost:8080/process_json
+Content-Type: application/json
+
+{
   "message": "CONNECT(subhan);"
 }

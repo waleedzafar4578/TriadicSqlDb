@@ -11,7 +11,7 @@ impl<'a> Parser<'a> {
     pub fn parse(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         //First check that first token is sql keyword
         if let Some(Token::Keyword(ref keyword)) = self.tokens.get(self.current_token) {
-            match keyword.to_uppercase().as_str() {
+            match keyword.as_str() {
                 "ADDUSER" => self.parse_adduser_statement(),
                 "CHECKUSER" => self.parse_checkuser_statement(),
                 "CREATE" => self.parse_create_statement(),

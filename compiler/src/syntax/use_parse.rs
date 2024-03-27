@@ -6,7 +6,7 @@ impl<'a> Parser<'a> {
         self.advance();
         //checking the next token is DATABASE
         if let Some(Token::Keyword(ref next_keyword)) = self.tokens.get(self.current_token) {
-            if next_keyword.to_uppercase() == "DATABASE" {
+            if next_keyword == "DATABASE" {
                 self.advance();
                 return self.parse_use_database_statement();
             }
