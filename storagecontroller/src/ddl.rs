@@ -45,7 +45,7 @@ impl BaseControl {
         if !self.db_select {
             return false;
         }
-        
+
          */
         let temp = self.system_path.clone() + name;
         match fs::remove_dir(temp.clone()) {
@@ -56,10 +56,11 @@ impl BaseControl {
                  EngineErrorDrop::DoneYes
             }
             Err(e) => {
+                println!("{e}");
                  EngineErrorDrop::NotFind
             },
         }
-        
+
     }
     pub fn rename_the_database(&mut self, path_hold: &str, path_new: &str) -> bool {
         let old = self.system_path.to_string() + path_hold;
