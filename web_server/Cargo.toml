@@ -12,3 +12,5 @@ serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
 storagecontroller = { version = "0.1.0", path = "../storagecontroller" }
 triadic_error = { version = "0.1.0", path = "../triadic_error" }
+actix-web-actors="3"
+actix = "0.10.0"

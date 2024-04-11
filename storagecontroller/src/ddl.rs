@@ -1,8 +1,9 @@
 use crate::BaseControl;
 use std::fs;
+use triadic_error::engine_error::EngineErrorCreate;
 
 impl BaseControl {
-    pub fn create_the_database(&mut self, path: &str) -> bool {
+    pub fn create_the_database(&mut self, path: &str) -> EngineErrorCreate {
         if self.initiate_lock {
             /*
             Here cloning the value to temp variable which use for fs::create_dir_all
@@ -15,21 +16,21 @@ impl BaseControl {
             let temp = self.system_path.clone() + path;
             if let Err(e) = fs::create_dir_all(temp) {
                 if e.kind() == std::io::ErrorKind::AlreadyExists {
-                    println!("AlreadyExist");
-                    return false;
+                    //println!("AlreadyExist");
+                    return EngineErrorCreate::AlreadyExist;
                 }
             } else if !BaseControl::find_this_database(self, path) {
-                //println!("Database is created!");
-                return true;
+                println!("Database is created!");
+                return EngineErrorCreate::DoneYes;
             } else {
                 //println!("AlreadyExist");
-                return false;
+                return EngineErrorCreate::AlreadyExist;
             }
         } else {
             println!("\n\n\nError:First  initiate the database\n\n");
-            return false;
+            return EngineErrorCreate::PathNotSelected;
         }
-         false
+        EngineErrorCreate::PathNotSelected
     }
     pub fn remove_the_database(&mut self) -> bool {
         //Check if initiate lock is false then need to break the function
@@ -56,14 +57,14 @@ impl BaseControl {
 
          false
     }
-    pub fn rename_the_database(&mut self, path: &str) -> bool {
-        let old = self.system_path.to_string() + &*self.database_name.to_string();
-        let new = self.system_path.to_string() + path;
+    pub fn rename_the_database(&mut self, path_hold: &str, path_new: &str) -> bool {
+        let old = self.system_path.to_string() + path_hold;
+        let new = self.system_path.to_string() + path_new;
 
          match fs::rename(old, new) {
             Ok(_) => {
                 println!("Directory renamed successfully!");
-                self.database_name = path.to_string();
+                self.database_name = path_new.to_string();
                 true
             }
             Err(_e) => {

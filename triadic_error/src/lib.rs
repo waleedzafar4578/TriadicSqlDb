@@ -2,6 +2,7 @@ pub fn hello() {
     println!("Hello from error library");
 }
 
+pub mod engine_error;
 pub enum Compiler {
     NotAKeyword,
     CREATE,
@@ -26,35 +27,53 @@ pub enum Compiler {
 }
 #[derive(Debug)]
 pub enum FrontSendCode {
+    //Query Empty
     QEm,
+    //Query doesn't start with keyword
     QNTK,
+    //Query Parse that belongs to Data Definition Language Create keyword
     QOkDDLC,
+    //Query Error Create ____ ____ __
     QERRDDLC0,
+    //Query Error Creates Database ____ __
     QERRDDLC1,
+    //Query Error Create Database exam __
     QERRDDLC2,
+    //Engine Error for this type of query
+    EPNS,
+    EAE,
+    //Query Parse that belongs to Data Definition Language Show keyword
     QOkDDLSH,
     QERRDDLSH0,
     QERRDDLSH1,
+    //Query Parse that belongs to Data Definition Language Drop keyword
     QOkDDLD,
     QERRDDLD0,
     QERRDDLD1,
     QERRDDLD2,
+    //Query Parse that belongs to Data Definition Language Use keyword
     QOkDDLU,
     QERRDDLU0,
     QERRDDLU1,
     QERRDDLU2,
+    //Query Parse that belongs to Data Definition Language Rename keyword
     QOkDDLR,
     QERRDDLR0,
     QERRDDLR1,
     QERRDDLR2,
+    //Query Parse that belongs to Data Definition Language Select keyword
     QOkDDLSE,
     QERRDDLSE0,
     QERRDDLSE1,
     QERRDDLSE2,
+    //Query Parse that belongs to Data Definition Language System keyword
     QOkSYSA,
     QOkSYSA0,
+    //Query Parse that belongs to Data Definition Language Show keyword
     QOkSYSC,
     QOkSYSC0,
+    //Engine Error
+    
 }
 
 impl ToString for FrontSendCode {
@@ -89,6 +108,8 @@ impl ToString for FrontSendCode {
             FrontSendCode::QOkSYSA0 => String::from("QOkSYSA0"),
             FrontSendCode::QOkSYSC => String::from("QOkSYSC"),
             FrontSendCode::QOkSYSC0 => String::from("QOkSYSC0"),
+            FrontSendCode::EPNS => String::from("EPNS"),
+            FrontSendCode::EAE => String::from("EAE"),
         }
     }
 }

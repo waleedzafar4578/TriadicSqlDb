@@ -1,6 +1,7 @@
 use crate::lexical::Lexer;
 use crate::syntax::{AstNode, Parser};
 use storagecontroller::BaseControl;
+use triadic_error::engine_error::EngineErrorCreate;
 use triadic_error::{Compiler, FrontSendCode};
 
 pub mod lexical;
@@ -11,37 +12,59 @@ pub fn hello() {
 }
 
 pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, String) {
+    controller.initiate_database("../../servertesting/");
     let input = query.trim();
     let mut lexer = Lexer::new(input);
     let tokens = lexer.tokenize();
+
+    //println!("{:?}",tokens);
+
     let mut parser = Parser::new(&tokens);
     let (ast, error_type) = parser.parse();
     match ast {
         AstNode::SelectStatement => {}
         AstNode::CreateTableStatement => {}
         AstNode::CreateDatabaseStatement(name) => {
-            return if controller.create_the_database(name.as_str()) {
-                (
-                    FrontSendCode::QOkDDLC,
-                    format!("Database is Create with the Name of: {}", name),
-                )
-            } else {
-                (
-                    FrontSendCode::QOkDDLC,
-                    "Please First Connect your system with server".to_string(),
-                )
-            }
+            return match controller.create_the_database(name.as_str()) {
+                EngineErrorCreate::PathNotSelected => {
+                    (
+                        FrontSendCode::EPNS,
+                        "Please First Connect your system with server".to_string(),
+                    )
+                }
+                EngineErrorCreate::AlreadyExist => {
+                    (
+                        FrontSendCode::EAE,
+                        format!("Database is already exist with the Name of: {}", name),
+                    )
+                }
+                EngineErrorCreate::DoneYes => {
+                    (
+                        FrontSendCode::QOkDDLC,
+                        format!("Database is Create with the Name of: {}", name),
+                    )
+                }
+            };
         }
         AstNode::DropDatabaseStatement(name) => {
             controller.remove_the_database();
             return (
-                FrontSendCode::QOkDDLC,
+                FrontSendCode::QOkDDLD,
                 format!("Database is Delete with the Name of: {}", name),
             );
         }
-        AstNode::SearchDatabaseStatement(_) => {}
-        AstNode::RemoveDatabaseStatement(_) => {}
-        AstNode::RenameDatabaseStatement(_) => {}
+        AstNode::SearchDatabaseStatement(name) => {
+            match controller.find_this_database(name.as_str()) {
+                true => {}
+                false => {}
+            }
+        }
+        AstNode::RenameDatabaseStatement(old_path,new_path) => {
+               match controller.rename_the_database(&old_path, &new_path) {
+                   true => {}
+                   false => {}
+               } 
+        }
         AstNode::ShowDatabaseStatement => {
             let ans = controller.list_down_the_name_database();
             let ath = ans.join(" ");

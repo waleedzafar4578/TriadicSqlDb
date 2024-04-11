@@ -6,7 +6,7 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use storagecontroller::BaseControl;
-use triadic_error::{FrontSendCode};
+use triadic_error::FrontSendCode;
 #[derive(Default, Clone)]
 struct AppState {
     base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
@@ -56,6 +56,7 @@ async fn handle_json(
     let base_control = base_controls.entry(client_ip.clone()).or_default();
     //let path = format!("../Testing/{}/", client_ip);
     //base_control.initiate_database(path.as_str());
+    base_control.initiate_database("../../servertesting/");
     // Perform modifications on the received data
     let modified_data = process_json_data(input_data, base_control);
     println!("{}", base_control);
