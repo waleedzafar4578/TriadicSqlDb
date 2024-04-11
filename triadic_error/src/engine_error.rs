@@ -3,3 +3,8 @@ pub enum EngineErrorCreate{
     AlreadyExist,
     DoneYes,
 }
+pub enum EngineErrorDrop{
+    PathNotSelected,
+    NotFind,
+    DoneYes
+}

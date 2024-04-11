@@ -39,9 +39,6 @@ pub enum FrontSendCode {
     QERRDDLC1,
     //Query Error Create Database exam __
     QERRDDLC2,
-    //Engine Error for this type of query
-    EPNS,
-    EAE,
     //Query Parse that belongs to Data Definition Language Show keyword
     QOkDDLSH,
     QERRDDLSH0,
@@ -61,7 +58,7 @@ pub enum FrontSendCode {
     QERRDDLR0,
     QERRDDLR1,
     QERRDDLR2,
-    //Query Parse that belongs to Data Definition Language Select keyword
+    //Query Parse that belongs to Data Definition Language Search keyword
     QOkDDLSE,
     QERRDDLSE0,
     QERRDDLSE1,
@@ -72,7 +69,10 @@ pub enum FrontSendCode {
     //Query Parse that belongs to Data Definition Language Show keyword
     QOkSYSC,
     QOkSYSC0,
-    //Engine Error
+    //Engine Error 
+    EPNS,
+    EAE,
+    ENE
     
 }
 
@@ -110,6 +110,7 @@ impl ToString for FrontSendCode {
             FrontSendCode::QOkSYSC0 => String::from("QOkSYSC0"),
             FrontSendCode::EPNS => String::from("EPNS"),
             FrontSendCode::EAE => String::from("EAE"),
+            FrontSendCode::ENE => String::from("ENE"),
         }
     }
 }

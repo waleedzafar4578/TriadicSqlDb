@@ -1,6 +1,6 @@
 use crate::BaseControl;
 use std::fs;
-use triadic_error::engine_error::EngineErrorCreate;
+use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
 
 impl BaseControl {
     pub fn create_the_database(&mut self, path: &str) -> EngineErrorCreate {
@@ -32,30 +32,34 @@ impl BaseControl {
         }
         EngineErrorCreate::PathNotSelected
     }
-    pub fn remove_the_database(&mut self) -> bool {
+    pub fn remove_the_database(&mut self,name:&str) -> EngineErrorDrop {
         //Check if initiate lock is false then need to break the function
         if !self.initiate_lock {
-            return false;
+            return EngineErrorDrop::PathNotSelected;
         }
         //Check if select lock is false then need
         // to break the function because if you want to remove,
         // a database
         //must be select first
+        /*
         if !self.db_select {
             return false;
         }
-        let temp = self.system_path.clone() + &*self.database_name;
+        
+         */
+        let temp = self.system_path.clone() + name;
         match fs::remove_dir(temp.clone()) {
             Ok(()) => {
                 println!("Folder '{}' removed successfully!", temp);
                 self.db_select = false;
                 self.database_name = "".to_string();
-                return true;
+                 EngineErrorDrop::DoneYes
             }
-            Err(e) => eprintln!("Error removing folder '{}': {}", temp, e),
+            Err(e) => {
+                 EngineErrorDrop::NotFind
+            },
         }
-
-         false
+        
     }
     pub fn rename_the_database(&mut self, path_hold: &str, path_new: &str) -> bool {
         let old = self.system_path.to_string() + path_hold;

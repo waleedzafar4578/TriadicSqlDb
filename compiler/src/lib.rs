@@ -1,7 +1,7 @@
 use crate::lexical::Lexer;
 use crate::syntax::{AstNode, Parser};
 use storagecontroller::BaseControl;
-use triadic_error::engine_error::EngineErrorCreate;
+use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
 use triadic_error::{Compiler, FrontSendCode};
 
 pub mod lexical;
@@ -47,23 +47,58 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             };
         }
         AstNode::DropDatabaseStatement(name) => {
-            controller.remove_the_database();
-            return (
-                FrontSendCode::QOkDDLD,
-                format!("Database is Delete with the Name of: {}", name),
-            );
+            match controller.remove_the_database(name.as_str()){
+                EngineErrorDrop::PathNotSelected => {
+                    (
+                        FrontSendCode::EPNS,
+                        "Engine Path Not Selected".to_string(),
+                    )
+                }
+                EngineErrorDrop::NotFind => {
+                    (
+                        FrontSendCode::ENE,
+                        "Engine Database Not Exist".to_string(),
+                    )
+                }
+                EngineErrorDrop::DoneYes => {
+                    (
+                        FrontSendCode::QOkDDLD,
+                        "Database Dropped".to_string(),
+                    )
+                }
+            };
         }
         AstNode::SearchDatabaseStatement(name) => {
             match controller.find_this_database(name.as_str()) {
-                true => {}
-                false => {}
-            }
+                true => {
+                    (
+                        FrontSendCode::QOkDDLSE,
+                        "Database Found".to_string(),
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::EAE,
+                        "Database Not Found".to_string(),
+                    )
+                }
+            };
         }
         AstNode::RenameDatabaseStatement(old_path,new_path) => {
                match controller.rename_the_database(&old_path, &new_path) {
-                   true => {}
-                   false => {}
-               } 
+                   true => {
+                       (
+                           FrontSendCode::QOkDDLR,
+                           "Database Rename".to_string(),
+                       )
+                   }
+                   false => {
+                       (
+                           FrontSendCode::EAE,
+                           "Database Not Found".to_string(),
+                       )
+                   }
+               };
         }
         AstNode::ShowDatabaseStatement => {
             let ans = controller.list_down_the_name_database();
@@ -71,11 +106,20 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             return (FrontSendCode::QOkDDLSH, ath);
         }
         AstNode::UseDatabaseStatement(name) => {
-            controller.use_this_database(name.as_str());
-            return (
-                FrontSendCode::QOkDDLU,
-                format!("{} This database is selected", name),
-            );
+            match controller.use_this_database(name.as_str()){
+                true => {
+                    (
+                        FrontSendCode::QOkDDLU,
+                        "Database Found".to_string(),
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::EAE,
+                        "Database Not Found".to_string(),
+                    )
+                }
+            };
         }
         AstNode::Nothing => match error_type {
             None => {}
