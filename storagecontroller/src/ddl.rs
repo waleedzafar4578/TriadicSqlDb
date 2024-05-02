@@ -14,18 +14,23 @@ impl BaseControl {
             And e.kind help to identify the actual Error.
              */
             let temp = self.system_path.clone() + path;
-            if let Err(e) = fs::create_dir_all(temp) {
-                if e.kind() == std::io::ErrorKind::AlreadyExists {
-                    //println!("AlreadyExist");
-                    return EngineErrorCreate::AlreadyExist;
-                }
-            } else if !BaseControl::find_this_database(self, path) {
-                println!("Database is created!");
-                return EngineErrorCreate::DoneYes;
-            } else {
-                //println!("AlreadyExist");
+            if  BaseControl::find_this_database(self, &temp){
+                //println!("already exist from if");
                 return EngineErrorCreate::AlreadyExist;
             }
+            match fs::create_dir_all(temp) {
+                Ok(_) => {
+                    println!("Database is created!");
+                    return EngineErrorCreate::DoneYes;
+                }
+                Err(e) => {
+                    if e.kind() == std::io::ErrorKind::AlreadyExists {
+                        println!("match statement AlreadyExist");
+                        return EngineErrorCreate::AlreadyExist;
+                    }
+                }
+            }
+            
         } else {
             println!("\n\n\nError:First  initiate the database\n\n");
             return EngineErrorCreate::PathNotSelected;

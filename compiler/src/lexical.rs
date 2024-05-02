@@ -2,6 +2,7 @@ use std::fs::{File};
 use std::io::Read;
 use std::string::String;
 use serde::Deserialize;
+use std::fs::read_to_string;
 
 
 
@@ -119,13 +120,34 @@ impl<'a> Lexer<'a> {
     }
     pub fn tokenize(&mut self) -> Vec<Token> {
 
-        let m: KeywordHolder =converter();
-        let ky=m.keyword.clone();
-       
+        //let m: KeywordHolder =converter();
+        //let ky=m.keyword.Clone();
+       	
        
         //Define SQL keywords inside the tokenize function
-        let sql_keywords: Vec<&str>=ky.iter().map(|s| s.as_str()).collect();
-        
+        //let sql_keywords: Vec<&str>=ky.iter().map(|s| s.as_str()).collect();
+        let sql_keywords:Vec<&str>=vec![
+    "CREATE",
+    "DROP",
+    "SHOW",
+    "TABLE",
+    "DATABASE",
+    "ALTER",
+    "RENAME",
+    "UPDATE",
+    "SEARCH",
+    "USE",
+    "TRUNCATE",
+    "INSERT",
+    "DELETE",
+    "SELECT",
+    "FROM",
+    "GRANT",
+    "REVOKE",
+    "ADDUSER",
+    "CHECKUSER",
+    "CONNECT"
+  ];
         
         
         let mut tokens = Vec::new();
@@ -173,8 +195,33 @@ pub struct KeywordHolder {
     keyword: Vec<String>,
 }
 pub fn converter()-> KeywordHolder {
-    let  file = File::open("Syskeywords.json");
-    let mut contents = String::new();
-    file.expect("Failed to open").read_to_string(&mut contents).expect("Failed to read data from file!!");
+    //let  file = File::open("Syskeywords.json");
+    let mut contents = r#"
+    {
+  "keyword": [
+    "CREATE",
+    "DROP",
+    "SHOW",
+    "TABLE",
+    "DATABASE",
+    "ALTER",
+    "RENAME",
+    "UPDATE",
+    "SEARCH",
+    "USE",
+    "TRUNCATE",
+    "INSERT",
+    "DELETE",
+    "SELECT",
+    "FROM",
+    "GRANT",
+    "REVOKE",
+    "ADDUSER",
+    "CHECKUSER",
+    "CONNECT"
+  ]
+}
+    "#;
+    read_to_string(&mut contents).expect("Failed to read data from file!!");
     serde_json::from_str(&contents).unwrap()
 }

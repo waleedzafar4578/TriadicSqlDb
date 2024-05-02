@@ -1,1 +1,10 @@
 ngrok http --domain=hopeful-lasting-boa.ngrok-free.app --host-header=rewrite 3000
+
+
+
+curl -X POST "http://127.0.0.1:8000/ca" -H "Content-Type: application/json" -d '{"username": "waleedzafar", "password": "W12345678@"}'
+
+{"ans":"This username is already exist!"}%                                                                                                      ~/serv/triadic_user/tmain    master +2 !2 ?6  curl -X POST "http://127.0.0.1:8000/login" -H "Content-Type: application/json" -d '{"username": "waleedzafar", "password": "W12345678@"}'
+
+{"ans":""}%                                                                                                                                     ~/serv/triadic_user/tmain    master +2 !2 ?6  curl -X POST "http://127.0.0.1:8000/login" -H "Content-Type: application/json" -d '{"username": "waleedzafar", "password": "W12345678@"}'
+

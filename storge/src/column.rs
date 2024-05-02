@@ -11,6 +11,8 @@ pub struct Column {
     type_status: AttributeType,
     size_status: usize,
     value: Vec<TriData>,
+    primary_key: bool,
+    not_null: bool,
 }
 
 impl Column {
@@ -21,6 +23,8 @@ impl Column {
             type_status: t.clone(), //here some issue
             size_status: 0,
             value: vec![],
+            primary_key: false,
+            not_null: false,
         }
     }
 }
@@ -29,8 +33,12 @@ impl Column {
         match self.type_status {
             AttributeType::TBool => {}
             AttributeType::TInt => {
-                self.size_status += 1;
-                self.value.push(TriData::t_int(value, d))
+                if self.primary_key == true {
+                    println!("Please Pass Unique Value");
+                } else {
+                    self.size_status += 1;
+                    self.value.push(TriData::t_int(value, d))
+                }
             }
             AttributeType::TFloat => {}
             AttributeType::TChar => {}
@@ -109,5 +117,19 @@ impl fmt::Display for Column {
             writeln!(f, "{}", data)?;
         }
         Ok(())
+    }
+}
+impl Column {
+    pub fn enable_primary_key(&mut self) {
+        self.primary_key = true;
+    }
+    pub fn disable_primary_key(&mut self) {
+        self.primary_key = false;
+    }
+    pub fn enable_not_null(&mut self) {
+        self.not_null = true;
+    }
+    pub fn disable_not_null(&mut self) {
+        self.not_null = false;
     }
 }
