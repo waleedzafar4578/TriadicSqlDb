@@ -1,11 +1,20 @@
-POST https://127.0.0.1:8000/
+###
+POST http://localhost:8080/ca
 Content-Type: application/json
 
 {
-  "username": "waleedzafar",
+  "username": "subhankhaild",
   "password": "W1231243@"
 }
 
+###
+POST http://localhost:8080/ln
+Content-Type: application/json
+
+{
+  "username": "subhankhaild",
+  "password": "W1231243@"
+}
 
 ###
 
@@ -18,9 +27,11 @@ Content-Type: application/json
   "password": "W12345678@"
 }
 
+
+
 ###
 
-POST http://localhost:8080/login
+POST http://localhost:8080/ln
 Content-Type: application/json
 
 {
@@ -29,3 +40,19 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "b3455d2ad296811e7f7f12af846d72df24cdc34b6de38f08282d52414a994a83",
+  "query": "CREATE DATABASE third;"
+}
+
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "545dee096f23db8ef5283e9f1e276488ef6a7fea6e9e48c30d55eb1508d6f38b",
+  "query": "CREATE DATABASE second;"
+}
