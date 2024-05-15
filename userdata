@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "token": "993fd12191231a72dd7802f2978979f5fee1f9949fa060653349ab1c3ea362fe",
+      "username": "waleedzafar",
+      "password": "$2b$10$EBA8J5LqLWp3JGzruLb6aeKui4I1txYrOThNrF4hvdM3AWYWmp8gm",
+      "unique_id": "../../AllUserData/waleedzafar/",
+      "selected_database": "",
+      "timestamp": 1715596072,
+      "expiration_time": 1715596672
+    },
+    {
+      "token": "59947dd8bacc1ae545dd89a506ca64860d053bfd41d02d91a37babb77a4ed767",
+      "username": "subhankhaild",
+      "password": "$2b$10$9gps1czis9RuS.OpQNJDFeqMbgYg5e0RQK7Vx.bJyH0B3QZYdoA9K",
+      "unique_id": "../../AllUserData/subhankhaild/",
+      "selected_database": "",
+      "timestamp": 1715511065,
+      "expiration_time": 1715511665
+    }
+  ]
+}

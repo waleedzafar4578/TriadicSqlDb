@@ -1,3 +1,11 @@
+POST http://localhost:8080/checkt
+Content-Type: application/json
+
+{
+  "token": "59947dd8bacc1ae545dd89a506ca64860d053bfd41d02d91a37babb77a4ed767"
+}
+
+###
 ###
 POST http://localhost:8080/ca
 Content-Type: application/json
@@ -53,6 +61,7 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "545dee096f23db8ef5283e9f1e276488ef6a7fea6e9e48c30d55eb1508d6f38b",
-  "query": "CREATE DATABASE second;"
+  "token": "",
+  "query": "SHOW DATABASE;"
 }
+

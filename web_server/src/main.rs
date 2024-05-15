@@ -13,30 +13,34 @@ use std::{env, fmt, io};
 use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
 use UserAuth::structure_of_server::{appuser_to_file, file_to_appuser};
-use UserAuth::{
-    AppUsers, CreateAccountResult, InputData, JsonData1, JsonData2, JsonData3, OutputData, TFile,
-    User,
-};
+use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, TakeTokenJson, TFile, TokenResponse, User};
 
 #[derive(Default, Clone)]
 struct AppState {
     base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
 }
-async fn select_db(input: web::Json<JsonData2>) -> HttpResponse {
-    let mut ret_ans = CreateAccountResult { ans: String::new() };
+#[post("/sdb")]
+async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
+    let mut ret_ans = ClientResponseAccount {
+        related_info: String::new(),
+        token: String::new(),
+    };
 
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
     //checking this user is already exist or not.
     match user_data.check_token(&input.token) {
         None => {
-            ret_ans.ans = "Wrong Token!".to_string();
+            ret_ans.related_info = "Wrong Token!".to_string();
             Err("This username does not exist!".to_string())
         }
         Some(index) => {
             let user = user_data.users.get_mut(index).unwrap();
 
-            ret_ans.ans = user.cloned_token();
+            match user.set_database(input.database_name.as_str()) {
+                true => {}
+                false => {}
+            }
             Ok(user.cloned_token())
         }
     }
@@ -50,17 +54,20 @@ async fn select_db(input: web::Json<JsonData2>) -> HttpResponse {
 }
 
 #[post("/ln")]
-async fn login(input: web::Json<JsonData1>) -> HttpResponse {
+async fn login(input: web::Json<LoginJson>) -> HttpResponse {
     //set up the returning value structure
-    let mut ret_ans = CreateAccountResult { ans: String::new() };
+    let mut ret_ans = ClientResponseAccount {
+        related_info: String::new(),
+        token: "".to_string(),
+    };
 
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
-    println!("{:#?}",user_data);
+    println!("{:#?}", user_data);
     //checking this user is already exist or not.
     match user_data.check_username_exist(&input.username) {
         None => {
-            ret_ans.ans = "This username does not exist!".to_string();
+            ret_ans.related_info = "This username does not exist!".to_string();
             Err("This username does not exist!".to_string())
         }
         Some(index) => {
@@ -68,10 +75,11 @@ async fn login(input: web::Json<JsonData1>) -> HttpResponse {
 
             if user.verify_password(&input.password) {
                 user.generate_token();
-                ret_ans.ans = user.cloned_token();
+                ret_ans.token = user.cloned_token();
+                ret_ans.related_info="-1".to_string();
                 Ok(user.cloned_token())
             } else {
-                ret_ans.ans = "Invalid password!".to_string();
+                ret_ans.related_info = "Invalid password!".to_string();
                 Err("Invalid password!".to_string())
             }
         }
@@ -86,9 +94,12 @@ async fn login(input: web::Json<JsonData1>) -> HttpResponse {
 }
 
 #[post("/ca")]
-async fn create_account(input: web::Json<JsonData1>) -> HttpResponse {
+async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
     //set up the returning value structure
-    let mut ret_ans = CreateAccountResult { ans: String::new() };
+    let mut ret_ans = ClientResponseAccount{
+        related_info: String::new(),
+        token: String::new(),
+    };
 
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
@@ -98,12 +109,12 @@ async fn create_account(input: web::Json<JsonData1>) -> HttpResponse {
         None => {
             //temporary object for access User functions
             let mut temp_user = User::default();
-            ret_ans.ans = temp_user.set(&input.username, &input.password);
+            ret_ans.related_info = temp_user.set(&input.username, &input.password,&input.confirm);
 
             user_data.users.push(temp_user);
             appuser_to_file(user_data);
         }
-        Some(_) => ret_ans.ans = "This username is already exist!".to_string(),
+        Some(_) => ret_ans.related_info = "This username is already exist!".to_string(),
     }
     //------------------------------------------
 
@@ -118,27 +129,28 @@ fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
     (sts, mem) = sql_runner(data, con);
     // Create a modified OutputData with the reversed message
     OutputData {
-        reversed_message: mem.to_string(),
+        query_information: mem.to_string(),
         status: sts.to_string(),
     }
 }
 #[post("/pq")]
-async fn process_query(input: Json<JsonData3>) -> HttpResponse {
+async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
     let mut ret_ans: OutputData = OutputData {
-        reversed_message: "".to_string(),
+        query_information: "".to_string(),
         status: "".to_string(),
     };
-
+    println!("processQuery Function");
+    println!("{:?}",input);
     let mut base: BaseControl = BaseControl::new();
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
     match user_data.get_path(&input.token) {
         None => {
-            ret_ans.reversed_message = "SomeThing wrong with you token".to_string();
+            ret_ans.query_information = "SomeThing wrong with you token".to_string();
         }
         Some(path) => {
             base.initiate_database(path.as_str());
-            ret_ans=process_json_data(input.query.as_str(), &mut base);
+            ret_ans = process_json_data(input.query.as_str(), &mut base);
         }
     }
     appuser_to_file(user_data);
@@ -147,38 +159,24 @@ async fn process_query(input: Json<JsonData3>) -> HttpResponse {
         .content_type("application/json")
         .json(ret_ans)
 }
-/*
-async fn handle_json(
-    input: web::Json<InputData>,
-    req: HttpRequest,
-    data: web::Data<AppState>,
-) -> Result<HttpResponse> {
-    let input_data: InputData = input.into_inner();
-    println!("Received JSON Data: {:?}", input_data);
-
-    let client_ip = req
-        .peer_addr()
-        .map(|addr| addr.ip().to_string())
-        .unwrap_or_default();
-
-    let base_controls = data.base_controls.clone(); // Clone the Arc for access
-    let mut base_controls = base_controls.write().unwrap(); // Acquire a write lock
-
-    let base_control = base_controls.entry(client_ip.clone()).or_default();
-    //let path = format!("../Testing/{}/", client_ip);
-    //base_control.initiate_database(path.as_str());
-    base_control.initiate_database("../../servertesting/");
-    // Perform modifications on the received data
-    let modified_data = process_json_data(input_data, base_control);
-    println!("{}", base_control);
-    // Serialize the modified data to a JSON response
-    Ok(HttpResponse::Ok()
+#[post("/checkt")]
+async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
+    let mut ret_ans  = TokenResponse{ find_token: false };
+    //converting string to AppUser object
+    let mut user_data = file_to_appuser();
+    match user_data.check_token(&input.token) {
+        None => {
+            ret_ans.find_token=false;
+        }
+        Some(_) => {
+            ret_ans.find_token=true;
+        }
+    }
+    println!("[Client Token:{}]<->[And server answer:{}]",input.token,ret_ans.find_token);
+    HttpResponse::Ok()
         .content_type("application/json")
-        .json(modified_data))
+        .json(ret_ans)
 }
-
-
- */
 async fn health_check(_req: HttpRequest) -> impl Responder {
     /*
     let client_ip = _req
@@ -227,7 +225,7 @@ async fn help() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let app_state = AppState::default();
-
+    println!("Server start and on localhost:8080");
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
@@ -240,6 +238,7 @@ async fn main() -> std::io::Result<()> {
             .service(create_account)
             .service(login)
             .service(process_query)
+            .service(token_check)
     })
     .bind("localhost:8080")?
     .run()

@@ -159,7 +159,7 @@ impl User {
 
 //public function
 impl User {
-    pub fn set(&mut self, username: &str, password: &str) -> String {
+    pub fn set(&mut self, username: &str, password: &str,confirm: &str) -> String {
         match Self::validate_username(username) {
             Ok(_vname) => {
                 self.username = _vname;
@@ -168,6 +168,9 @@ impl User {
                 return _ename;
             }
         };
+        if password !=confirm{
+            return "Password and Confirm password not equal".to_string();
+        }
         match Self::validate_password(password) {
             Ok(_vpass) => {
                 self.password = _vpass;
