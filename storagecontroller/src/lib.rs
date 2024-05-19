@@ -13,7 +13,7 @@ pub fn hello() {
     println!("Hello from storage controller")
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize,Debug)]
 pub struct BaseControl {
     system_path: String,
     database_name: String,
@@ -21,7 +21,7 @@ pub struct BaseControl {
     initiate_lock: bool,
     all_table: Vec<Table>,
 }
-
+/*
 impl fmt::Display for BaseControl {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         writeln!(
@@ -45,3 +45,5 @@ impl fmt::Display for BaseControl {
         Ok(())
     }
 }
+
+ */

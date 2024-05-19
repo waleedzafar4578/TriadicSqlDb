@@ -1,5 +1,5 @@
 use crate::BaseControl;
-use storge::column::Column;
+use storge::column::{Column, Constraints};
 use storge::table::Table;
 use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
@@ -21,15 +21,15 @@ impl BaseControl {
         &mut self,
         t_name: &str,
         col_name: Vec<&str>,
-        col_type: Vec<AttributeType>,
+        col_type: Vec<(AttributeType,Constraints)>,
     ) -> bool {
          match self.db_select {
             true => {
                 let mut tb: Table = Table::new(t_name);
 
                 if col_name.len() == col_type.len() {
-                    for (i, j) in col_name.iter().zip(col_type.iter()) {
-                        tb.add_column(Column::new(i, j));
+                    for (i, (j,c)) in col_name.iter().zip(col_type.iter()) {
+                        tb.add_column(Column::new(i, j,c.clone()));
                     }
                     self.all_table.push(tb);
                     return true;

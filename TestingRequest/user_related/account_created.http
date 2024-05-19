@@ -1,0 +1,17 @@
+###
+POST http://localhost:8080/ca
+Content-Type: application/json
+
+{
+  "username": "subhankhaild",
+  "password": "W1231243@"
+}
+
+###
+POST http://localhost:8080/ca
+Content-Type: application/json
+
+{
+"username": "waleedzafar",
+"password": "W12345678@"
+}

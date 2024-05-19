@@ -7,7 +7,7 @@ use std::io::{Read, Write};
 use crate::column::Column;
 use std::string::String;
 use triadic_logic::degree::Degree;
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone,Debug)]
 pub struct Table {
     table_name: String,
     table_column: Vec<Column>,
@@ -82,7 +82,7 @@ fn string_to_bool(s: &str) -> Result<bool, &'static str> {
         _ => Err("Invalid boolean representation"),
     }
 }
-
+/*
 impl fmt::Display for Table {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         writeln!(f, "TableName: {}", self.table_name)?;
@@ -119,6 +119,8 @@ impl fmt::Display for Table {
         Ok(())
     }
 }
+
+ */
 
 impl Table {
     pub fn save_to_file(self, path: String) {

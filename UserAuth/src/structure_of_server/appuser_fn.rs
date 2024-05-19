@@ -27,13 +27,13 @@ impl AppUsers {
             }
         })
     }
-    pub fn get_path(&self, token: &str) ->Option<String>{
+    pub fn get_path_db(&self, token: &str) ->Option<(String,String)>{
         match self.check_token(token){
             None => {
                 None
             }
             Some(index) => {
-                self.users.get(index).map(|user| user.unique_id.clone())
+                self.users.get(index).map(|user| (user.unique_id.clone(),user.selected_database.clone()))
             }
         }
     }

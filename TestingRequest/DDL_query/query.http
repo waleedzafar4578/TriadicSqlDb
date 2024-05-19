@@ -1,0 +1,28 @@
+
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "f014f496b73929532b1f84cf0f6e95e44744b7b87fa81bffdb23b8ad03ef0721",
+  "query": "CREATE DATABASE third4;"
+}
+
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "d64032f755b734bb4688e89926eb78c765b45b7abc2d8cd9becbc4564a011c7f",
+  "query": "SHOW DATABASE;"
+}
+
+###
+POST http://localhost:8080/sdb
+Content-Type: application/json
+
+{
+  "token": "d64032f755b734bb4688e89926eb78c765b45b7abc2d8cd9becbc4564a011c7f",
+  "database_name": "third4"
+}
+

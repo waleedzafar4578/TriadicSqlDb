@@ -146,7 +146,14 @@ impl<'a> Lexer<'a> {
     "REVOKE",
     "ADDUSER",
     "CHECKUSER",
-    "CONNECT"
+    "CONNECT",
+    "VARCHAR",
+    "PRIMARY",
+    "KEY",
+    "NOT",
+    "NULL",
+    "FORIGEN",
+    "DEFAULT"
   ];
         
         

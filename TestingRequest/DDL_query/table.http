@@ -1,0 +1,11 @@
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "f014f496b73929532b1f84cf0f6e95e44744b7b87fa81bffdb23b8ad03ef0721",
+  "query": "CREATE TABLE Persons (PersonID int,LastName str,FirstName str,Address str,City str);"
+}
+
+
+###

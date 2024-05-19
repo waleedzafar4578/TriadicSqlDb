@@ -121,7 +121,7 @@ impl User {
         self.timestamp = current_time;
 
         // Set expiration time (10 minutes from current time)
-        self.expiration_time = current_time + 600; // 600 seconds = 10 minutes
+        self.expiration_time = current_time + 3600; // 600 seconds = 10 minutes
 
         // Concatenate user properties and timestamp to create input for hashing
         let input = format!(
@@ -209,6 +209,9 @@ impl User {
     pub fn set_database(&mut self,db:&str)->bool{
         self.selected_database= db.to_string();
         true
+    }
+    pub fn get_path(&mut self)->String{
+        self.unique_id.to_string()
     }
 }
 //for file input & output

@@ -1,0 +1,26 @@
+POST http://localhost:8080/checkt
+Content-Type: application/json
+
+{
+  "token": "59947dd8bacc1ae545dd89a506ca64860d053bfd41d02d91a37babb77a4ed767"
+}
+
+###
+POST http://localhost:8080/ln
+Content-Type: application/json
+
+{
+  "username": "subhankhaild",
+  "password": "W1231243@"
+}
+
+
+###
+
+POST http://localhost:8080/ln
+Content-Type: application/json
+
+{
+  "username": "waleedzafar",
+  "password": "W12345678@"
+}

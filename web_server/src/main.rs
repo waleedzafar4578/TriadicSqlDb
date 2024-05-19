@@ -13,7 +13,7 @@ use std::{env, fmt, io};
 use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
 use UserAuth::structure_of_server::{appuser_to_file, file_to_appuser};
-use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, TakeTokenJson, TFile, TokenResponse, User};
+use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TFile, TokenResponse, User};
 
 #[derive(Default, Clone)]
 struct AppState {
@@ -21,9 +21,8 @@ struct AppState {
 }
 #[post("/sdb")]
 async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
-    let mut ret_ans = ClientResponseAccount {
-        related_info: String::new(),
-        token: String::new(),
+    let mut ret_ans = SelectDatabaseRes {
+        info: String::new(),
     };
 
     //converting string to AppUser object
@@ -31,21 +30,22 @@ async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
     //checking this user is already exist or not.
     match user_data.check_token(&input.token) {
         None => {
-            ret_ans.related_info = "Wrong Token!".to_string();
-            Err("This username does not exist!".to_string())
+            ret_ans.info = "Wrong Token!".to_string();
         }
         Some(index) => {
             let user = user_data.users.get_mut(index).unwrap();
-
-            match user.set_database(input.database_name.as_str()) {
-                true => {}
-                false => {}
-            }
-            Ok(user.cloned_token())
+            let db_name=format!("{}{}/",user.get_path(),input.database_name);
+            if user.set_database(db_name.as_str()) {
+                ret_ans.info=format!("{}  database is selected!",input.database_name);
+                Ok(())
+            } else {
+                Err("Failed to set database".to_string())
+            }.expect("TODO: panic message");
+           
         }
     }
-    .expect("TODO: panic message");
-
+ 
+    println!("{:#?}",user_data);
     appuser_to_file(user_data);
 
     HttpResponse::Ok()
@@ -144,12 +144,15 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
     let mut base: BaseControl = BaseControl::new();
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
-    match user_data.get_path(&input.token) {
+    match user_data.get_path_db(&input.token) {
         None => {
             ret_ans.query_information = "SomeThing wrong with you token".to_string();
         }
-        Some(path) => {
+        Some((path,db)) => {
             base.initiate_database(path.as_str());
+            if !db.is_empty(){
+                base.use_this_database(db.as_str());
+            }
             ret_ans = process_json_data(input.query.as_str(), &mut base);
         }
     }
@@ -239,6 +242,7 @@ async fn main() -> std::io::Result<()> {
             .service(login)
             .service(process_query)
             .service(token_check)
+            .service(select_db)
     })
     .bind("localhost:8080")?
     .run()
