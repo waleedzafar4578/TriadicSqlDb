@@ -99,7 +99,7 @@ impl<'a> Parser<'a> {
                     self.tokens.get(self.current_token+1) ==Some(&Token::Punctuation(';')){
                     break;
                 }
-                //here
+                //here pushing
                 
                 println!("                          :{:?}",self.tokens.get(self.current_token));
                 self.advance();
