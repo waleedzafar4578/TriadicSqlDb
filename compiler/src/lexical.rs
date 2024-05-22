@@ -153,7 +153,8 @@ impl<'a> Lexer<'a> {
     "NOT",
     "NULL",
     "FORIGEN",
-    "DEFAULT"
+    "DEFAULT",
+    "INT"
   ];
         
         

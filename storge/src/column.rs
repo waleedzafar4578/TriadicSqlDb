@@ -5,7 +5,7 @@ use triadic_logic::datatype::{AttributeType, Date, Interval, Money, Time, TimeSt
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriData;
 
-#[derive(Serialize, Deserialize, Clone,Debug)]
+#[derive(Default,Serialize, Deserialize, Clone,Debug)]
 pub struct Constraints {
     pub not_null: bool,
     pub unique: bool,
@@ -18,6 +18,7 @@ pub struct Constraints {
     pub index: bool,
     pub index_type: String,
 }
+
 impl Constraints{
     pub fn new()->Self{
         Self{

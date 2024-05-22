@@ -23,7 +23,9 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     let (ast, error_type) = parser.parse();
     match ast {
         AstNode::SelectStatement => {}
-        AstNode::CreateTableStatement => {}
+        AstNode::CreateTableStatement(data) => {
+            
+        }
         AstNode::CreateDatabaseStatement(name) => {
             return match controller.create_the_database(name.as_str()) {
                 EngineErrorCreate::PathNotSelected => {
