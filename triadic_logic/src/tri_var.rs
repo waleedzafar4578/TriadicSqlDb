@@ -39,7 +39,7 @@ impl TriData {
             status: s,
         }
     }
-    pub fn t_char(v: char, s: Degree) -> Self {
+    pub fn t_char(v: String, s: Degree) -> Self {
         Self {
             value: Option::from(AttributeTypeValue::CharacterIng(v)),
             status: s,

@@ -1,6 +1,9 @@
-use crate::lexical::Token;
+use crate::lexical::{Literal, Token};
 use crate::syntax::{AstNode, CompilerTableParseEntry, Parser};
 use storge::column::Constraints;
+use triadic_logic::datatype::AttributeType;
+pub mod helping;
+pub mod constraints;
 
 impl<'a> Parser<'a> {
     pub(crate) fn parse_create_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
@@ -36,82 +39,107 @@ impl<'a> Parser<'a> {
             Some(triadic_error::Compiler::CreateDatabase),
         )
     }
-    fn parse_create_table_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
-        //here checking that next token is identifier
-        let mut temp: CompilerTableParseEntry = CompilerTableParseEntry {
-            name: "".to_string(),
-            column_name: vec![],
-            type_plus_constraint: vec![],
-        };
-        let temp_constraint: Constraints = Constraints {
-            not_null: false,
-            unique: false,
-            primary_key: false,
-            foreign_key: false,
-            check: false,
-            check_value: 0,
-            default: false,
-            default_value: "".to_string(),
-            index: false,
-            index_type: "".to_string(),
-        };
+}
 
+impl<'a> Parser<'a> {
+    fn parse_create_table_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
+        //
+        //
+        //This mutable variable help to store things when walkthrough in token vector
+        let mut table_creation_attributes_result: CompilerTableParseEntry =
+            CompilerTableParseEntry {
+                name: "".to_string(),
+                column_name: vec![],
+                type_plus_constraint: vec![],
+            };
+        //
+        //
+        //This if condition check that next token is identifier.
+        //Then it means that is table name.
+        //If it is not an identifier, then it panics and closes the app.
         if let Some(Token::Identifier(ref table_name)) = self.tokens.get(self.current_token) {
-            temp.name.clone_from(table_name);
+            table_creation_attributes_result.name.clone_from(table_name);
             self.advance();
         } else {
             panic!("You miss table name!");
         }
-
+        //
+        //
+        //This if condition checks the round open bracket, this means now columns and datatype.
         //println!("{:?}",self.tokens.get(self.current_token));
-        if  Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token){
-            panic!("You miss round bracket");
-        }
+        self.open_bracket_check();
         self.advance();
+        //
+        //
+        //
+        if Some(&Token::Punctuation(')')) == self.tokens.get(self.current_token) {
+            panic!("You want to create empty table.");
+        }
 
-//------------------------------------------------------
-
-
-        while self.tokens.get(self.current_token) !=Some(&Token::Punctuation(';')) {
+        //
+        //
+        //This while the loop is iterated in every column that break when found semicolon
+        while self.tokens.get(self.current_token) != Some(&Token::Punctuation(';')) {
+            //
+            //
+            //This condition is explained already.
             if self.tokens.get(self.current_token).is_none() {
+                panic!("You miss semicolon")
+            }
+            if self.terminate_with_close_bracket_and_semicolun() {
                 break;
             }
-
-            println!("{:?}",self.tokens.get(self.current_token));
-            if let Some(Token::Identifier(ref coln)) = self.tokens.get(self.current_token){
-                temp.column_name.push(coln.clone()) ;
-            }
-            self.advance();
-
-
-            let datatype:String;
-             println!("{:?}",self.tokens.get(self.current_token));
-            if let Some(Token::Keyword(ref _datatype))=self.tokens.get(self.current_token){
-                datatype=_datatype.to_string();
-            }
-            self.advance();
-
-            while self.tokens.get(self.current_token) !=Some(&Token::Punctuation(',')) {
-                if self.tokens.get(self.current_token).is_none() {
-                    break;
+            //
+            //
+            //
+            match self.extract_column_name() {
+                Some(_name) => {
+                    table_creation_attributes_result.column_name.push(_name);
+                    //println!("Sys:Column Name:{}", _name);
+                    self.advance();
                 }
-                if self.tokens.get(self.current_token) ==Some(&Token::Punctuation(')')) &&
-                    self.tokens.get(self.current_token+1) ==Some(&Token::Punctuation(';')){
-                    break;
+                None => {
+                    panic!("column name is not given!");
                 }
-                //here pushing
-                
-                println!("                          :{:?}",self.tokens.get(self.current_token));
-                self.advance();
             }
-
+            
+            
+            let mut col_type:AttributeType;
+            match self.datatype_checker() {
+                None => {
+                    panic!("You missed datatype of column")
+                }
+                Some(_type) => {
+                    col_type=_type;
+                    //println!("Sys:Column Datatype::{:?}", _type);
+                    self.advance();
+                }
+            }
+            //
+            //
+            //
+            match self.inline_column_constraints() {
+                None => {}
+                Some(_constrains) => {
+                    table_creation_attributes_result.type_plus_constraint.push((col_type,_constrains));
+                    //println!("System:Column Constraints:{:#?}", _constrains);
+                }
+            }
+            //
+            //
+            //println!("End of first loop iteration:{:?}",self.tokens.get(self.current_token));
+            //
+            //
+            //This advance function skips comma.
+            self.advance();
         }
 
-
-
+        println!("{:#?}", table_creation_attributes_result);
         (
-            AstNode::Nothing,
+            AstNode::CreateTableStatement(table_creation_attributes_result),
             Some(triadic_error::Compiler::CreateDatabase),
         )
     }
+
+    
 }

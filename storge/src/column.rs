@@ -12,11 +12,11 @@ pub struct Constraints {
     pub primary_key: bool,
     pub foreign_key: bool,
     pub check: bool,
-    pub check_value: i32,
+    pub check_operator: String,
+    pub check_value: String,
     pub default: bool,
     pub default_value: String,
-    pub index: bool,
-    pub index_type: String,
+   
 }
 
 impl Constraints{
@@ -27,11 +27,10 @@ impl Constraints{
             primary_key: false,
             foreign_key: false,
             check: false,
-            check_value: 0,
+            check_operator: "".to_string(),
+            check_value: "".to_string(),
             default: false,
             default_value: "".to_string(),
-            index: false,
-            index_type: "".to_string(),
         }
     }
 }
@@ -91,7 +90,7 @@ impl Column {
             self.value.push(TriData::t_float(value, d))
         }
     }
-    pub fn set_char_cell(&mut self, value: char, d: Degree) {
+    pub fn set_char_cell(&mut self, value: String, d: Degree) {
         if self.type_status == AttributeType::TChar {
             self.size_status += 1;
             self.value.push(TriData::t_char(value, d))

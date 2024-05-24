@@ -51,7 +51,7 @@ impl Table {
                     i.set_float_cell(value, d);
                 }
                 if let Ok(value) = string_to_char(col) {
-                    i.set_char_cell(value, d);
+                    //i.set_char_cell(value, d);
                 }
                 if let Ok(value) = string_to_bool(col) {
                     i.set_bool_cell(value, d);

@@ -21,6 +21,7 @@ pub enum Token {
     Operator(String),
     Punctuation(char),
 }
+#[derive(Debug)]
 pub struct Lexer<'a> {
     input: &'a str,
     position: usize,
@@ -101,7 +102,7 @@ impl<'a> Lexer<'a> {
     fn read_operator(&mut self) -> String {
         let mut operator = String::new();
         while let Some(ch) = self.peek() {
-            if "+_*/=&|".contains(ch) {
+            if "+_*/=&|<>".contains(ch) {
                 operator.push(ch);
                 self.advance();
             } else {
@@ -152,13 +153,20 @@ impl<'a> Lexer<'a> {
     "KEY",
     "NOT",
     "NULL",
-    "FORIGEN",
+    "FOREIGN",
     "DEFAULT",
-    "INT"
+    "INT",
+    "REFERENCE",
+    "STR",
+    "CONSTRAINT",
+            "UNIQUE",
+            "CHECK"
   ];
         
         
         let mut tokens = Vec::new();
+        
+        
         while let Some(ch) = self.peek() {
             if ch.is_whitespace() {
                 self.skip_whitespace();
@@ -190,8 +198,9 @@ impl<'a> Lexer<'a> {
             } else {
                 self.advance();
             }
+            
         }
-
+        
         tokens
     }
 }

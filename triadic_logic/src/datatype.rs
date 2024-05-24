@@ -23,7 +23,7 @@ pub enum AttributeTypeValue {
     SmallINT(i16),
     BigInt(i64),
     FloatIng(f64),
-    CharacterIng(char),
+    CharacterIng(String),
     Stringing(String),
     VarCharacterIng(String,usize),
     Texting(String),
@@ -70,9 +70,9 @@ impl AttributeTypeValue {
             None
         }
     }
-    pub fn get_char(&self) -> Option<char> {
+    pub fn get_char(&self) -> Option<String> {
         if let AttributeTypeValue::CharacterIng(val) = self {
-            Some(*val)
+            Some(val.clone())
         } else {
             None
         }

@@ -1,29 +1,52 @@
-use crate::lexical::Lexer;
-use crate::syntax::{AstNode, Parser};
-use storagecontroller::BaseControl;
-use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
-use triadic_error::{Compiler, FrontSendCode};
+//TriadicSqlDb/compiler/src/lib.rs
+
+
+//! This module provides utilities for processing the user query
+//!
+//! It includes starting point for sql compiler.
+//! - Sql_runner takes two arguments:
+//!             1: One is queried that comes from user.
+//!             2: Second one is a base control structure
+//! that comes from server with loaded user previous information.
+//! - Lexical module provides utilities for tokenize the query.
+//! - Syntax module provides utilities for a check token sequence is according to grammar.
+
+
 
 pub mod lexical;
+use crate::lexical::Lexer;
+
 pub mod syntax;
+use crate::syntax::{AstNode, Parser};
 
-pub fn hello() {
-    println!("Hello from compiler side");
-}
+use storagecontroller::BaseControl;
 
+use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
+use triadic_error::{Compiler, FrontSendCode};
+///
+/// This sql runner function is responsible for operations:
+///     1: Tokenize the stream of character:
+///         1: Trim the query.
+///         2: Tokenize the trim query.
+///     2: Check Sequence the stream of token.
+///     3: Find which statement user wants to run.
+///     4: Then run user required query.
+///     5: Send back response which are correct or error.
+///     6: Every response and error goes with code.
+///     7: Code for frontend app which recognizes the coming response. 
+///
 pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, String) {
-    controller.initiate_database("../../servertesting/");
+   // controller.initiate_database("../../servertesting/");
     let input = query.trim();
     let mut lexer = Lexer::new(input);
     let tokens = lexer.tokenize();
-
-    println!("{:?}",tokens);
+    //println!("{:?}",tokens);
 
     let mut parser = Parser::new(&tokens);
     let (ast, error_type) = parser.parse();
     match ast {
         AstNode::SelectStatement => {}
-        AstNode::CreateTableStatement(data) => {
+        AstNode::CreateTableStatement(_data) => {
             
         }
         AstNode::CreateDatabaseStatement(name) => {
@@ -184,4 +207,5 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         }
     }
     (FrontSendCode::QEm, "Error".to_string())
+    
 }
