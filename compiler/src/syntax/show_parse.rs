@@ -12,7 +12,7 @@ impl<'a> Parser<'a> {
                 // Delegate to a separate function for parsing Search DATABASE
                 self.parse_show_database_statement()
             } else {
-                (AstNode::Nothing, Some(triadic_error::Compiler::Show))
+                (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword))
             };
         }
          (AstNode::Nothing, None)
@@ -26,7 +26,7 @@ impl<'a> Parser<'a> {
         }
          (
             AstNode::Nothing,
-            Some(triadic_error::Compiler::ShowDatabase),
+            Some(triadic_error::Compiler::MissSemicolon),
         )
     }
 }

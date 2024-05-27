@@ -3,10 +3,6 @@
 version = 3
 
 [[package]]
-name = "IndexesTriadic"
-version = "0.1.0"
-
-[[package]]
 name = "UserAuth"
 version = "0.1.0"
 dependencies = [

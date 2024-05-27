@@ -1,6 +1,7 @@
 use crate::lexical::{Literal, Token};
 use crate::syntax::{AstNode, CompilerTableParseEntry, Parser};
 use storge::column::Constraints;
+
 use triadic_logic::datatype::AttributeType;
 pub mod helping;
 pub mod constraints;
@@ -11,14 +12,14 @@ impl<'a> Parser<'a> {
         //checking the next token is DATABASE
         if let Some(Token::Keyword(ref next_keyword)) = self.tokens.get(self.current_token) {
             if next_keyword == "DATABASE" {
-                self.advance(); //Move to next token
+                self.advance(); 
                 return self.parse_create_database_statement();
             } else if next_keyword == "TABLE" {
                 self.advance();
                 return self.parse_create_table_statement();
             }
         }
-        (AstNode::Nothing, Some(triadic_error::Compiler::CREATE))
+        (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword))
     }
     fn parse_create_database_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         //here checking that next token is identifier
@@ -30,21 +31,24 @@ impl<'a> Parser<'a> {
             } else {
                 (
                     AstNode::Nothing,
-                    Some(triadic_error::Compiler::CreateDatabaseIdentifier),
+                    Some(triadic_error::Compiler::MissSemicolon),
                 )
             };
         }
         (
             AstNode::Nothing,
-            Some(triadic_error::Compiler::CreateDatabase),
+            Some(triadic_error::Compiler::MissIdentifier),
         )
     }
 }
 
+
+
+
+
+
 impl<'a> Parser<'a> {
     fn parse_create_table_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
-        //
-        //
         //This mutable variable help to store things when walkthrough in token vector
         let mut table_creation_attributes_result: CompilerTableParseEntry =
             CompilerTableParseEntry {
@@ -52,8 +56,6 @@ impl<'a> Parser<'a> {
                 column_name: vec![],
                 type_plus_constraint: vec![],
             };
-        //
-        //
         //This if condition check that next token is identifier.
         //Then it means that is table name.
         //If it is not an identifier, then it panics and closes the app.
@@ -61,7 +63,10 @@ impl<'a> Parser<'a> {
             table_creation_attributes_result.name.clone_from(table_name);
             self.advance();
         } else {
-            panic!("You miss table name!");
+           return  (
+                AstNode::Nothing,
+                Some(triadic_error::Compiler::MissIdentifier),
+            )
         }
         //
         //
@@ -73,7 +78,10 @@ impl<'a> Parser<'a> {
         //
         //
         if Some(&Token::Punctuation(')')) == self.tokens.get(self.current_token) {
-            panic!("You want to create empty table.");
+            return  (
+                AstNode::Nothing,
+                Some(triadic_error::Compiler::MissColumn),
+            )
         }
 
         //
@@ -84,7 +92,10 @@ impl<'a> Parser<'a> {
             //
             //This condition is explained already.
             if self.tokens.get(self.current_token).is_none() {
-                panic!("You miss semicolon")
+                return  (
+                    AstNode::Nothing,
+                    Some(triadic_error::Compiler::MissSemicolon),
+                )
             }
             if self.terminate_with_close_bracket_and_semicolun() {
                 break;
@@ -99,18 +110,24 @@ impl<'a> Parser<'a> {
                     self.advance();
                 }
                 None => {
-                    panic!("column name is not given!");
+                    return  (
+                        AstNode::Nothing,
+                        Some(triadic_error::Compiler::MissColumnName),
+                    )
                 }
             }
             
             
-            let mut col_type:AttributeType;
+            let col_type:AttributeType;
             match self.datatype_checker() {
                 None => {
-                    panic!("You missed datatype of column")
+                    return  (
+                        AstNode::Nothing,
+                        Some(triadic_error::Compiler::MissColumnDatatype),
+                    )
                 }
                 Some(_type) => {
-                    col_type=_type;
+                    col_type=_type.clone();
                     //println!("Sys:Column Datatype::{:?}", _type);
                     self.advance();
                 }
@@ -134,10 +151,10 @@ impl<'a> Parser<'a> {
             self.advance();
         }
 
-        println!("{:#?}", table_creation_attributes_result);
+        //println!("{:#?}", table_creation_attributes_result);
         (
             AstNode::CreateTableStatement(table_creation_attributes_result),
-            Some(triadic_error::Compiler::CreateDatabase),
+            Some(triadic_error::Compiler::Nothing),
         )
     }
 

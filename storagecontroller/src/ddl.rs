@@ -1,7 +1,7 @@
 use crate::BaseControl;
 use std::fs;
 use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
-
+use std::path::Path;
 impl BaseControl {
     pub fn create_the_database(&mut self, path: &str) -> EngineErrorCreate {
         if self.initiate_lock {
@@ -18,6 +18,9 @@ impl BaseControl {
                 //println!("already exist from if");
                 return EngineErrorCreate::AlreadyExist;
             }
+            self.database_name= path.to_string();
+            self.save_to_file();
+            /*
             match fs::create_dir_all(temp) {
                 Ok(_) => {
                     println!("Database is created!");
@@ -30,6 +33,8 @@ impl BaseControl {
                     }
                 }
             }
+            
+             */
             
         } else {
             println!("\n\n\nError:First  initiate the database\n\n");

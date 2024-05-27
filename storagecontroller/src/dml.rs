@@ -20,9 +20,10 @@ impl BaseControl {
     pub fn add_table(
         &mut self,
         t_name: &str,
-        col_name: Vec<&str>,
+        col_name: Vec<String>,
         col_type: Vec<(AttributeType,Constraints)>,
     ) -> bool {
+        println!("Yes! Come in engine side.");
          match self.db_select {
             true => {
                 let mut tb: Table = Table::new(t_name);

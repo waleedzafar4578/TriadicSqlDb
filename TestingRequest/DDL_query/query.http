@@ -4,8 +4,8 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "f014f496b73929532b1f84cf0f6e95e44744b7b87fa81bffdb23b8ad03ef0721",
-  "query": "CREATE DATABASE third4;"
+  "token": "0beca3154a253cca46d7cf3336061fc36391c41432ccd8aa3726bc8cdfb68420",
+  "query": "CREATE DATABASE no;"
 }
 
 ###

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use std::fmt::Formatter;
+use std::fmt::{Debug, Formatter};
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
 //use serde_json::Value::String;
@@ -12,6 +12,8 @@ pub struct Table {
     table_name: String,
     table_column: Vec<Column>,
 }
+
+
 
 impl Table {
     pub fn new(name: &str) -> Table {

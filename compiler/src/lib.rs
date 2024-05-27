@@ -45,27 +45,40 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     let mut parser = Parser::new(&tokens);
     let (ast, error_type) = parser.parse();
     match ast {
-        AstNode::SelectStatement => {}
         AstNode::CreateTableStatement(_data) => {
-            
+            return match controller.add_table(&_data.name, _data.column_name, _data.type_plus_constraint) {
+                true => {
+                    (
+                        FrontSendCode::QueryProcessed,
+                        "Your requested Table is created!".to_string(),
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::AlreadyExist,
+                        "Your requested table is already exist!".to_string(),
+                    )
+                }
+            }
+            //`println!("table creation:{:#?}",_data);
         }
         AstNode::CreateDatabaseStatement(name) => {
             return match controller.create_the_database(name.as_str()) {
                 EngineErrorCreate::PathNotSelected => {
                     (
-                        FrontSendCode::EPNS,
+                        FrontSendCode::SysDatabaseNotSelected,
                         "Please First Connect your system with server".to_string(),
                     )
                 }
                 EngineErrorCreate::AlreadyExist => {
                     (
-                        FrontSendCode::EAE,
+                        FrontSendCode::AlreadyExist,
                         format!("Database is already exist with the Name of: {}", name),
                     )
                 }
                 EngineErrorCreate::DoneYes => {
                     (
-                        FrontSendCode::QOkDDLC,
+                        FrontSendCode::QueryProcessed,
                         format!("Database is Create with the Name of: {}", name),
                     )
                 }
@@ -75,19 +88,19 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             match controller.remove_the_database(name.as_str()){
                 EngineErrorDrop::PathNotSelected => {
                     (
-                        FrontSendCode::EPNS,
+                        FrontSendCode::SysDatabaseNotSelected,
                         "Engine Path Not Selected".to_string(),
                     )
                 }
                 EngineErrorDrop::NotFind => {
                     (
-                        FrontSendCode::ENE,
+                        FrontSendCode::SysNotFound,
                         "Engine Database Not Exist".to_string(),
                     )
                 }
                 EngineErrorDrop::DoneYes => {
                     (
-                        FrontSendCode::QOkDDLD,
+                        FrontSendCode::SysFound,
                         "Database Dropped".to_string(),
                     )
                 }
@@ -97,13 +110,13 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             match controller.find_this_database(name.as_str()) {
                 true => {
                     (
-                        FrontSendCode::QOkDDLSE,
+                        FrontSendCode::SysFound,
                         "Database Found".to_string(),
                     )
                 }
                 false => {
                     (
-                        FrontSendCode::EAE,
+                        FrontSendCode::SysNotFound,
                         "Database Not Found".to_string(),
                     )
                 }
@@ -113,13 +126,13 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                match controller.rename_the_database(&old_path, &new_path) {
                    true => {
                        (
-                           FrontSendCode::QOkDDLR,
+                           FrontSendCode::QueryProcessed,
                            "Database Rename".to_string(),
                        )
                    }
                    false => {
                        (
-                           FrontSendCode::EAE,
+                           FrontSendCode::SysNotFound,
                            "Database Not Found".to_string(),
                        )
                    }
@@ -128,19 +141,19 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         AstNode::ShowDatabaseStatement => {
             let ans = controller.list_down_the_name_database();
             let ath = ans.join(" ");
-            return (FrontSendCode::QOkDDLSH, ath);
+            return (FrontSendCode::QueryProcessed, ath);
         }
         AstNode::UseDatabaseStatement(name) => {
             match controller.use_this_database(name.as_str()){
                 true => {
                     (
-                        FrontSendCode::QOkDDLU,
+                        FrontSendCode::QueryProcessed,
                         "Database Found".to_string(),
                     )
                 }
                 false => {
                     (
-                        FrontSendCode::EAE,
+                        FrontSendCode::SysNotFound,
                         "Database Not Found".to_string(),
                     )
                 }
@@ -150,62 +163,19 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             None => {}
             Some(ty) => {
                 return match ty {
-                    Compiler::NotAKeyword => (FrontSendCode::QNTK, query.to_string()),
-                    Compiler::CREATE => (FrontSendCode::QERRDDLC0, query.to_string()),
-                    Compiler::CreateDatabase => (FrontSendCode::QERRDDLC1, query.to_string()),
-                    Compiler::CreateDatabaseIdentifier => {
-                        (FrontSendCode::QERRDDLC2, query.to_string())
-                    }
-                    Compiler::Drop => (FrontSendCode::QERRDDLD0, query.to_string()),
-                    Compiler::DropDatabase => (FrontSendCode::QERRDDLD1, query.to_string()),
-                    Compiler::DropDatabaseIdentifier => {
-                        (FrontSendCode::QERRDDLD2, query.to_string())
-                    }
-                    Compiler::Use => (FrontSendCode::QERRDDLU0, query.to_string()),
-                    Compiler::UseDatabase => (FrontSendCode::QERRDDLU1, query.to_string()),
-                    Compiler::UseDatabaseIdentifier => {
-                        (FrontSendCode::QERRDDLU2, query.to_string())
-                    }
-                    Compiler::Show => (FrontSendCode::QERRDDLSH0, query.to_string()),
-                    Compiler::ShowDatabase => (FrontSendCode::QERRDDLSH1, query.to_string()),
-                    Compiler::Rename => (FrontSendCode::QERRDDLR0, query.to_string()),
-                    Compiler::RenameDatabase => (FrontSendCode::QERRDDLR1, query.to_string()),
-                    Compiler::RenameDatabaseIdentifier => {
-                        (FrontSendCode::QERRDDLR2, query.to_string())
-                    }
-                    Compiler::Search => (FrontSendCode::QERRDDLSE0, query.to_string()),
-                    Compiler::SearchDatabase => (FrontSendCode::QERRDDLSE1, query.to_string()),
-                    Compiler::SearchDatabaseIdentifier => {
-                        (FrontSendCode::QERRDDLSE2, query.to_string())
-                    }
-                    Compiler::AddUser => (FrontSendCode::QERRDDLSE2, query.to_string()),
-                    Compiler::CheckUser => (FrontSendCode::QERRDDLSE2, query.to_string()),
+                    Compiler::NotAKeyword => (FrontSendCode::QueryKeywordMissing, String::from(query)),
+                    Compiler::MissKeyword => {(FrontSendCode::QueryKeywordMissing, String::from(query))}
+                    Compiler::MissIdentifier => {(FrontSendCode::QueryIdentifierMissing, String::from(query))}
+                    Compiler::MissSemicolon => {(FrontSendCode::QuerySemiColonMissing, String::from(query))}
+                    Compiler::Nothing => {(FrontSendCode::QueryProcessed, String::from(query))}
+                    Compiler::MissColumn => {(FrontSendCode::QueryColumnMissing, String::from(query))}
+                    Compiler::MissColumnName => {(FrontSendCode::QueryColumnNameMissing, String::from(query))}
+                    Compiler::MissColumnDatatype => {(FrontSendCode::QueryColumnDatatypeMissing, String::from(query))}
                 }
             }
         },
-        AstNode::AddUser(name) => {
-            let path = format!("../Testing/{}/", name);
-            return if controller.initiate_database(path.as_str()) {
-                (FrontSendCode::QOkDDLC, "".to_string())
-            } else {
-                (
-                    FrontSendCode::QOkDDLC,
-                    "Failed to Add User into Server".to_string(),
-                )
-            };
-        }
-        AstNode::CheckUser(name) => {
-            let path = format!("../Testing/{}/", name);
-            return if controller.initiate_database(path.as_str()) {
-                (FrontSendCode::QOkDDLC, "".to_string())
-            } else {
-                (
-                    FrontSendCode::QOkDDLC,
-                    "Failed to Check User into Server".to_string(),
-                )
-            };
-        }
+        
     }
-    (FrontSendCode::QEm, "Error".to_string())
+    (FrontSendCode::QueryEmpty, "Error".to_string())
     
 }

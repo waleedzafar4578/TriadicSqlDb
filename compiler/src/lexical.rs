@@ -148,7 +148,7 @@ impl<'a> Lexer<'a> {
     "ADDUSER",
     "CHECKUSER",
     "CONNECT",
-    "VARCHAR",
+    "BOOLEAN",
     "PRIMARY",
     "KEY",
     "NOT",
@@ -156,11 +156,14 @@ impl<'a> Lexer<'a> {
     "FOREIGN",
     "DEFAULT",
     "INT",
+    "FLOAT",
+    "CHAR",
+    "TEXT",
     "REFERENCE",
-    "STR",
+    "STRING",
     "CONSTRAINT",
             "UNIQUE",
-            "CHECK"
+            "CHECK",
   ];
         
         

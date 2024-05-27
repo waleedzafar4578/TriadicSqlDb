@@ -1,3 +1,49 @@
+//! This **DataType** module provides two things.
+//! 
+//! - AttributeType
+//! 
+//! 
+//! This AttributeType
+//! used for transfer column datatype information from compiler side to engine side.
+//! 
+//! - AttributeTypeValue
+//! 
+//! 
+//! This AttributeTypeValue is used for actual store value that comes from the compiler.
+//! 
+//! ## Supported Datatypes
+//! 
+//! - Bool
+//! - Int
+//! - Float
+//! - Char
+//! - String
+//! - Text
+
+//! ## Upcoming Datatype
+//! - SmallInt
+//! - BigInt
+//! - VarChar
+//! - Date
+//! - Time
+//! - Timestamp
+//! - Interval
+//! - Money
+//! Custom design Datatype
+//! 
+//! - Date
+//! 
+//! - Time
+//! 
+//! - Timestamp
+//! 
+//! - Interval
+//! 
+//!  
+
+
+
+
 use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub enum AttributeType {
@@ -23,7 +69,7 @@ pub enum AttributeTypeValue {
     SmallINT(i16),
     BigInt(i64),
     FloatIng(f64),
-    CharacterIng(String),
+    CharacterIng(char),
     Stringing(String),
     VarCharacterIng(String,usize),
     Texting(String),
@@ -70,9 +116,9 @@ impl AttributeTypeValue {
             None
         }
     }
-    pub fn get_char(&self) -> Option<String> {
+    pub fn get_char(&self) -> Option<char> {
         if let AttributeTypeValue::CharacterIng(val) = self {
-            Some(val.clone())
+            Some(*val)
         } else {
             None
         }
@@ -134,14 +180,18 @@ impl AttributeTypeValue {
         }
     }
 }
-
+///Custom design Date datatype
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub struct Date;
+///Custom design Time datatype
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub struct Time;
+///Custom design Timestamp datatype
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub struct TimeStamp;
+///Custom design interval datatype
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub struct Interval;
+///Custom design Money datatype
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub struct Money;

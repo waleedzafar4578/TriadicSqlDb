@@ -3,14 +3,13 @@ use triadic_logic::datatype::AttributeType;
 
 use crate::lexical::Token;
 
-pub mod connect;
 pub mod create_parse;
 pub mod drop_parse;
 pub mod parse;
 pub mod rename_parse;
 pub mod search_parse;
 pub mod show_parse;
-pub mod use_parse;
+
 
 
 #[derive(Debug)]
@@ -23,9 +22,6 @@ pub struct CompilerTableParseEntry{
 
 #[derive(Debug)]
 pub enum AstNode {
-    AddUser(String),
-    CheckUser(String),
-    SelectStatement,
     CreateTableStatement(CompilerTableParseEntry),
     CreateDatabaseStatement(String),
     DropDatabaseStatement(String),

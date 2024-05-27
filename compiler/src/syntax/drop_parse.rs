@@ -11,7 +11,7 @@ impl<'a> Parser<'a> {
                 return self.parse_drop_database_statement();
             }
         }
-         (AstNode::Nothing, Some(triadic_error::Compiler::Drop))
+         (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword))
     }
     fn parse_drop_database_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
         //here checking that next token is identifier
@@ -23,13 +23,13 @@ impl<'a> Parser<'a> {
             } else {
                 (
                     AstNode::Nothing,
-                    Some(triadic_error::Compiler::DropDatabaseIdentifier),
+                    Some(triadic_error::Compiler::MissSemicolon),
                 )
             };
         }
          (
             AstNode::Nothing,
-            Some(triadic_error::Compiler::DropDatabase),
+            Some(triadic_error::Compiler::MissIdentifier),
         )
     }
 }

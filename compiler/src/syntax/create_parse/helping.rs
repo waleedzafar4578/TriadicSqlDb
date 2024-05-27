@@ -26,7 +26,11 @@ impl<'a> Parser<'a> {
         if let Some(Token::Keyword(ref _datatype)) = self.tokens.get(self.current_token) {
             match _datatype.as_str() {
                 "INT" => Some(AttributeType::TInt),
-                "STR" => Some(AttributeType::TString),
+                "STRING" => Some(AttributeType::TString),
+                "FLOAT" => Some(AttributeType::TFloat),
+                "CHAR" => Some(AttributeType::TChar),
+                "TEXT" => Some(AttributeType::TText),
+                "BOOLEAN" => Some(AttributeType::TBool),
                 &_ => Some(AttributeType::TTime),
             }
         } else {

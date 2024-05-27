@@ -34,7 +34,7 @@ async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
         }
         Some(index) => {
             let user = user_data.users.get_mut(index).unwrap();
-            let db_name=format!("{}{}/",user.get_path(),input.database_name);
+            let db_name=input.database_name.to_string();
             if user.set_database(db_name.as_str()) {
                 ret_ans.info=format!("{}  database is selected!",input.database_name);
                 Ok(())
@@ -45,7 +45,7 @@ async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
         }
     }
  
-    println!("{:#?}",user_data);
+    //println!("{:#?}",user_data);
     appuser_to_file(user_data);
 
     HttpResponse::Ok()
@@ -63,7 +63,7 @@ async fn login(input: web::Json<LoginJson>) -> HttpResponse {
 
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
-    println!("{:#?}", user_data);
+    //println!("{:#?}", user_data);
     //checking this user is already exist or not.
     match user_data.check_username_exist(&input.username) {
         None => {
@@ -127,6 +127,9 @@ fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
     let mut mem: String = String::new();
     let sts: FrontSendCode;
     (sts, mem) = sql_runner(data, con);
+    println!("{:#?}",con);
+    
+    con.save_to_file();
     // Create a modified OutputData with the reversed message
     OutputData {
         query_information: mem.to_string(),
@@ -139,13 +142,14 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
         query_information: "".to_string(),
         status: "".to_string(),
     };
-    println!("processQuery Function");
-    println!("{:?}",input);
+    println!("Processing the User Query......!");
+    //println!("{:?}",input);
     let mut base: BaseControl = BaseControl::new();
     //converting string to AppUser object
-    let mut user_data = file_to_appuser();
+    let user_data = file_to_appuser();
     match user_data.get_path_db(&input.token) {
         None => {
+            println!("User Token is expired!");
             ret_ans.query_information = "SomeThing wrong with you token".to_string();
         }
         Some((path,db)) => {

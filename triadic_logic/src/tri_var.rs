@@ -4,11 +4,11 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::fmt::Formatter;
 #[derive(Serialize, Deserialize, Clone,PartialEq,Debug)]
-pub struct TriData {
+pub struct TriVar {
     value: Option<AttributeTypeValue>,
     status: Degree,
 }
-impl TriData {
+impl TriVar {
     pub fn t_bool(v: bool, s: Degree) -> Self {
         Self {
             value: Option::from(AttributeTypeValue::BoolIng(v)),
@@ -39,7 +39,7 @@ impl TriData {
             status: s,
         }
     }
-    pub fn t_char(v: String, s: Degree) -> Self {
+    pub fn t_char(v: char, s: Degree) -> Self {
         Self {
             value: Option::from(AttributeTypeValue::CharacterIng(v)),
             status: s,

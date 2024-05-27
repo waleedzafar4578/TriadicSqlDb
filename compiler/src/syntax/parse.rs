@@ -12,11 +12,8 @@ impl<'a> Parser<'a> {
         //First check that first token is sql keyword
         if let Some(Token::Keyword(ref keyword)) = self.tokens.get(self.current_token) {
             match keyword.as_str() {
-                "ADDUSER" => self.parse_adduser_statement(),
-                "CHECKUSER" => self.parse_checkuser_statement(),
                 "CREATE" => self.parse_create_statement(),
                 "DROP" => self.parse_drop_statement(),
-                "USE" => self.parse_use_statement(),
                 "SHOW" => self.parse_show_statement(),
                 "RENAME" => self.parse_rename_statement(),
                 "SEARCH" => self.parse_search_statement(),
