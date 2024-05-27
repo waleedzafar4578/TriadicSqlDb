@@ -1,10 +1,10 @@
 use crate::BaseControl;
 use std::fs;
-use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
+use triadic_error::engine_error::{EngineError};
 use std::path::Path;
 impl BaseControl {
-    pub fn create_the_database(&mut self, path: &str) -> EngineErrorCreate {
-        if self.initiate_lock {
+    pub fn create_the_database(&mut self, path: &str) -> EngineError {
+        return if self.initiate_lock {
             /*
             Here cloning the value to temp variable which use for fs::create_dir_all
             Here question is why we use create_parse dir all instead of only create_parse dir?
@@ -13,39 +13,26 @@ impl BaseControl {
             Fs::create_parse function return ok if the folder is created vice versa.
             And e.kind help to identify the actual Error.
              */
-            let temp = self.system_path.clone() + path;
-            if  BaseControl::find_this_database(self, &temp){
-                //println!("already exist from if");
-                return EngineErrorCreate::AlreadyExist;
+            let temp = &(self.system_path.clone() + path + ".json");
+            let new_file_path = Path::new(temp);
+            if new_file_path.exists() {
+                //println!("already exist");
+                EngineError::AlreadyExist
+            } else {
+                self.database_name = path.to_string();
+                self.save_to_file();
+                EngineError::DoneYes
             }
-            self.database_name= path.to_string();
-            self.save_to_file();
-            /*
-            match fs::create_dir_all(temp) {
-                Ok(_) => {
-                    println!("Database is created!");
-                    return EngineErrorCreate::DoneYes;
-                }
-                Err(e) => {
-                    if e.kind() == std::io::ErrorKind::AlreadyExists {
-                        println!("match statement AlreadyExist");
-                        return EngineErrorCreate::AlreadyExist;
-                    }
-                }
-            }
-            
-             */
-            
         } else {
-            println!("\n\n\nError:First  initiate the database\n\n");
-            return EngineErrorCreate::PathNotSelected;
+            //println!("\n\n\nError:First  initiate the database\n\n");
+            EngineError::PathNotSelected
         }
-        EngineErrorCreate::PathNotSelected
+       
     }
-    pub fn remove_the_database(&mut self,name:&str) -> EngineErrorDrop {
+    pub fn remove_the_database(&mut self,name:&str) -> EngineError {
         //Check if initiate lock is false then need to break the function
         if !self.initiate_lock {
-            return EngineErrorDrop::PathNotSelected;
+            return EngineError::PathNotSelected;
         }
         //Check if select lock is false then need
         // to break the function because if you want to remove,
@@ -57,35 +44,42 @@ impl BaseControl {
         }
 
          */
-        let temp = self.system_path.clone() + name;
-        match fs::remove_dir(temp.clone()) {
-            Ok(()) => {
-                println!("Folder '{}' removed successfully!", temp);
-                self.db_select = false;
-                self.database_name = "".to_string();
-                 EngineErrorDrop::DoneYes
+        let temp = &(self.system_path.clone() + name + ".json");
+        let new_file_path = Path::new(temp);
+        if new_file_path.exists() {
+            //println!("already exist");
+            match fs::remove_file(temp) {
+                Ok(_) => println!("File removed successfully."),
+                Err(err) => println!("Error removing file: {}", err),
             }
-            Err(e) => {
-                println!("{e}");
-                 EngineErrorDrop::NotFind
-            },
+            EngineError::DoneYes
+        } else {
+            EngineError::NotFind
         }
 
     }
     pub fn rename_the_database(&mut self, path_hold: &str, path_new: &str) -> bool {
-        let old = self.system_path.to_string() + path_hold;
-        let new = self.system_path.to_string() + path_new;
+        let old = self.system_path.to_string() + path_hold+".json";
+        let new = self.system_path.to_string() + path_new+".json";
 
-         match fs::rename(old, new) {
-            Ok(_) => {
-                println!("Directory renamed successfully!");
-                self.database_name = path_new.to_string();
-                true
+        
+        let new_file_path = Path::new(&old);
+        if new_file_path.exists() {
+            match fs::rename(old, new) {
+                Ok(_) => {
+                    println!("File renamed successfully!");
+                    self.database_name = path_new.to_string();
+                    true
+                }
+                Err(_e) => {
+                    println!("Failed to rename");
+                    false
+                }
             }
-            Err(_e) => {
-                println!("Failed to rename");
-                false
-            }
+           
+        } else {
+            false
         }
+         
     }
 }

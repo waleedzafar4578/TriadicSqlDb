@@ -14,8 +14,9 @@ impl BaseControl {
         let streem = serde_json::to_string_pretty(&self).unwrap();
         file.write_all(streem.as_bytes()).unwrap();
     }
-    pub fn load_to_file(&mut self, file_name: String) -> BaseControl {
-        let p_file_name = file_name.clone();
+    pub fn load_to_file(&mut self) -> BaseControl {
+        
+        let p_file_name = (*self.system_path).to_owned() + &*self.database_name +".json";
         let mut file = OpenOptions::new()
             .read(true)
             .open(p_file_name)

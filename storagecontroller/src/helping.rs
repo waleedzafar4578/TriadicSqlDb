@@ -1,5 +1,7 @@
 use crate::BaseControl;
 use std::fs;
+use std::path::Path;
+use triadic_error::engine_error::EngineError;
 
 impl Default for BaseControl {
     fn default() -> Self {
@@ -37,7 +39,7 @@ impl BaseControl {
         if let Ok(entries) = fs::read_dir(self.system_path.clone()) {
             for entry in entries.flatten() {
                 if let Ok(metadata) = entry.metadata() {
-                    if metadata.is_dir() {
+                    if metadata.is_file() {
                         if let Some(name) = entry.file_name().to_str() {
                             answer.push(name.to_string());
                         }
@@ -61,8 +63,8 @@ impl BaseControl {
         }
         ret
     }
-    pub fn search_table(self, name: &str) -> bool {
-        for i in self.all_table {
+    pub fn search_table(&self, name: &str) -> bool {
+        for i in self.all_table.clone() {
             if i.table_name() == name {
                 return true;
             }
@@ -90,23 +92,15 @@ impl BaseControl {
     }
     pub fn use_this_database(&mut self, path: &str) -> bool {
         if !self.db_select && self.initiate_lock {
-            if let Ok(entries) = fs::read_dir(self.system_path.clone()) {
-                for entry in entries.flatten() {
-                    if let Ok(metadata) = entry.metadata() {
-                        if metadata.is_dir() {
-                            if let Some(name) = entry.file_name().to_str() {
-                                if path == name {
-                                    self.database_name = name.parse().unwrap();
-                                }
-                            }
-                        }
-                    }
-                }
+            let temp = &(self.system_path.clone() + path + ".json");
+            let new_file_path = Path::new(temp);
+            if new_file_path.exists() {
+                self.database_name=path.to_string();
+                self.db_select = true;
+              return true
             } else {
-                eprintln!("Error reading directory '{}'", &mut self.system_path);
+                return false
             }
-            self.db_select = true;
-            return true;
         }
         false
     }

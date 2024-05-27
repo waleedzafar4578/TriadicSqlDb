@@ -21,7 +21,7 @@ use crate::syntax::{AstNode, Parser};
 
 use storagecontroller::BaseControl;
 
-use triadic_error::engine_error::{EngineErrorCreate, EngineErrorDrop};
+use triadic_error::engine_error::{EngineError};
 use triadic_error::{Compiler, FrontSendCode};
 ///
 /// This sql runner function is responsible for operations:
@@ -63,48 +63,10 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             //`println!("table creation:{:#?}",_data);
         }
         AstNode::CreateDatabaseStatement(name) => {
-            return match controller.create_the_database(name.as_str()) {
-                EngineErrorCreate::PathNotSelected => {
-                    (
-                        FrontSendCode::SysDatabaseNotSelected,
-                        "Please First Connect your system with server".to_string(),
-                    )
-                }
-                EngineErrorCreate::AlreadyExist => {
-                    (
-                        FrontSendCode::AlreadyExist,
-                        format!("Database is already exist with the Name of: {}", name),
-                    )
-                }
-                EngineErrorCreate::DoneYes => {
-                    (
-                        FrontSendCode::QueryProcessed,
-                        format!("Database is Create with the Name of: {}", name),
-                    )
-                }
-            };
+            return engine_error(controller.create_the_database(name.as_str()));
         }
         AstNode::DropDatabaseStatement(name) => {
-            match controller.remove_the_database(name.as_str()){
-                EngineErrorDrop::PathNotSelected => {
-                    (
-                        FrontSendCode::SysDatabaseNotSelected,
-                        "Engine Path Not Selected".to_string(),
-                    )
-                }
-                EngineErrorDrop::NotFind => {
-                    (
-                        FrontSendCode::SysNotFound,
-                        "Engine Database Not Exist".to_string(),
-                    )
-                }
-                EngineErrorDrop::DoneYes => {
-                    (
-                        FrontSendCode::SysFound,
-                        "Database Dropped".to_string(),
-                    )
-                }
-            };
+            return engine_error(controller.remove_the_database(name.as_str()));
         }
         AstNode::SearchDatabaseStatement(name) => {
             match controller.find_this_database(name.as_str()) {
@@ -178,4 +140,33 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
     
+}
+
+fn engine_error(engine_error:EngineError) ->(FrontSendCode, String){
+    match engine_error {
+        EngineError::PathNotSelected => {
+            (
+                FrontSendCode::SysDatabaseNotSelected,
+                "Engine Path Not Selected".to_string(),
+            )
+        }
+        EngineError::NotFind => {
+            (
+                FrontSendCode::SysNotFound,
+                "Engine Database Not Exist".to_string(),
+            )
+        }
+        EngineError::DoneYes => {
+            (
+                FrontSendCode::SysFound,
+                "Database Dropped".to_string(),
+            )
+        }
+        EngineError::AlreadyExist => {
+            (
+                FrontSendCode::AlreadyExist,
+                "Database is already exist!".to_string(),
+            )
+        }
+    }
 }

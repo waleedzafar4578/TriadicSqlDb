@@ -1,10 +1,6 @@
-pub enum EngineErrorCreate{
+pub enum EngineError{
     PathNotSelected,
     AlreadyExist,
-    DoneYes,
-}
-pub enum EngineErrorDrop{
-    PathNotSelected,
     NotFind,
-    DoneYes
+    DoneYes,
 }

@@ -1,11 +1,21 @@
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "116e58f3d783ee259e0d2d9a5ae9c167d18b09b0d4600993586a40efc1b0deae",
+  "query": "RENAME DATABASE third4,third ;"
+}
+
+###
 
 ###
 POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "0beca3154a253cca46d7cf3336061fc36391c41432ccd8aa3726bc8cdfb68420",
-  "query": "CREATE DATABASE no;"
+  "token": "116e58f3d783ee259e0d2d9a5ae9c167d18b09b0d4600993586a40efc1b0deae",
+  "query": "DROP DATABASE no1;"
 }
 
 ###

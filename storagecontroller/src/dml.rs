@@ -23,9 +23,12 @@ impl BaseControl {
         col_name: Vec<String>,
         col_type: Vec<(AttributeType,Constraints)>,
     ) -> bool {
-        println!("Yes! Come in engine side.");
+        //println!("Yes! Come in engine side.");
          match self.db_select {
             true => {
+                if self.search_table(t_name){
+                   return false; 
+                }
                 let mut tb: Table = Table::new(t_name);
 
                 if col_name.len() == col_type.len() {

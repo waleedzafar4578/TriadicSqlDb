@@ -126,10 +126,13 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
 fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
     let mut mem: String = String::new();
     let sts: FrontSendCode;
-    (sts, mem) = sql_runner(data, con);
-    println!("{:#?}",con);
     
-    con.save_to_file();
+    let mut temp=con.load_to_file();
+    //println!("{:#?}",temp);
+    (sts, mem) = sql_runner(data,&mut temp);
+    //println!("{:#?}",con);
+    
+    temp.save_to_file();
     // Create a modified OutputData with the reversed message
     OutputData {
         query_information: mem.to_string(),

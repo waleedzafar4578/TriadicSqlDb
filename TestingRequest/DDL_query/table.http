@@ -13,8 +13,8 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "0beca3154a253cca46d7cf3336061fc36391c41432ccd8aa3726bc8cdfb68420",
-  "query": "CREATE TABLE Persons (PersonID INT,LastName STRING UNIQUE,FirstName STRING );"
+  "token": "b309b8dca66d1d37cf915a2ac930097fafff4b748266530f7e2813f3ff4fce11",
+  "query": "CREATE TABLE Persons2 (PersonID INT,LastName STRING UNIQUE,FirstName STRING );"
 }
 
 
