@@ -1,13 +1,20 @@
-use triadic_logic::datatype::AttributeType;
-use crate::lexical::Token;
+use std::arch::x86_64::_mm_test_all_ones;
+use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
+use triadic_logic::datatype::AttributeType;
 
 //helping function
 impl<'a> Parser<'a> {
-    pub(crate) fn terminate_with_close_bracket_and_semicolun(&mut self) -> bool {
+    pub(crate) fn terminate_with_close_bracket_and_semicolon(&mut self) -> bool {
         if self.tokens.get(self.current_token) == Some(&Token::Punctuation(')'))
             && self.tokens.get(self.current_token + 1) == Some(&Token::Punctuation(';'))
         {
+            return true;
+        }
+        false
+    }
+    pub(crate) fn terminate_with_semicolon(&self) -> bool {
+        if self.tokens.get(self.current_token) == Some(&Token::Punctuation(';')) {
             return true;
         }
         false
@@ -50,14 +57,64 @@ impl<'a> Parser<'a> {
         }
         Some(_tempory_column_name)
     }
-    pub fn open_bracket_check(& self){
-        if Some(&Token::Punctuation('(')) !=self.tokens.get(self.current_token){
-            panic!("Opening Bracket missed!");
+    pub(crate) fn extract_identifier(&self) -> Option<String> {
+        let mut _tempory_id: String = String::new();
+        //
+        //
+        //checking the Column name if not find then not needs to checking further.
+        if let Some(Token::Identifier(ref column_name)) = self.tokens.get(self.current_token) {
+            _tempory_id.clone_from(column_name);
+        } else {
+            return None;
         }
+        Some(_tempory_id)
     }
-    pub fn close_bracket_check(& self){
-        if Some(&Token::Punctuation(')')) !=self.tokens.get(self.current_token){
-            panic!("Opening Bracket missed!");
+    pub fn open_bracket_check(&self) -> bool {
+        if Some(&Token::Punctuation('(')) == self.tokens.get(self.current_token) {
+            return true;
         }
+        false
+    }
+    pub fn close_bracket_check(&self) -> bool {
+        if Some(&Token::Punctuation(')')) == self.tokens.get(self.current_token) {
+            return true;
+        }
+        false
+    }
+    pub fn comma_check(&self) -> bool {
+        if Some(&Token::Punctuation(',')) == self.tokens.get(self.current_token) {
+            return true;
+        }
+        false
+    }
+    pub fn keyword_check(&self, word: &str) -> bool {
+        if let Some(Token::Keyword(ref next_keyword)) = self.tokens.get(self.current_token) {
+            if next_keyword == word {
+                return true;
+            }
+        }
+        false
+    }
+    pub fn get_literal(&self) -> Option<String> {
+        if let Some(Token::Literal(ref next_keyword)) = self.tokens.get(self.current_token) {
+            return match next_keyword {
+                Literal::Numeric(_d) => Some(_d.clone()),
+                Literal::String(_d) => Some(_d.clone()),
+                Literal::Boolean(_d) => Some(_d.clone()),
+            };
+        }
+        None
+    }
+    pub fn get_value_degree(&self) -> Option<char> {
+        if let Some(Token::Keyword(ref next_keyword)) = self.tokens.get(self.current_token) {
+            return match next_keyword.as_str() {
+                "T" => Some('T'),
+                "L" => Some('L'),
+                "F" => Some('F'),
+                _ => { Some('L') }
+            }
+        }
+
+        None
     }
 }

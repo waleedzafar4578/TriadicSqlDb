@@ -19,7 +19,7 @@ impl<'a> Parser<'a>{
             //this block of code breaks the loop when the current token is NONE
             //OR it found ");" bracket with semicolon
             if self.tokens.get(self.current_token).is_none()
-                || self.terminate_with_close_bracket_and_semicolun()
+                || self.terminate_with_close_bracket_and_semicolon()
             {
                 break;
             }

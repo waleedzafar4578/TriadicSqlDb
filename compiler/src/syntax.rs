@@ -10,6 +10,7 @@ pub mod rename_parse;
 pub mod search_parse;
 pub mod show_parse;
 
+pub mod insert_parse;
 
 
 #[derive(Debug)]
@@ -18,11 +19,17 @@ pub struct CompilerTableParseEntry{
     pub column_name:Vec<String>,
     pub type_plus_constraint:Vec<(AttributeType,Constraints)>,
 }
-
+#[derive(Debug)]
+pub struct CompilerTableDataEntry{
+    pub name:String,
+    pub column_name:Vec<String>,
+    pub column_data:Vec<Vec<(String,char)>>,
+}
 
 #[derive(Debug)]
 pub enum AstNode {
     CreateTableStatement(CompilerTableParseEntry),
+    InsertTableStatement(CompilerTableDataEntry),
     CreateDatabaseStatement(String),
     DropDatabaseStatement(String),
     SearchDatabaseStatement(String),

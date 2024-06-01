@@ -97,7 +97,7 @@ impl<'a> Parser<'a> {
                     Some(triadic_error::Compiler::MissSemicolon),
                 )
             }
-            if self.terminate_with_close_bracket_and_semicolun() {
+            if self.terminate_with_close_bracket_and_semicolon() {
                 break;
             }
             //

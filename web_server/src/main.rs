@@ -123,7 +123,7 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
         .json(ret_ans)
 }
 
-fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
+ fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
     let mut mem: String = String::new();
     let sts: FrontSendCode;
     
@@ -139,6 +139,7 @@ fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
         status: sts.to_string(),
     }
 }
+
 #[post("/pq")]
 async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
     let mut ret_ans: OutputData = OutputData {
@@ -234,6 +235,7 @@ async fn help() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    
     let app_state = AppState::default();
     println!("Server start and on localhost:8080");
     HttpServer::new(move || {

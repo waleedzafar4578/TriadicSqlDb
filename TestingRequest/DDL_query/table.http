@@ -19,3 +19,14 @@ Content-Type: application/json
 
 
 ###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "b309b8dca66d1d37cf915a2ac930097fafff4b748266530f7e2813f3ff4fce11",
+  "query": ""
+
+}
+
+
+###

@@ -12,7 +12,9 @@ pub enum Compiler {
     NotAKeyword,
     MissKeyword,
     MissIdentifier,
-    MissSemicolon
+    MissSemicolon,
+    MissOpenBracket,
+    MissCloseBracket,
 }
 #[derive(Debug)]
 pub enum FrontSendCode {
@@ -26,6 +28,8 @@ pub enum FrontSendCode {
     QueryColumnMissing,
     QueryColumnNameMissing,
     QueryColumnDatatypeMissing,
+    QueryOpenBracketMissing,
+    QueryCloseBracketMissing,
     SysDatabaseNotSelected,
     AlreadyExist,
     QueryProcessed,
@@ -49,6 +53,8 @@ impl Display for FrontSendCode {
             FrontSendCode::QueryColumnMissing => {String::from("QueryColumnMissing")}
             FrontSendCode::QueryColumnNameMissing => {String::from("QueryColumnNameMissing")}
             FrontSendCode::QueryColumnDatatypeMissing => {String::from("QueryColumnDatatypeMissing")}
+            FrontSendCode::QueryOpenBracketMissing => {String::from("QueryOpenBracketMissing")}
+            FrontSendCode::QueryCloseBracketMissing => {String::from("QueryCloseBracketMissing")}
         };
         write!(f, "{}", str)
     }
