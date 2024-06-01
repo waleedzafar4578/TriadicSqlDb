@@ -52,7 +52,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     let (ast, error_type) = parser.parse();
     match ast {
         AstNode::InsertTableStatement(table_data) => {
-            match controller.search_table(table_data.name.clone().as_str()) {
+            return match controller.search_table(table_data.name.clone().as_str()) {
                 true => {
                     for (row_index, row_data) in table_data.column_data.iter().enumerate() {
                         for (col_index, column_name) in table_data.column_name.iter().enumerate() {
@@ -65,24 +65,19 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                             );
                         }
                     }
-                    return (
+                    (
                         FrontSendCode::QueryProcessed,
                         "Data Inserted in Table!".to_string(),
-                    );
+                    )
                 }
                 false => {
-                    return (
+                    (
                         FrontSendCode::QueryKeywordMissing,
                         "Please first create table.In database not found this table!".to_string(),
                     )
                 }
             }
-
-            // print!("{:#?}",_data);
-            return (
-                FrontSendCode::QueryKeywordMissing,
-                "Keyword he!".to_string(),
-            );
+            
         }
         AstNode::CreateTableStatement(_data) => {
             return match controller.add_table(

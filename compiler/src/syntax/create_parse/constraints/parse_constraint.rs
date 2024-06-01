@@ -1,21 +1,56 @@
+use storge::column::PRIMARYKEY;
+use triadic_logic::degree::Degree;
 use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
 
 impl<'a> Parser<'a> {
-    pub fn primary_key(&mut self, start_constraint: &str) -> bool {
+    pub fn primary_key(&mut self, start_constraint: &str) -> PRIMARYKEY {
         //println!("coming:{}", start_constraint);
-        if start_constraint == "PRIMARY" {
-            if let Some(Token::Keyword(ref inner_constrain)) =
-                self.tokens.get(self.current_token + 1)
-            {
-                if inner_constrain.as_str() == "KEY" {
-                    self.advance();
-                    //println!("System: primary key found");
-                    return true;
+        let mut temp_primary_object=PRIMARYKEY::default();
+        
+        if start_constraint != "PRIMARY" {
+            return temp_primary_object;
+        }
+        self.advance();
+        if let Some(Token::Keyword(ref inner_constrain)) =
+            self.tokens.get(self.current_token)
+        {
+            if inner_constrain.as_str() == "KEY" {
+                //println!("System: primary key found");
+                temp_primary_object.primary_key=true;
+            }
+
+        }
+        if Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token+1) {
+            return temp_primary_object;
+        }
+        else { 
+            self.advance()
+        }
+        self.advance();
+        if let Some(Token::Keyword(ref inner_constrain)) =
+            self.tokens.get(self.current_token)
+        {
+           
+            match inner_constrain.as_str() {
+                "T"=>temp_primary_object.degree=Some(Degree::T),
+                "F"=>temp_primary_object.degree=Some(Degree::F),
+                "L"=>temp_primary_object.degree=Some(Degree::L),
+                &_ => {
+                    
                 }
             }
+
         }
-        false
+        else { 
+            panic!("You miss Degree of primary key")
+        }
+        self.advance();
+        if !self.close_bracket_check() {
+            panic!("You miss close bracket")
+        }
+        
+        temp_primary_object
     }
     pub fn not_null(&mut self, start_constraint: &str) -> bool {
         //println!("coming:{}", start_constraint);

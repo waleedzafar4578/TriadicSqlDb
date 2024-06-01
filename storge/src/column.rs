@@ -5,11 +5,22 @@ use triadic_logic::datatype::{AttributeType, Date, Interval, Money, Time, TimeSt
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriVar;
 
+
+#[derive(Default,Serialize, Deserialize, Clone,Debug)]
+pub struct PRIMARYKEY {
+    pub primary_key: bool,
+    pub degree:Option<Degree>,
+}
+
+
+
+
+
 #[derive(Default,Serialize, Deserialize, Clone,Debug)]
 pub struct Constraints {
     pub not_null: bool,
     pub unique: bool,
-    pub primary_key: bool,
+    pub primary_key: PRIMARYKEY,
     pub foreign_key: bool,
     pub check: bool,
     pub check_operator: String,
@@ -24,7 +35,7 @@ impl Constraints{
         Self{
             not_null: false,
             unique: false,
-            primary_key: false,
+            primary_key: PRIMARYKEY::default(),
             foreign_key: false,
             check: false,
             check_operator: "".to_string(),
