@@ -587,6 +587,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
+name = "avl"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1249cb3effef43713024f23137529eb78c42bf288e7c60475b479f2e63f7379e"
+
+[[package]]
 name = "awc"
 version = "2.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2163,6 +2169,7 @@ dependencies = [
 name = "storge"
 version = "0.1.0"
 dependencies = [
+ "avl",
  "serde",
  "serde_json",
  "triadic_logic",

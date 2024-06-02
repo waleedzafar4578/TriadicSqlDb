@@ -44,6 +44,7 @@
 
 
 
+use std::cmp::Ordering;
 use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
 pub enum AttributeType {
@@ -62,7 +63,7 @@ pub enum AttributeType {
     TInterval,
     TMoney,
 }
-#[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
+#[derive(Serialize, Deserialize, Clone,Debug)]
 pub enum AttributeTypeValue {
     BoolIng(bool),
     IntIng(i32),
@@ -80,6 +81,42 @@ pub enum AttributeTypeValue {
     Moneying(Money)
 }
 
+impl Ord for AttributeTypeValue {
+    fn cmp(&self, other: &Self) -> Ordering {
+        match (self, other) {
+            (AttributeTypeValue::BoolIng(a), AttributeTypeValue::BoolIng(b)) => a.cmp(b),
+            (AttributeTypeValue::IntIng(a), AttributeTypeValue::IntIng(b)) => a.cmp(b),
+            (AttributeTypeValue::SmallINT(a), AttributeTypeValue::SmallINT(b)) => a.cmp(b),
+            (AttributeTypeValue::BigInt(a), AttributeTypeValue::BigInt(b)) => a.cmp(b),
+            (AttributeTypeValue::FloatIng(a), AttributeTypeValue::FloatIng(b)) => {
+                // Convert to bits before comparison to handle NaN correctly
+                a.to_bits().cmp(&b.to_bits())
+            }
+            (AttributeTypeValue::CharacterIng(a), AttributeTypeValue::CharacterIng(b)) => {
+                a.cmp(b)
+            }
+            (AttributeTypeValue::Stringing(a), AttributeTypeValue::Stringing(b)) => a.cmp(b),
+            (AttributeTypeValue::VarCharacterIng(a, _), AttributeTypeValue::VarCharacterIng(b, _)) => a.cmp(b),
+            (AttributeTypeValue::Texting(a), AttributeTypeValue::Texting(b)) => a.cmp(b),
+            // Implement comparison for other variants similarly
+            _ => unimplemented!("Comparison not implemented for these variants."),
+        }
+    }
+}
+
+impl PartialOrd for AttributeTypeValue {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Eq for AttributeTypeValue {}
+
+impl PartialEq for AttributeTypeValue {
+    fn eq(&self, other: &Self) -> bool {
+        self.cmp(other) == Ordering::Equal
+    }
+}
 impl AttributeTypeValue {
     pub fn get_bool(&self) -> Option<bool> {
         if let AttributeTypeValue::BoolIng(val) = self {

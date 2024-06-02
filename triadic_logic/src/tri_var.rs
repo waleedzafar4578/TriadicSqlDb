@@ -1,14 +1,51 @@
 use crate::datatype::{AttributeTypeValue, Date, Interval, Money, Time, TimeStamp};
 use crate::degree::Degree;
 use serde::{Deserialize, Serialize};
+use std::cmp::Ordering;
 use std::fmt;
 use std::fmt::Formatter;
-#[derive(Serialize, Deserialize, Clone,PartialEq,Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct TriVar {
     value: Option<AttributeTypeValue>,
     status: Degree,
 }
+impl Ord for TriVar {
+    fn cmp(&self, other: &Self) -> Ordering {
+        match self.status.cmp(&other.status) {
+            Ordering::Equal => self.value.cmp(&other.value),
+            other => other,
+        }
+    }
+}
+
+impl PartialOrd for TriVar {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for TriVar {
+    fn eq(&self, other: &Self) -> bool {
+        self.value == other.value && self.status == other.status
+    }
+}
+
+impl Eq for TriVar {}
+
 impl TriVar {
+    pub fn get_degree(&self) -> char {
+        match self.status {
+            Degree::T => {
+                'T'
+            }
+            Degree::F => {
+                'F'
+            }
+            Degree::L => {
+                'L'
+            }
+        }
+    }
     pub fn t_bool(v: bool, s: Degree) -> Self {
         Self {
             value: Option::from(AttributeTypeValue::BoolIng(v)),
@@ -51,9 +88,9 @@ impl TriVar {
             status: s,
         }
     }
-    pub fn t_varchar(v: String,size:usize, s: Degree) -> Self {
+    pub fn t_varchar(v: String, size: usize, s: Degree) -> Self {
         Self {
-            value: Option::from(AttributeTypeValue::VarCharacterIng(v,size)),
+            value: Option::from(AttributeTypeValue::VarCharacterIng(v, size)),
             status: s,
         }
     }
@@ -121,7 +158,7 @@ impl fmt::Display for TriData {
                     write!(f, "{}:{}", value.get_string().unwrap(), self.status)
                 }
                 AttributeTypeValue::SmallINT(_) => {
-                    
+
                 }
                 AttributeTypeValue::BigInt(_) => {}
                 AttributeTypeValue::VarCharacterIng(_, _) => {}

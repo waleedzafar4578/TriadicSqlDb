@@ -6,7 +6,10 @@ use std::io::{Read, Write};
 //use serde_json::Value::String;
 use crate::column::Column;
 use std::string::String;
+use triadic_logic::datatype::AttributeTypeValue;
 use triadic_logic::degree::Degree;
+use triadic_logic::tri_var::TriVar;
+
 #[derive(Serialize, Deserialize, Clone,Debug)]
 pub struct Table {
     table_name: String,
@@ -53,7 +56,7 @@ impl Table {
                     i.set_float_cell(value, d);
                 }
                 if let Ok(value) = string_to_char(col) {
-                    //i.set_char_cell(value, d);
+                    i.set_char_cell(value, d);
                 }
                 if let Ok(value) = string_to_bool(col) {
                     i.set_bool_cell(value, d);
@@ -63,6 +66,7 @@ impl Table {
         }
         self
     }
+
 }
 
 fn string_to_integer(s: &str) -> Result<i32, std::num::ParseIntError> {
@@ -150,5 +154,80 @@ impl Table {
         file.read_to_string(&mut stream).unwrap();
         let object: Table = serde_json::from_str(&stream).unwrap();
          object
+    }
+}
+#[derive(Default)]
+pub struct ShowTable{
+    pub row:Vec<Vec<String>>,
+}
+impl Table{
+    pub fn show_table(&self)->ShowTable{
+        let mut size=0;
+        for i in &self.table_column {
+            if size < i.clone().get_size(){
+                size=i.clone().get_size();
+            }
+            print!("{:?} | ",i.get_column_name());
+        }
+        println!();
+        let mut j=0;
+        while j<size {
+            for i in &self.table_column {
+                match i.get_column_data(j) {
+                    None => {
+                        print!("None | ");
+                    }
+                    Some(_f) => {
+                        match _f.get_attribute() {
+                            None => {
+                                print!("None | ");
+                            }
+                            Some(_n) => {
+                                match _n {
+                                    AttributeTypeValue::BoolIng(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::IntIng(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::SmallINT(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::BigInt(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::FloatIng(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::CharacterIng(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::Stringing(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::VarCharacterIng(_, _) => {}
+                                    AttributeTypeValue::Texting(_b) => {
+                                        print!("{}:",_b);
+                                    }
+                                    AttributeTypeValue::Dating(_b) => {}
+                                    AttributeTypeValue::Timing(_b) => {}
+                                    AttributeTypeValue::Timestamping(_b) => {}
+                                    AttributeTypeValue::Intervaling(_b) => {}
+                                    AttributeTypeValue::Moneying(_b) => {}
+                                }
+
+                            }
+                        }
+                        print!("{}  |",_f.get_degree());
+
+                    }
+                }
+
+            }
+            println!();
+            j+=1;
+        }
+        
+        ShowTable::default()
     }
 }

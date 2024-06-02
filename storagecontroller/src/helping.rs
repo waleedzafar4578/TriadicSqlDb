@@ -1,6 +1,7 @@
 use crate::BaseControl;
 use std::fs;
 use std::path::Path;
+use storge::table::{ShowTable, Table};
 use triadic_error::engine_error::EngineError;
 
 impl Default for BaseControl {
@@ -95,13 +96,24 @@ impl BaseControl {
             let temp = &(self.system_path.clone() + path + ".json");
             let new_file_path = Path::new(temp);
             if new_file_path.exists() {
-                self.database_name=path.to_string();
+                self.database_name = path.to_string();
                 self.db_select = true;
-              return true
+                return true;
             } else {
-                return false
+                return false;
             }
         }
         false
     }
+    pub fn show_table(&self, name: &str) -> ShowTable {
+        for i in self.all_table.clone() {
+            if i.clone().table_name() == name {
+                i.show_table();
+            }
+        }
+
+        ShowTable::default()
+    }
 }
+
+//for showing table and also send logic to a client

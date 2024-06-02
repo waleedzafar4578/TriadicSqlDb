@@ -1,22 +1,84 @@
+use avl::{AvlTreeMap, AvlTreeSet};
 use serde::{Deserialize, Serialize};
+use std::cmp::Ordering;
 use std::fmt;
 use std::fmt::Formatter;
-use triadic_logic::datatype::{AttributeType, Date, Interval, Money, Time, TimeStamp};
+use triadic_logic::datatype::{
+    AttributeType, AttributeTypeValue, Date, Interval, Money, Time, TimeStamp,
+};
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriVar;
+#[derive(Default, Clone, Debug)]
+pub struct TraidicTree {
+    pub avl_tree_set: AvlTreeSet<ForIndex>,
+}
+impl TraidicTree {
+    pub fn check_avl_insert(&mut self, value: ForIndex) -> bool {
+        if self.avl_tree_set.insert(value) {
+            return true;
+        }
 
-
-#[derive(Default,Serialize, Deserialize, Clone,Debug)]
-pub struct PRIMARYKEY {
-    pub primary_key: bool,
-    pub degree:Option<Degree>,
+        false
+    }
+}
+// Implement Serialize for TraidicTree
+impl Serialize for TraidicTree {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        // Convert AvlTreeSet<ForIndex> to a vector of ForIndex structs
+        let index_vector: Vec<_> = self.avl_tree_set.iter().cloned().collect();
+        index_vector.serialize(serializer)
+    }
 }
 
+// Implement Deserialize for TraidicTree
+impl<'de> Deserialize<'de> for TraidicTree {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        // Deserialize the vector of ForIndex structs and convert it to AvlTreeSet<ForIndex>
+        let index_vector: Vec<ForIndex> = Deserialize::deserialize(deserializer)?;
+        let avl_tree_set: AvlTreeSet<ForIndex> = index_vector.into_iter().collect();
+        Ok(TraidicTree { avl_tree_set })
+    }
+}
 
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+pub struct ForIndex {
+    pub value: Option<AttributeTypeValue>,
+    pub index: usize,
+}
 
+impl Ord for ForIndex {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.value.cmp(&other.value)
+    }
+}
 
+impl PartialOrd for ForIndex {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
-#[derive(Default,Serialize, Deserialize, Clone,Debug)]
+impl PartialEq for ForIndex {
+    fn eq(&self, other: &Self) -> bool {
+        self.value == other.value
+    }
+}
+
+impl Eq for ForIndex {}
+
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+pub struct PRIMARYKEY {
+    pub primary_key: bool,
+    pub degree: Option<Degree>,
+}
+
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Constraints {
     pub not_null: bool,
     pub unique: bool,
@@ -27,12 +89,11 @@ pub struct Constraints {
     pub check_value: String,
     pub default: bool,
     pub default_value: String,
-   
 }
 
-impl Constraints{
-    pub fn new()->Self{
-        Self{
+impl Constraints {
+    pub fn new() -> Self {
+        Self {
             not_null: false,
             unique: false,
             primary_key: PRIMARYKEY::default(),
@@ -46,27 +107,33 @@ impl Constraints{
     }
 }
 
-#[derive(Serialize, Deserialize, Clone,Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Column {
     name: String,
     type_status: AttributeType,
     size_status: usize,
     value: Vec<TriVar>,
     constraints: Constraints,
-    column_order:usize,
-    
+    column_order: usize,
+    index_tree: Option<TraidicTree>,
 }
 
 impl Column {
     //noinspection ALL
     pub fn new(n: &str, t: &AttributeType, constraints: Constraints) -> Self {
+        let temp = if constraints.primary_key.primary_key || constraints.unique {
+            Some(TraidicTree::default())
+        } else {
+            None
+        };
         Self {
             name: n.to_string(),
             type_status: t.clone(), //here some issue
             size_status: 0,
             value: vec![],
             constraints,
-            column_order:0,
+            column_order: 0,
+            index_tree: temp,
         }
     }
 }
@@ -74,15 +141,35 @@ impl Column {
     pub fn set_bool_cell(&mut self, value: bool, d: Degree) {
         if self.type_status == AttributeType::TBool {
             self.size_status += 1;
-            self.value.push(TriVar::t_bool(value, d))
+            self.value.push(TriVar::t_bool(value, d));
         }
     }
-    pub fn set_int_cell(&mut self, value: i32, d: Degree) {
-        if self.type_status == AttributeType::TInt {
-            self.size_status += 1;
-            self.value.push(TriVar::t_int(value, d))
+    pub fn set_int_cell(&mut self, value: i32, degree: Degree) {
+        if self.type_status == AttributeType::TInt && self.constraints.primary_key.primary_key {
+            if let Some(primary_degree) = self.constraints.primary_key.degree {
+                if primary_degree != degree {
+                    self.size_status += 1;
+                    self.value.push(TriVar::t_int(value, degree));
+                    return;
+                }
+            }
+
+            if let Some(tree) = self.index_tree.as_mut() {
+                let for_index = ForIndex {
+                    value: Some(AttributeTypeValue::IntIng(value)),
+                    index: self.size_status,
+                };
+
+                if !tree.check_avl_insert(for_index) {
+                    panic!("Duplicate value");
+                } else {
+                    self.size_status += 1;
+                    self.value.push(TriVar::t_int(value, degree));
+                }
+            }
         }
     }
+
     pub fn set_small_int_cell(&mut self, value: i16, d: Degree) {
         if self.type_status == AttributeType::TSmallInt {
             self.size_status += 1;
@@ -107,23 +194,21 @@ impl Column {
             self.value.push(TriVar::t_char(value, d))
         }
     }
-   
+
     pub fn set_string_cell(&mut self, value: String, d: Degree) {
         if self.type_status == AttributeType::TString {
             self.size_status += 1;
-            self.value.push(TriVar::t_string(value, d))
+            self.value.push(TriVar::t_string(value.clone(), d));
         }
-    }
-    pub fn set_varchar_cell(&mut self, value: String,size:usize, d: Degree) {
-        if self.type_status == AttributeType::TVarChar {
-            self.size_status += 1;
-            self.value.push(TriVar::t_varchar(value,size, d))
-        }
-    }
-    pub fn set_text_cell(&mut self, value: String, d: Degree) {
         if self.type_status == AttributeType::TText {
             self.size_status += 1;
-            self.value.push(TriVar::t_text(value, d))
+            self.value.push(TriVar::t_text(value.clone(), d))
+        }
+    }
+    pub fn set_varchar_cell(&mut self, value: String, size: usize, d: Degree) {
+        if self.type_status == AttributeType::TVarChar {
+            self.size_status += 1;
+            self.value.push(TriVar::t_varchar(value, size, d))
         }
     }
     pub fn set_date_cell(&mut self, value: Date, d: Degree) {
@@ -162,6 +247,7 @@ impl Column {
     pub fn get_column_name(&self) -> &String {
         &self.name
     }
+
     pub fn get_column_data(&self, index: usize) -> Option<&TriVar> {
         self.value.get(index)
     }
@@ -184,13 +270,9 @@ impl fmt::Display for Column {
 }
 
  */
-impl Column {
-   
-    
-}
+impl Column {}
 
-fn preprocess_for_value(data:Vec<TriVar>,point:TriVar)->bool{
-    
+fn preprocess_for_value(data: Vec<TriVar>, point: TriVar) -> bool {
     let _ = data.contains(&point);
     false
 }
