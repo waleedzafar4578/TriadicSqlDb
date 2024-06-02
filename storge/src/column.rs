@@ -128,7 +128,7 @@ impl Column {
         };
         Self {
             name: n.to_string(),
-            type_status: t.clone(), //here some issue
+            type_status: t.clone(), 
             size_status: 0,
             value: vec![],
             constraints,
@@ -144,13 +144,13 @@ impl Column {
             self.value.push(TriVar::t_bool(value, d));
         }
     }
-    pub fn set_int_cell(&mut self, value: i32, degree: Degree) {
+    pub fn set_int_cell(&mut self, value: i32, degree: Degree)->bool {
         if self.type_status == AttributeType::TInt && self.constraints.primary_key.primary_key {
             if let Some(primary_degree) = self.constraints.primary_key.degree {
                 if primary_degree != degree {
                     self.size_status += 1;
                     self.value.push(TriVar::t_int(value, degree));
-                    return;
+                    
                 }
             }
 
@@ -161,13 +161,14 @@ impl Column {
                 };
 
                 if !tree.check_avl_insert(for_index) {
-                    panic!("Duplicate value");
+                    return false;
                 } else {
                     self.size_status += 1;
                     self.value.push(TriVar::t_int(value, degree));
                 }
             }
         }
+        true
     }
 
     pub fn set_small_int_cell(&mut self, value: i16, d: Degree) {

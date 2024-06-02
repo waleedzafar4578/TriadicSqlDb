@@ -35,6 +35,7 @@ pub enum FrontSendCode {
     QueryProcessed,
     SysFound,
     SysNotFound,
+    ValueDuplicate,
     
 }
 
@@ -55,6 +56,7 @@ impl Display for FrontSendCode {
             FrontSendCode::QueryColumnDatatypeMissing => {String::from("QueryColumnDatatypeMissing")}
             FrontSendCode::QueryOpenBracketMissing => {String::from("QueryOpenBracketMissing")}
             FrontSendCode::QueryCloseBracketMissing => {String::from("QueryCloseBracketMissing")}
+            FrontSendCode::ValueDuplicate => {String::from("ValueDuplicated")}
         };
         write!(f, "{}", str)
     }

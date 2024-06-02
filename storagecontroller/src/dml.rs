@@ -73,10 +73,10 @@ impl BaseControl {
         d_status: Degree,
     ) -> bool {
         for mut _tb in &mut self.all_table {
-            if _tb.get_table_name() == t_name {
-                _tb.add_col_data(c_name, c_data, d_status);
+            if _tb.get_table_name() == t_name && !_tb.add_col_data(c_name, c_data, d_status) {
+                return false
             }
         }
-        false
+        true
     }
 }

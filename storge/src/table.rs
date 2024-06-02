@@ -46,11 +46,13 @@ impl Table {
     pub fn add_column(&mut self, col: Column) {
         self.table_column.push(col);
     }
-    pub fn add_col_data(&mut self, n: &str, col: &str, d: Degree) -> &mut Table {
+    pub fn add_col_data(&mut self, n: &str, col: &str, d: Degree) -> bool {
         for i in &mut self.table_column {
             if i.clone().get_column_name() == &n.to_string() {
                 if let Ok(value) = string_to_integer(col) {
-                    i.set_int_cell(value, d);
+                   if !i.set_int_cell(value, d){
+                       return false;
+                   }
                 }
                 if let Ok(value) = string_to_float(col) {
                     i.set_float_cell(value, d);
@@ -64,7 +66,7 @@ impl Table {
                 i.set_string_cell(col.to_string(), d);
             }
         }
-        self
+        true
     }
 
 }

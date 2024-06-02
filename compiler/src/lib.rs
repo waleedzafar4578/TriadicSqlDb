@@ -57,12 +57,15 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                     for (row_index, row_data) in table_data.column_data.iter().enumerate() {
                         for (col_index, column_name) in table_data.column_name.iter().enumerate() {
                             let (key, char_value) = &row_data[col_index];
-                            controller.insert_to_table(
+                            if !controller.insert_to_table(
                                 table_data.name.as_str(),
                                 column_name.as_str(),
                                 key.as_str(),
                                 char_to_degree(*char_value),
-                            );
+                            ){
+                                return (FrontSendCode::QueryProcessed,
+                                "Value is duplicate!".to_string(),)
+                            }
                         }
                     }
                     (
