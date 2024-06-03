@@ -1,6 +1,6 @@
-use std::arch::x86_64::_mm_test_all_ones;
 use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
+use std::arch::x86_64::_mm_test_all_ones;
 use triadic_logic::datatype::AttributeType;
 
 //helping function
@@ -111,10 +111,93 @@ impl<'a> Parser<'a> {
                 "T" => Some('T'),
                 "L" => Some('L'),
                 "F" => Some('F'),
-                _ => { Some('L') }
-            }
+                _ => Some('L'),
+            };
         }
 
         None
+    }
+    pub fn check_operator(&self, operator: &str) -> bool {
+        return Some(&Token::Operator(operator.to_string())) == self.tokens.get(self.current_token)
+    }
+    pub fn get_list_of_values(&mut self) -> Option<Vec<(String,char)>> {
+        //println!("Inside of list of column name");
+        let mut column_data: Vec<(String,char)> = vec![];
+        if !self.open_bracket_check() {
+            return None;
+        }
+        self.advance();
+        //println!("Open bracket find");
+        while !self.close_bracket_check() {
+            match self.get_literal() {
+                None => {
+                    //println!("");
+                    return None;
+                }
+                Some(_column_value) => {
+                    //println!("column name :{}",_column_name.clone());
+                    self.advance();
+                    match self.get_value_degree() {
+                        None => {}
+                        Some(_d) => {
+                            //println!("{}:{}",_column_value,_d);
+                            column_data.push((_column_value,_d));
+                        }
+                    }
+
+                }
+            }
+            self.advance();
+            match self.comma_check() {
+                true => {
+                    self.advance();
+                }
+                false => {
+                    if self.close_bracket_check() {
+                        self.advance();
+                        return Some(column_data);
+                    }
+                    return None;
+                }
+            }
+        }
+        Some(column_data)
+    }
+    pub fn get_list_of_column(&mut self) -> Option<Vec<String>> {
+        //println!("Inside of list of column name");
+        let mut column_name: Vec<String> = vec![];
+        if !self.open_bracket_check() {
+            return None;
+        }
+        self.advance();
+        //println!("Open bracket find");
+        while !self.close_bracket_check() {
+            match self.extract_identifier() {
+                None => {
+                    //println!("column name not find");
+                    return None;
+                }
+                Some(_column_name) => {
+                    //println!("column name :{}",_column_name.clone());
+                    column_name.push((_column_name));
+
+
+                }
+            }
+            self.advance();
+            match self.comma_check() {
+                true => {
+                    self.advance();
+                }
+                false => {
+                    if self.close_bracket_check() {
+                        self.advance();
+                        return Some(column_name);
+                    }
+                    return None;
+                }
+            }
+        }
+        Some(column_name)
     }
 }

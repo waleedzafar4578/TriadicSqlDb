@@ -3,4 +3,7 @@ pub enum EngineError{
     AlreadyExist,
     NotFind,
     DoneYes,
+    IsCreated,
+    IsFound,
+    IsRemove,
 }

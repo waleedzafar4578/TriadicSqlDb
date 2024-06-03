@@ -23,8 +23,8 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "d64032f755b734bb4688e89926eb78c765b45b7abc2d8cd9becbc4564a011c7f",
-  "query": "SHOW DATABASE;"
+  "token": "35c4eaa64fc56d2d46d4547863214c36a0e14327dd9b453709ce5b67736f72bd",
+  "query": "CREATE DATABASE ALI;"
 }
 
 ###
@@ -36,3 +36,10 @@ Content-Type: application/json
   "database_name": "third4"
 }
 
+###
+GET http://localhost:8080/gdb
+Content-Type:  application/json
+
+{
+ "token": "35c4eaa64fc56d2d46d4547863214c36a0e14327dd9b453709ce5b67736f72bd"
+}

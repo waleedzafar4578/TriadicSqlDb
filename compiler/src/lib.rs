@@ -100,7 +100,8 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             //`println!("table creation:{:#?}",_data);
         }
         AstNode::CreateDatabaseStatement(name) => {
-            return engine_error(controller.create_the_database(name.as_str()));
+            return  engine_error(controller.create_the_database(name.as_str()));
+            
         }
         AstNode::DropDatabaseStatement(name) => {
             return engine_error(controller.remove_the_database(name.as_str()));
@@ -164,6 +165,11 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 }
             }
         },
+        AstNode::SelectFullTable((_input,table_name)) => {
+            
+            return (FrontSendCode::QueryProcessed, format!("{:#?}",controller.show_table(table_name.as_str(),_input)))
+            
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }
@@ -178,11 +184,15 @@ fn engine_error(engine_error: EngineError) -> (FrontSendCode, String) {
             FrontSendCode::SysNotFound,
             "Engine Database Not Exist".to_string(),
         ),
-        EngineError::DoneYes => (FrontSendCode::SysFound, "Database Dropped".to_string()),
+        EngineError::DoneYes => (FrontSendCode::QueryProcessed, "You request is processed".to_string()),
         EngineError::AlreadyExist => (
             FrontSendCode::AlreadyExist,
             "Database is already exist!".to_string(),
         ),
+        EngineError::IsCreated => (FrontSendCode::QueryProcessed, "Database Created".to_string()),
+        EngineError::IsFound => (FrontSendCode::QueryProcessed, "Database Found".to_string()),
+        EngineError::IsRemove => (FrontSendCode::QueryProcessed, "Database Removed".to_string()),
+        
     }
 }
 

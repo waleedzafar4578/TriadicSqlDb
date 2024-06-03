@@ -13,12 +13,36 @@ use std::{env, fmt, io};
 use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
 use UserAuth::structure_of_server::{appuser_to_file, file_to_appuser};
-use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TFile, TokenResponse, User};
+use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TFile, TokenResponse, User};
 
-#[derive(Default, Clone)]
-struct AppState {
-    base_controls: Arc<RwLock<HashMap<String, BaseControl>>>,
+
+#[get("/gdb")]
+async fn get_db(input: web::Json<GetDatabase>) -> HttpResponse {
+    let mut ret_ans:Vec<String> =vec![];
+
+    //converting string to AppUser object
+    let mut user_data: AppUsers = file_to_appuser();
+    //checking this user is already exist or not.
+    match user_data.check_token(&input.token) {
+        None => {
+            ret_ans.push("Wrong Token!".to_string());
+        }
+        Some(index) => {
+            let user = user_data.users.get_mut(index).unwrap();
+            let mut t=BaseControl::new();
+            t.initiate_database(user.get_path().as_str());
+            ret_ans=t.list_down_the_name_database();
+        }
+    }
+    
+    //appuser_to_file(user_data);
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(ret_ans)
 }
+
+
 #[post("/sdb")]
 async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
     let mut ret_ans = SelectDatabaseRes {
@@ -236,12 +260,11 @@ async fn help() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     
-    let app_state = AppState::default();
+    
     println!("Server start and on localhost:8080");
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
-            .app_data(web::Data::new(app_state.clone())) // Clone the Arc for each App instance
             .service(web::resource("/editor").route(web::get().to(editor)))
             .service(web::resource("/result").route(web::get().to(result)))
             .service(web::resource("/help").route(web::get().to(help)))
@@ -252,6 +275,7 @@ async fn main() -> std::io::Result<()> {
             .service(process_query)
             .service(token_check)
             .service(select_db)
+            .service(get_db)
     })
     .bind("localhost:8080")?
     .run()

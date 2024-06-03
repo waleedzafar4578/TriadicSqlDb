@@ -11,6 +11,7 @@ pub mod search_parse;
 pub mod show_parse;
 
 pub mod insert_parse;
+pub mod select_parse;
 
 
 #[derive(Debug)]
@@ -36,6 +37,7 @@ pub enum AstNode {
     RenameDatabaseStatement(String,String),
     ShowDatabaseStatement,
     UseDatabaseStatement(String),
+    SelectFullTable((Vec<String>,String)),
     Nothing,
     // ...Continue another Sql statement here.
 }

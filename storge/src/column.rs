@@ -145,28 +145,37 @@ impl Column {
         }
     }
     pub fn set_int_cell(&mut self, value: i32, degree: Degree)->bool {
-        if self.type_status == AttributeType::TInt && self.constraints.primary_key.primary_key {
-            if let Some(primary_degree) = self.constraints.primary_key.degree {
-                if primary_degree != degree {
-                    self.size_status += 1;
-                    self.value.push(TriVar::t_int(value, degree));
-                    
-                }
-            }
+        if self.type_status == AttributeType::TInt {
+            
+             if self.constraints.primary_key.primary_key{
+                 if let Some(primary_degree) = self.constraints.primary_key.degree {
+                     if primary_degree != degree {
+                         self.size_status += 1;
+                         self.value.push(TriVar::t_int(value, degree));
 
-            if let Some(tree) = self.index_tree.as_mut() {
-                let for_index = ForIndex {
-                    value: Some(AttributeTypeValue::IntIng(value)),
-                    index: self.size_status,
-                };
+                     }
+                 }
 
-                if !tree.check_avl_insert(for_index) {
-                    return false;
-                } else {
-                    self.size_status += 1;
-                    self.value.push(TriVar::t_int(value, degree));
-                }
+                 if let Some(tree) = self.index_tree.as_mut() {
+                     let for_index = ForIndex {
+                         value: Some(AttributeTypeValue::IntIng(value)),
+                         index: self.size_status,
+                     };
+
+                     if !tree.check_avl_insert(for_index) {
+                         return false;
+                     } else {
+                         self.size_status += 1;
+                         self.value.push(TriVar::t_int(value, degree));
+                     }
+                 }
+             }
+            else {
+                self.size_status += 1;
+                self.value.push(TriVar::t_int(value, degree));
             }
+            
+            
         }
         true
     }

@@ -10,13 +10,11 @@ use triadic_logic::datatype::AttributeTypeValue;
 use triadic_logic::degree::Degree;
 use triadic_logic::tri_var::TriVar;
 
-#[derive(Serialize, Deserialize, Clone,Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Table {
     table_name: String,
     table_column: Vec<Column>,
 }
-
-
 
 impl Table {
     pub fn new(name: &str) -> Table {
@@ -50,9 +48,9 @@ impl Table {
         for i in &mut self.table_column {
             if i.clone().get_column_name() == &n.to_string() {
                 if let Ok(value) = string_to_integer(col) {
-                   if !i.set_int_cell(value, d){
-                       return false;
-                   }
+                    if !i.set_int_cell(value, d) {
+                        return false;
+                    }
                 }
                 if let Ok(value) = string_to_float(col) {
                     i.set_float_cell(value, d);
@@ -68,7 +66,6 @@ impl Table {
         }
         true
     }
-
 }
 
 fn string_to_integer(s: &str) -> Result<i32, std::num::ParseIntError> {
@@ -155,81 +152,84 @@ impl Table {
         let mut stream = String::new();
         file.read_to_string(&mut stream).unwrap();
         let object: Table = serde_json::from_str(&stream).unwrap();
-         object
+        object
     }
 }
-#[derive(Default)]
-pub struct ShowTable{
-    pub row:Vec<Vec<String>>,
+#[derive(Default, Debug,Serialize,Deserialize)]
+pub struct ShowTable {
+    pub table_name:String,
+    pub row: Vec<Vec<String>>,
 }
-impl Table{
-    pub fn show_table(&self)->ShowTable{
-        let mut size=0;
+impl Table {
+    pub fn show_table(&self, column_display: Vec<String>) -> ShowTable {
+        let mut display_constainer = ShowTable::default();
+        let mut row: Vec<String> = vec![];
+        let mut size = 0;
         for i in &self.table_column {
-            if size < i.clone().get_size(){
-                size=i.clone().get_size();
-            }
-            print!("{:?} | ",i.get_column_name());
-        }
-        println!();
-        let mut j=0;
-        while j<size {
-            for i in &self.table_column {
-                match i.get_column_data(j) {
-                    None => {
-                        print!("None | ");
-                    }
-                    Some(_f) => {
-                        match _f.get_attribute() {
-                            None => {
-                                print!("None | ");
-                            }
-                            Some(_n) => {
-                                match _n {
-                                    AttributeTypeValue::BoolIng(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::IntIng(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::SmallINT(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::BigInt(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::FloatIng(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::CharacterIng(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::Stringing(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::VarCharacterIng(_, _) => {}
-                                    AttributeTypeValue::Texting(_b) => {
-                                        print!("{}:",_b);
-                                    }
-                                    AttributeTypeValue::Dating(_b) => {}
-                                    AttributeTypeValue::Timing(_b) => {}
-                                    AttributeTypeValue::Timestamping(_b) => {}
-                                    AttributeTypeValue::Intervaling(_b) => {}
-                                    AttributeTypeValue::Moneying(_b) => {}
-                                }
-
-                            }
-                        }
-                        print!("{}  |",_f.get_degree());
-
-                    }
+            if column_display.is_empty() || column_display.contains(i.get_column_name()) {
+                if size < i.clone().get_size() {
+                    size = i.clone().get_size();
                 }
-
+                row.push(i.get_column_name().to_string());
             }
-            println!();
-            j+=1;
         }
-        
-        ShowTable::default()
+        display_constainer.row.push(row);
+        row = vec![];
+        let mut j = 0;
+        while j < size {
+            for i in &self.table_column {
+                if column_display.is_empty() || column_display.contains(i.get_column_name()) {
+                    row.push(show_column(i, j));
+                }
+            }
+            display_constainer.row.push(row);
+            row = vec![];
+            j += 1;
+        }
+
+        display_constainer
+    }
+}
+pub fn show_column(i: &Column, j: usize) -> String {
+    match i.get_column_data(j) {
+        None => "None".to_string(),
+        Some(_f) => match _f.get_attribute() {
+            None => {
+                format!("None:{}", _f.get_degree())
+            }
+            Some(_n) => {
+                format!("{}:{}", display_value(_n), _f.get_degree())
+            }
+        },
+    }
+}
+pub fn display_value(_n: &AttributeTypeValue) -> String {
+    match _n {
+        AttributeTypeValue::BoolIng(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::IntIng(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::SmallINT(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::BigInt(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::FloatIng(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::CharacterIng(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::Stringing(_b) => {
+            format!("{}:", _b)
+        }
+        AttributeTypeValue::Texting(_b) => {
+            format!("{}:", _b)
+        }
+
+        _ => "None".to_string(),
     }
 }

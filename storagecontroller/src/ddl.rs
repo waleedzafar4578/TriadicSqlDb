@@ -13,7 +13,7 @@ impl BaseControl {
             Fs::create_parse function return ok if the folder is created vice versa.
             And e.kind help to identify the actual Error.
              */
-            let temp = &(self.system_path.clone() + path + ".json");
+            let temp = &(self.system_path.clone() + path );
             let new_file_path = Path::new(temp);
             if new_file_path.exists() {
                 //println!("already exist");
@@ -21,7 +21,7 @@ impl BaseControl {
             } else {
                 self.database_name = path.to_string();
                 self.save_to_file();
-                EngineError::DoneYes
+                EngineError::IsCreated
             }
         } else {
             //println!("\n\n\nError:First  initiate the database\n\n");
@@ -52,7 +52,7 @@ impl BaseControl {
                 Ok(_) => println!("File removed successfully."),
                 Err(err) => println!("Error removing file: {}", err),
             }
-            EngineError::DoneYes
+            EngineError::IsRemove
         } else {
             EngineError::NotFind
         }

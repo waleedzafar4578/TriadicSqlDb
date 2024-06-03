@@ -13,9 +13,13 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "b309b8dca66d1d37cf915a2ac930097fafff4b748266530f7e2813f3ff4fce11",
-  "query": "CREATE TABLE Persons2 (PersonID INT,LastName STRING UNIQUE,FirstName STRING );"
+  "token": "deb0651ae98ae6765fd1ec13f3d988104285ceb130a96b995d1daf1826d86cc2",
+  "query": "CREATE TABLE STUDENT(ID INT PRIMARY KEY,NAME STRING,Gender CHAR,Background TEXT,Fee FLOAT,Allowed BOOLEAN);"
 }
+
+
+
+###
 
 
 ###
@@ -23,8 +27,18 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "b309b8dca66d1d37cf915a2ac930097fafff4b748266530f7e2813f3ff4fce11",
-  "query": ""
+  "token": "deb0651ae98ae6765fd1ec13f3d988104285ceb130a96b995d1daf1826d86cc2",
+  "query": "INSERT INTO STUDENT(ID,NAME,Gender,Background,Fee,Allowed) VALUES(1:L,'ALI':T,'M':T ,'Vip person':L ,200.1 :T,true:T),(2:F,'Nomi':T,'M':T,'Vip person1':L,200.1:T,true:T),(3:T,'Mahnoor':F,'F':L,'Nothing person':L,100.0:L,false:L);"
+
+}
+
+###
+POST http://localhost:8080/pq
+Content-Type: application/json
+
+{
+  "token": "deb0651ae98ae6765fd1ec13f3d988104285ceb130a96b995d1daf1826d86cc2",
+  "query": "SELECT * FROM STUDENT;"
 
 }
 

@@ -105,13 +105,14 @@ impl BaseControl {
         }
         false
     }
-    pub fn show_table(&self, name: &str) -> ShowTable {
+    pub fn show_table(&self, name: &str,column:Vec<String>) -> ShowTable {
         for i in self.all_table.clone() {
             if i.clone().table_name() == name {
-                i.show_table();
+                let mut t = i.show_table(column.clone());
+                t.table_name=name.to_string();
+                return t;
             }
         }
-
         ShowTable::default()
     }
 }
