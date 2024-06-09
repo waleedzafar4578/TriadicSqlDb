@@ -15,3 +15,13 @@ Content-Type: application/json
 "username": "waleedzafar",
 "password": "W12345678@"
 }
+
+###
+POST http://localhost:8080/ca
+Content-Type: application/json
+
+{
+  "username": "jawadali",
+  "password": "W12345678@",
+  "confirm": "W12345678@"
+}

@@ -124,7 +124,8 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
         related_info: String::new(),
         token: String::new(),
     };
-
+    println!("{:?}",input);
+    
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
 
@@ -268,7 +269,6 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/editor").route(web::get().to(editor)))
             .service(web::resource("/result").route(web::get().to(result)))
             .service(web::resource("/help").route(web::get().to(help)))
-            //.service(web::resource("/process_json").route(web::post().to(handle_json)))
             .service(web::resource("/health_check").route(web::get().to(health_check)))
             .service(create_account)
             .service(login)
