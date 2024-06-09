@@ -179,7 +179,7 @@ impl User {
                 return _epass;
             }
         }
-        self.unique_id = "../../AllUserData/".to_owned() + &*self.username.clone()+"/";
+        self.unique_id = "AllUserData/".to_owned() + &*self.username.clone()+"/";
         "Account Created".to_string()
     }
     pub fn compare_tokens(&self, input_token: &str) -> bool {

@@ -82,7 +82,7 @@ async fn login(input: web::Json<LoginJson>) -> HttpResponse {
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
     //println!("{:#?}", user_data);
-    //checking this user is already exist or not.
+    //checking this user already exists or not.
     match user_data.check_username_exist(&input.username) {
         None => {
             ret_ans.related_info = "This username does not exist!".to_string();
@@ -208,23 +208,7 @@ async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
         .json(ret_ans)
 }
 async fn health_check(_req: HttpRequest) -> impl Responder {
-    /*
-    let client_ip = _req
-        .peer_addr()
-        .map(|addr| addr.ip().to_string())
-        .unwrap_or_default();
-    let user_agent = _req
-        .headers()
-        .get("user-agent")
-        .map(|value| value.to_str().unwrap_or_default())
-        .unwrap_or_default();
-
-
-     */
-    // Log or use client information as needed
-    //println!("Client IP: {}", client_ip);
-    //println!("User-Agent: {}", user_agent);
-
+    
     HttpResponse::Ok().finish()
 }
 

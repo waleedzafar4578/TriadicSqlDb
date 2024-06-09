@@ -4,7 +4,7 @@
       "token": "66565571acb8f20e4966c841a35a577f3fe148cbc4daa4b6d763f3baa9eb441e",
       "username": "waleedzafar",
       "password": "$2b$10$EBA8J5LqLWp3JGzruLb6aeKui4I1txYrOThNrF4hvdM3AWYWmp8gm",
-      "unique_id": "../../AllUserData/waleedzafar/",
+      "unique_id": "AllUserData/waleedzafar/",
       "selected_database": "yes",
       "timestamp": 1717869453,
       "expiration_time": 1717869573
@@ -13,7 +13,7 @@
       "token": "59947dd8bacc1ae545dd89a506ca64860d053bfd41d02d91a37babb77a4ed767",
       "username": "subhankhaild",
       "password": "$2b$10$9gps1czis9RuS.OpQNJDFeqMbgYg5e0RQK7Vx.bJyH0B3QZYdoA9K",
-      "unique_id": "../../AllUserData/subhankhaild/",
+      "unique_id": "AllUserData/subhankhaild/",
       "selected_database": "",
       "timestamp": 1715511065,
       "expiration_time": 1715511665
@@ -22,7 +22,7 @@
       "token": "",
       "username": "jawadali",
       "password": "$2b$10$ZqxXrWu75fsHD/n1RM/UTOJpT8qtC93NOgvSMHY0Pd4H3T8x4be6S",
-      "unique_id": "../../AllUserData/jawadali/",
+      "unique_id": "AllUserData/jawadali/",
       "selected_database": "",
       "timestamp": 0,
       "expiration_time": 0
