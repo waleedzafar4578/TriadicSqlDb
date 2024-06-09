@@ -1,5 +1,5 @@
 {
-  "system_path": "../../AllUserData/",
+  "system_path": "AllUserData/",
   "database_name": "bb",
   "db_select": false,
   "initiate_lock": true,
