@@ -1,0 +1,11 @@
+/home/macli/RustroverProjects/TriadicSqlDb/target/debug/deps/libtime_macros_impl-71b7ad4205013cf7.so: /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/lib.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/date.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/ext.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/offset.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/mod.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/date.rs
+
+/home/macli/RustroverProjects/TriadicSqlDb/target/debug/deps/time_macros_impl-71b7ad4205013cf7.d: /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/lib.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/date.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/ext.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/offset.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/mod.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/date.rs
+
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/lib.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/date.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/ext.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/offset.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/mod.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-impl-0.1.2/src/time_crate/date.rs:

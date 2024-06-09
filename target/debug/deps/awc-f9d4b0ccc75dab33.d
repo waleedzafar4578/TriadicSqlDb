@@ -1,0 +1,14 @@
+/home/macli/RustroverProjects/TriadicSqlDb/target/debug/deps/libawc-f9d4b0ccc75dab33.rmeta: /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/lib.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/builder.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/connect.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/error.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/frozen.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/request.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/response.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/sender.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/test.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/ws.rs
+
+/home/macli/RustroverProjects/TriadicSqlDb/target/debug/deps/awc-f9d4b0ccc75dab33.d: /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/lib.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/builder.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/connect.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/error.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/frozen.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/request.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/response.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/sender.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/test.rs /home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/ws.rs
+
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/lib.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/builder.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/connect.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/error.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/frozen.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/request.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/response.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/sender.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/test.rs:
+/home/macli/.cargo/registry/src/index.crates.io-6f17d22bba15001f/awc-2.0.3/src/ws.rs:
