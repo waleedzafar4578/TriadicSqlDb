@@ -1,5 +1,5 @@
 {
-  "system_path": "../../AllUserData/waleedzafar/",
+  "system_path": "AllUserData/waleedzafar/",
   "database_name": "ALI",
   "db_select": true,
   "initiate_lock": true,
