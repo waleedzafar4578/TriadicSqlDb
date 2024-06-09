@@ -12,6 +12,7 @@ use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase,
 
 #[get("/gdb")]
 async fn get_db(input: web::Json<GetDatabase>) -> HttpResponse {
+    println!("{:?}",input);
     let mut ret_ans:Vec<String> =vec![];
 
     //converting string to AppUser object
@@ -39,6 +40,7 @@ async fn get_db(input: web::Json<GetDatabase>) -> HttpResponse {
 
 #[post("/sdb")]
 async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
+    println!("{:?}",input);
     let mut ret_ans = SelectDatabaseRes {
         info: String::new(),
     };
@@ -73,6 +75,7 @@ async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
 
 #[post("/ln")]
 async fn login(input: web::Json<LoginJson>) -> HttpResponse {
+    println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount {
         related_info: String::new(),
@@ -113,6 +116,7 @@ async fn login(input: web::Json<LoginJson>) -> HttpResponse {
 
 #[post("/ca")]
 async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
+    println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount{
         related_info: String::new(),
@@ -143,6 +147,7 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
 }
 
  fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
+     
     let  mem: String ;
     let sts: FrontSendCode;
     
@@ -161,6 +166,7 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
 
 #[post("/pq")]
 async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
+    println!("{:?}",input);
     let mut ret_ans: OutputData = OutputData {
         query_information: "".to_string(),
         status: "".to_string(),
@@ -191,6 +197,7 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
 }
 #[post("/checkt")]
 async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
+    println!("{:?}",input);
     let mut ret_ans  = TokenResponse{ find_token: false };
     //converting string to AppUser object
     let user_data = file_to_appuser();
