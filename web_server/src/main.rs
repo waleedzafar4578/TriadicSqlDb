@@ -256,7 +256,7 @@ async fn help() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     
     
-    println!("Server start and on localhost:8080");
+    println!("Server start and on 0.0.0.0:4000");
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
