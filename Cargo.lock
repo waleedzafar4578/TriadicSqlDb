@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "UserAuth"
-version = "0.1.0"
-dependencies = [
- "bcrypt",
- "serde",
- "serde_json",
- "sha2 0.11.0-pre.3",
-]
-
-[[package]]
 name = "actix"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2496,6 +2486,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "user_auth"
+version = "0.1.0"
+dependencies = [
+ "bcrypt",
+ "serde",
+ "serde_json",
+ "sha2 0.11.0-pre.3",
+]
+
+[[package]]
 name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2571,7 +2571,6 @@ checksum = "af190c94f2773fdb3729c55b007a722abb5384da03bc0986df4c289bf5567e96"
 name = "web_server"
 version = "0.1.0"
 dependencies = [
- "UserAuth",
  "actix",
  "actix-cors",
  "actix-web 4.5.1",
@@ -2583,6 +2582,7 @@ dependencies = [
  "sha2 0.10.8",
  "storagecontroller",
  "triadic_error",
+ "user_auth",
 ]
 
 [[package]]

@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::fmt;
-use std::fmt::{Debug, Formatter};
+use std::fmt::{Debug};
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
 //use serde_json::Value::String;
@@ -8,7 +7,6 @@ use crate::column::Column;
 use std::string::String;
 use triadic_logic::datatype::AttributeTypeValue;
 use triadic_logic::degree::Degree;
-use triadic_logic::tri_var::TriVar;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Table {

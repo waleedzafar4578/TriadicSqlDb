@@ -1,5 +1,5 @@
 use storge::column::Constraints;
-use crate::lexical::{Literal, Token};
+use crate::lexical::{Token};
 use crate::syntax::Parser;
 
 pub mod parse_constraint;

@@ -13,7 +13,6 @@
 pub mod lexical;
 
 use crate::lexical::Lexer;
-use std::ffi::c_double;
 
 pub mod syntax;
 use crate::syntax::{AstNode, Parser};
@@ -55,6 +54,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             return match controller.search_table(table_data.name.clone().as_str()) {
                 true => {
                     for (row_index, row_data) in table_data.column_data.iter().enumerate() {
+                        format!("{}",row_index);
                         for (col_index, column_name) in table_data.column_name.iter().enumerate() {
                             let (key, char_value) = &row_data[col_index];
                             if !controller.insert_to_table(

@@ -1,10 +1,4 @@
-use std::fs::{File};
-use std::io::Read;
 use std::string::String;
-use serde::Deserialize;
-use std::fs::read_to_string;
-
-
 
 #[derive(PartialEq, Debug)]
 pub enum Literal {
@@ -120,24 +114,47 @@ impl<'a> Lexer<'a> {
         }
     }
     pub fn tokenize(&mut self) -> Vec<Token> {
+        let sql_keywords: Vec<&str> = vec![
+            "CREATE",
+            "DROP",
+            "SHOW",
+            "TABLE",
+            "DATABASE",
+            "ALTER",
+            "RENAME",
+            "UPDATE",
+            "SEARCH",
+            "USE",
+            "TRUNCATE",
+            "INSERT",
+            "INTO",
+            "VALUES",
+            "DELETE",
+            "SELECT",
+            "FROM",
+            "BOOLEAN",
+            "PRIMARY",
+            "KEY",
+            "NOT",
+            "NULL",
+            "FOREIGN",
+            "DEFAULT",
+            "INT",
+            "FLOAT",
+            "CHAR",
+            "TEXT",
+            "REFERENCE",
+            "STRING",
+            "CONSTRAINT",
+            "UNIQUE",
+            "CHECK",
+            "L",
+            "F",
+            "T",
+        ];
 
-        //let m: KeywordHolder =converter();
-        //let ky=m.keyword.Clone();
-       	
-       
-        //Define SQL keywords inside the tokenize function
-        //let sql_keywords: Vec<&str>=ky.iter().map(|s| s.as_str()).collect();
-        let sql_keywords:Vec<&str>=vec![
-    "CREATE","DROP", "SHOW", "TABLE", "DATABASE", "ALTER", "RENAME", "UPDATE", "SEARCH", "USE",
-    "TRUNCATE", "INSERT", "INTO", "VALUES", "DELETE", "SELECT", "FROM", "BOOLEAN", "PRIMARY",
-    "KEY", "NOT", "NULL", "FOREIGN", "DEFAULT", "INT", "FLOAT", "CHAR", "TEXT", "REFERENCE",
-    "STRING", "CONSTRAINT", "UNIQUE", "CHECK", "L","F","T",
-  ];
-        
-        
         let mut tokens = Vec::new();
-        
-        
+
         while let Some(ch) = self.peek() {
             if ch.is_whitespace() {
                 self.skip_whitespace();
@@ -169,47 +186,8 @@ impl<'a> Lexer<'a> {
             } else {
                 self.advance();
             }
-            
         }
-        
+
         tokens
     }
-}
-
-
-
-#[derive(Deserialize, Debug)]
-pub struct KeywordHolder {
-    keyword: Vec<String>,
-}
-pub fn converter()-> KeywordHolder {
-    //let  file = File::open("Syskeywords.json");
-    let mut contents = r#"
-    {
-  "keyword": [
-    "CREATE",
-    "DROP",
-    "SHOW",
-    "TABLE",
-    "DATABASE",
-    "ALTER",
-    "RENAME",
-    "UPDATE",
-    "SEARCH",
-    "USE",
-    "TRUNCATE",
-    "INSERT",
-    "DELETE",
-    "SELECT",
-    "FROM",
-    "GRANT",
-    "REVOKE",
-    "ADDUSER",
-    "CHECKUSER",
-    "CONNECT"
-  ]
-}
-    "#;
-    read_to_string(&mut contents).expect("Failed to read data from file!!");
-    serde_json::from_str(&contents).unwrap()
 }

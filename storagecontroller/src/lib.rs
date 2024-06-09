@@ -1,8 +1,6 @@
 extern crate core;
 
-use core::fmt;
 use serde::{Deserialize, Serialize};
-use std::fmt::Formatter;
 use std::string::String;
 use storge::table::Table;
 pub mod ddl;

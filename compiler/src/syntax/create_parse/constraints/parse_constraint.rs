@@ -76,17 +76,17 @@ impl<'a> Parser<'a> {
     }
     pub fn check(&mut self,start_constraint: &str)->(bool,String,String){
         if start_constraint == "CHECK" {
-            let mut t1:bool;
+            let t1:bool=true;
             let mut t2:String=String::new();
             let mut t3:String=String::new();
-            t1=true;
+            
             self.advance();
             self.open_bracket_check();
 
             self.advance();
             if let Some(Token::Identifier(ref colname)) =self.tokens.get(self.current_token){
 
-                //println!("Sys:column name:{}",colname);
+                format!("Sys:column name:{}",colname);
             }
             else {
                 panic!("column name missed!");

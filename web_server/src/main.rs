@@ -1,19 +1,13 @@
 use actix_cors::Cors;
 use actix_web::web::Json;
 use actix_web::{get, post};
-use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder, Result};
+use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use compiler::sql_runner;
-use serde::{Deserialize, Serialize};
 use serde_json::json;
-use std::collections::HashMap;
-use std::fs::{File, OpenOptions};
-use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::sync::{Arc, RwLock};
-use std::{env, fmt, io};
 use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
-use UserAuth::structure_of_server::{appuser_to_file, file_to_appuser};
-use UserAuth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, InputData, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TFile, TokenResponse, User};
+use user_auth::structure_of_server::{appuser_to_file, file_to_appuser};
+use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TokenResponse, User};
 
 
 #[get("/gdb")]
@@ -149,7 +143,7 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
 }
 
  fn process_json_data(data: &str, con: &mut BaseControl) -> OutputData {
-    let mut mem: String = String::new();
+    let  mem: String ;
     let sts: FrontSendCode;
     
     let mut temp=con.load_to_file();
@@ -199,7 +193,7 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
 async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
     let mut ret_ans  = TokenResponse{ find_token: false };
     //converting string to AppUser object
-    let mut user_data = file_to_appuser();
+    let user_data = file_to_appuser();
     match user_data.check_token(&input.token) {
         None => {
             ret_ans.find_token=false;

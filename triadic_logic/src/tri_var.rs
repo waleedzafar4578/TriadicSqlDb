@@ -2,8 +2,6 @@ use crate::datatype::{AttributeTypeValue, Date, Interval, Money, Time, TimeStamp
 use crate::degree::Degree;
 use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
-use std::fmt;
-use std::fmt::Formatter;
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct TriVar {
     value: Option<AttributeTypeValue>,

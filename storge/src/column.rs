@@ -1,8 +1,6 @@
-use avl::{AvlTreeMap, AvlTreeSet};
+use avl::{AvlTreeSet};
 use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
-use std::fmt;
-use std::fmt::Formatter;
 use triadic_logic::datatype::{
     AttributeType, AttributeTypeValue, Date, Interval, Money, Time, TimeStamp,
 };
@@ -267,22 +265,4 @@ impl Column {
     pub fn get_column(&self) -> &Column {
         self
     }
-}
-/*
-impl fmt::Display for Column {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(f, "{}", self.name)?;
-        for data in &self.value {
-            writeln!(f, "{}", data)?;
-        }
-        Ok(())
-    }
-}
-
- */
-impl Column {}
-
-fn preprocess_for_value(data: Vec<TriVar>, point: TriVar) -> bool {
-    let _ = data.contains(&point);
-    false
 }

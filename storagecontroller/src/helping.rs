@@ -1,8 +1,7 @@
 use crate::BaseControl;
 use std::fs;
 use std::path::Path;
-use storge::table::{ShowTable, Table};
-use triadic_error::engine_error::EngineError;
+use storge::table::{ShowTable};
 
 impl Default for BaseControl {
     fn default() -> Self {

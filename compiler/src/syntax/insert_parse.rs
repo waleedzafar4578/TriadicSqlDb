@@ -1,4 +1,3 @@
-use crate::lexical::Token;
 use crate::syntax::{AstNode, CompilerTableDataEntry, Parser};
 
 impl<'a> Parser<'a> {

@@ -1,9 +1,9 @@
 use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
-use std::arch::x86_64::_mm_test_all_ones;
 use triadic_logic::datatype::AttributeType;
 
 //helping function
+
 impl<'a> Parser<'a> {
     pub(crate) fn terminate_with_close_bracket_and_semicolon(&mut self) -> bool {
         if self.tokens.get(self.current_token) == Some(&Token::Punctuation(')'))
@@ -19,8 +19,9 @@ impl<'a> Parser<'a> {
         }
         false
     }
-    fn check_constrain(&mut self) {
-        let (column, operator, value): (String, String, String);
+    
+    pub fn check_constrain(&mut self) {
+       // let (column, operator, value): (String, String, String);
         if Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token + 1) {
             panic!("Some this wrong with CHECK ..");
         }
@@ -179,7 +180,7 @@ impl<'a> Parser<'a> {
                 }
                 Some(_column_name) => {
                     //println!("column name :{}",_column_name.clone());
-                    column_name.push((_column_name));
+                    column_name.push(_column_name);
 
 
                 }
@@ -200,4 +201,5 @@ impl<'a> Parser<'a> {
         }
         Some(column_name)
     }
+    
 }

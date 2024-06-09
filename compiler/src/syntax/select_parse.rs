@@ -1,5 +1,4 @@
 use crate::syntax::{AstNode, Parser};
-use std::ptr::null;
 
 impl<'a> Parser<'a> {
     pub fn parse_select_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
