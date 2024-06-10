@@ -167,8 +167,8 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         },
         AstNode::SelectFullTable((_input,table_name)) => {
             
-            return (FrontSendCode::QueryProcessed, format!("{:#?}",controller.show_table(table_name.as_str(),_input)))
-            
+            return (FrontSendCode::QueryProcessed, serde_json::to_string_pretty(&controller.show_table(table_name.as_str(),_input)).unwrap())
+
         }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())

@@ -156,6 +156,7 @@ impl Table {
 #[derive(Default, Debug,Serialize,Deserialize)]
 pub struct ShowTable {
     pub table_name:String,
+    pub column_name:Vec<String>,
     pub row: Vec<Vec<String>>,
 }
 impl Table {
@@ -168,10 +169,9 @@ impl Table {
                 if size < i.clone().get_size() {
                     size = i.clone().get_size();
                 }
-                row.push(i.get_column_name().to_string());
+                display_constainer.column_name.push(i.get_column_name().to_string());
             }
         }
-        display_constainer.row.push(row);
         row = vec![];
         let mut j = 0;
         while j < size {
