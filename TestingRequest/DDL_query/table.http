@@ -37,7 +37,7 @@ POST http://localhost:8080/pq
 Content-Type: application/json
 
 {
-  "token": "deb0651ae98ae6765fd1ec13f3d988104285ceb130a96b995d1daf1826d86cc2",
+  "token": "55c79456e7cfdd1427a2c33bcef270c4617cfa803a32532284f6a05ce21bd2eb",
   "query": "SELECT * FROM STUDENT;"
 
 }

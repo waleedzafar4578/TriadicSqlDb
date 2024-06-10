@@ -204,28 +204,28 @@ pub fn show_column(i: &Column, j: usize) -> String {
 pub fn display_value(_n: &AttributeTypeValue) -> String {
     match _n {
         AttributeTypeValue::BoolIng(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::IntIng(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::SmallINT(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::BigInt(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::FloatIng(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::CharacterIng(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::Stringing(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
         AttributeTypeValue::Texting(_b) => {
-            format!("{}:", _b)
+            format!("{}", _b)
         }
 
         _ => "None".to_string(),
