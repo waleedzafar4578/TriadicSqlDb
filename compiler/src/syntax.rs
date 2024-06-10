@@ -30,6 +30,7 @@ pub struct CompilerTableDataEntry{
 #[derive(Debug)]
 pub enum AstNode {
     CreateTableStatement(CompilerTableParseEntry),
+    DropTableStatement(String),
     InsertTableStatement(CompilerTableDataEntry),
     CreateDatabaseStatement(String),
     DropDatabaseStatement(String),

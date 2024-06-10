@@ -143,14 +143,18 @@ impl Column {
         }
     }
     pub fn set_int_cell(&mut self, value: i32, degree: Degree)->bool {
+        //datatype compare
         if self.type_status == AttributeType::TInt {
-            
+            //Here a primary key is need to check or not.
              if self.constraints.primary_key.primary_key{
+                 //Now find primary key has degree or not.
+                 //If not then
                  if let Some(primary_degree) = self.constraints.primary_key.degree {
                      if primary_degree != degree {
+                         println!("Degree not same ,so push value");
                          self.size_status += 1;
                          self.value.push(TriVar::t_int(value, degree));
-
+                         return true;
                      }
                  }
 
@@ -160,22 +164,24 @@ impl Column {
                          index: self.size_status,
                      };
 
-                     if !tree.check_avl_insert(for_index) {
-                         return false;
+                     return if !tree.check_avl_insert(for_index) {
+                         false
                      } else {
                          self.size_status += 1;
                          self.value.push(TriVar::t_int(value, degree));
+                         true
                      }
                  }
              }
             else {
                 self.size_status += 1;
                 self.value.push(TriVar::t_int(value, degree));
+                return true;
             }
             
             
         }
-        true
+        false
     }
 
     pub fn set_small_int_cell(&mut self, value: i16, d: Degree) {

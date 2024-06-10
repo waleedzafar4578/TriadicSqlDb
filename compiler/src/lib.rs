@@ -53,20 +53,25 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         AstNode::InsertTableStatement(table_data) => {
             return match controller.search_table(table_data.name.clone().as_str()) {
                 true => {
-                    for (row_index, row_data) in table_data.column_data.iter().enumerate() {
-                        format!("{}",row_index);
-                        for (col_index, column_name) in table_data.column_name.iter().enumerate() {
-                            let (key, char_value) = &row_data[col_index];
-                            if !controller.insert_to_table(
-                                table_data.name.as_str(),
-                                column_name.as_str(),
-                                key.as_str(),
-                                char_to_degree(*char_value),
-                            ){
-                                return (FrontSendCode::QueryProcessed,
-                                "Value is duplicate!".to_string(),)
-                            }
+                    let mut walk_in_column_name = table_data.column_data.iter();
+                    let mut column_iterator = 0;
+                    let mut row_iterator = 0;
+                    for val in walk_in_column_name {
+                        println!("{:?}",&val);
+                        for nm in &table_data.column_name {
+                            //println!("{}  ", nm);
+                            let (value,value_degree)=  &table_data.column_data[row_iterator][column_iterator];
+                            //println!("{}:{}",value,char_to_degree(value_degree));
+                             if !controller.insert_to_table(table_data.name.as_str(),nm.as_str(),value.as_str(),char_to_degree(value_degree)){
+                                 return (
+                                     FrontSendCode::QueryProcessed,
+                                     "Data is duplicate!".to_string(),
+                                 )
+                             }
+                            column_iterator += 1;
                         }
+                        column_iterator=0;
+                        row_iterator += 1;
                     }
                     (
                         FrontSendCode::QueryProcessed,
@@ -170,6 +175,9 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             return (FrontSendCode::QueryProcessed, serde_json::to_string_pretty(&controller.show_table(table_name.as_str(),_input)).unwrap())
 
         }
+        AstNode::DropTableStatement(_tb_name) => {
+           return  (FrontSendCode::QueryProcessed, controller.drop_table(_tb_name.as_str()))
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }
@@ -191,12 +199,12 @@ fn engine_error(engine_error: EngineError) -> (FrontSendCode, String) {
         ),
         EngineError::IsCreated => (FrontSendCode::QueryProcessed, "Database Created".to_string()),
         EngineError::IsFound => (FrontSendCode::QueryProcessed, "Database Found".to_string()),
-        EngineError::IsRemove => (FrontSendCode::QueryProcessed, "Database Removed".to_string()),
+        EngineError::IsRemove => (FrontSendCode::QueryProcessed, "Requested thing Removed".to_string()),
         
     }
 }
 
-fn char_to_degree(input:char)->Degree{
+fn char_to_degree(input: &char) ->Degree{
      match input {
         'T'=>Degree::T,
         'L'=>Degree::L,

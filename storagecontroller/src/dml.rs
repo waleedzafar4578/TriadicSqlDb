@@ -46,22 +46,19 @@ impl BaseControl {
             }
         }
     }
-    pub fn drop_table(&mut self, t_name: &str) -> bool {
-        match self.db_select {
+    pub fn drop_table(&mut self, t_name: &str) -> String {
+        return match self.db_select {
             true => {
                 for (i, cl) in self.all_table.clone().into_iter().enumerate() {
                     if cl.table_name() == t_name {
                         self.all_table.remove(i);
-                        println!("Yes! This table is {} removed!", t_name);
+                        return format!("Yes! This table is {} removed!", t_name);
                     }
-                    
                 }
-
-                true
+                "Table is not found in database!".to_string()
             }
             false => {
-                println!("\n\n\nError: Please first select database!");
-                false
+                "Error: Please first select database!".to_string()
             }
         }
     }
@@ -72,7 +69,7 @@ impl BaseControl {
         c_data: &str,
         d_status: Degree,
     ) -> bool {
-        //println!("{}:{}:{}:{}",t_name,c_name,c_data,d_status);
+        println!("{}:{}:{}:{}",t_name,c_name,c_data,d_status);
         for mut _tb in &mut self.all_table {
             if _tb.get_table_name() == t_name  {
                 if !_tb.add_col_data(c_name, c_data, d_status) {
