@@ -53,7 +53,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         AstNode::InsertTableStatement(table_data) => {
             return match controller.search_table(table_data.name.clone().as_str()) {
                 true => {
-                    let mut walk_in_column_name = table_data.column_data.iter();
+                    let  walk_in_column_name = table_data.column_data.iter();
                     let mut column_iterator = 0;
                     let mut row_iterator = 0;
                     for val in walk_in_column_name {
@@ -64,7 +64,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                             //println!("{}:{}",value,char_to_degree(value_degree));
                              if !controller.insert_to_table(table_data.name.as_str(),nm.as_str(),value.as_str(),char_to_degree(value_degree)){
                                  return (
-                                     FrontSendCode::QueryProcessed,
+                                     FrontSendCode::Table,
                                      "Data is duplicate!".to_string(),
                                  )
                              }

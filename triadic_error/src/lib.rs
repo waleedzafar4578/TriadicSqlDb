@@ -36,6 +36,7 @@ pub enum FrontSendCode {
     SysFound,
     SysNotFound,
     ValueDuplicate,
+    Table
     
 }
 
@@ -48,7 +49,7 @@ impl Display for FrontSendCode {
             FrontSendCode::QuerySemiColonMissing => { String::from("QuerySemiColonMissing") }
             FrontSendCode::SysDatabaseNotSelected => { String::from("SysDatabaseNotSelected") }
             FrontSendCode::AlreadyExist => {String::from("AlreadyExist")}
-            FrontSendCode::QueryProcessed => {String::from("QueryProcessed")}
+            FrontSendCode::QueryProcessed => {String::from("QP")}
             FrontSendCode::SysFound => {String::from("SysFound")}
             FrontSendCode::SysNotFound => {String::from("SysNotFound")}
             FrontSendCode::QueryColumnMissing => {String::from("QueryColumnMissing")}
@@ -57,6 +58,7 @@ impl Display for FrontSendCode {
             FrontSendCode::QueryOpenBracketMissing => {String::from("QueryOpenBracketMissing")}
             FrontSendCode::QueryCloseBracketMissing => {String::from("QueryCloseBracketMissing")}
             FrontSendCode::ValueDuplicate => {String::from("ValueDuplicated")}
+            FrontSendCode::Table => {String::from("Table")}
         };
         write!(f, "{}", str)
     }

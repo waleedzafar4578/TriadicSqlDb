@@ -162,7 +162,7 @@ pub struct ShowTable {
 impl Table {
     pub fn show_table(&self, column_display: Vec<String>) -> ShowTable {
         let mut display_constainer = ShowTable::default();
-        let mut row: Vec<String> = vec![];
+        let mut row: Vec<String>;
         let mut size = 0;
         for i in &self.table_column {
             if column_display.is_empty() || column_display.contains(i.get_column_name()) {
