@@ -64,7 +64,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                             //println!("{}:{}",value,char_to_degree(value_degree));
                              if !controller.insert_to_table(table_data.name.as_str(),nm.as_str(),value.as_str(),char_to_degree(value_degree)){
                                  return (
-                                     FrontSendCode::Table,
+                                     FrontSendCode::ValueDuplicate,
                                      "Data is duplicate!".to_string(),
                                  )
                              }
@@ -172,7 +172,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         },
         AstNode::SelectFullTable((_input,table_name)) => {
             
-            return (FrontSendCode::QueryProcessed, serde_json::to_string_pretty(&controller.show_table(table_name.as_str(),_input)).unwrap())
+            return (FrontSendCode::Table, serde_json::to_string_pretty(&controller.show_table(table_name.as_str(),_input)).unwrap())
 
         }
         AstNode::DropTableStatement(_tb_name) => {
