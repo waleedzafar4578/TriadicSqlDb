@@ -1,0 +1,7 @@
+{
+  "system_path": "AllUserData/jawadali/",
+  "database_name": "nomi",
+  "db_select": true,
+  "initiate_lock": true,
+  "all_table": []
+}

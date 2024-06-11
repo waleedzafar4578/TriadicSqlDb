@@ -13,13 +13,15 @@ impl BaseControl {
             Fs::create_parse function return ok if the folder is created vice versa.
             And e.kind help to identify the actual Error.
              */
-            let temp = &(self.system_path.clone() + path );
-            let new_file_path = Path::new(temp);
+            let temp_path = &(self.system_path.clone() + path );
+            let new_file_path = Path::new(temp_path);
             if new_file_path.exists() {
                 //println!("already exist");
                 EngineError::AlreadyExist
             } else {
-                self.database_name = path.to_string();
+                self.database_name=path.to_string();
+                self.db_select=true;
+                self.all_table.clear();
                 self.save_to_file();
                 EngineError::IsCreated
             }
@@ -58,27 +60,25 @@ impl BaseControl {
         }
 
     }
-    pub fn rename_the_database(&mut self, path_hold: &str, path_new: &str) -> bool {
-        let old = self.system_path.to_string() + path_hold+".json";
+    pub fn rename_the_database(&mut self, path_old: &str, path_new: &str) -> String {
+        let old = self.system_path.to_string() + path_old+".json";
         let new = self.system_path.to_string() + path_new+".json";
 
         
         let new_file_path = Path::new(&old);
-        if new_file_path.exists() {
+        return if new_file_path.exists() {
             match fs::rename(old, new) {
                 Ok(_) => {
                     println!("File renamed successfully!");
                     self.database_name = path_new.to_string();
-                    true
+                    format!("Change database name {} to {}.", path_old, path_new)
                 }
                 Err(_e) => {
-                    println!("Failed to rename");
-                    false
+                    format!("Failed to change database name {} to {}.", path_old, path_new)
                 }
             }
-           
         } else {
-            false
+            format!("{} database is found!", path_old)
         }
          
     }

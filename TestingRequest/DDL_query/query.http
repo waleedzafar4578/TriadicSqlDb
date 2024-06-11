@@ -19,21 +19,21 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/pq
+POST http://localhost:4000/pq
 Content-Type: application/json
 
 {
-  "token": "35c4eaa64fc56d2d46d4547863214c36a0e14327dd9b453709ce5b67736f72bd",
-  "query": "CREATE DATABASE ALI;"
+  "token": "7be96e004f5c3244864c1f339c426f1b844a1ad67d57c2958df594d5fcc35771",
+  "query": "USE DATABASE nomi1;"
 }
 
 ###
-POST http://localhost:8080/sdb
+POST http://localhost:4000/sdb
 Content-Type: application/json
 
 {
-  "token": "d64032f755b734bb4688e89926eb78c765b45b7abc2d8cd9becbc4564a011c7f",
-  "database_name": "third4"
+  "token": "e767a9fb3021463fea992d42dbc531d791172964d0924fd4ebf0264e7f68f45b",
+  "database_name": "ALI"
 }
 
 ###

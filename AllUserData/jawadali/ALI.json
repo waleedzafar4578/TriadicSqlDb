@@ -1,0 +1,35 @@
+{
+  "system_path": "AllUserData/jawadali/",
+  "database_name": "ALI",
+  "db_select": true,
+  "initiate_lock": true,
+  "all_table": [
+    {
+      "table_name": "std",
+      "table_column": [
+        {
+          "name": "ID",
+          "type_status": "TInt",
+          "size_status": 0,
+          "value": [],
+          "constraints": {
+            "not_null": false,
+            "unique": false,
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        }
+      ]
+    }
+  ]
+}

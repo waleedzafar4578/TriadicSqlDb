@@ -64,31 +64,31 @@ impl BaseControl {
         ret
     }
     pub fn search_table(&self, name: &str) -> bool {
-        for i in self.all_table.clone() {
-            if i.table_name() == name {
+        for i in &self.all_table {
+            if i.get_table_name() == name {
                 return true;
             }
         }
         false
     }
-    pub fn find_this_database(&mut self, path: &str) -> bool {
+    pub fn find_this_database(&mut self, path: &str) -> (String,bool) {
         if let Ok(entries) = fs::read_dir(self.system_path.clone()) {
             for entry in entries.flatten() {
                 if let Ok(metadata) = entry.metadata() {
-                    if metadata.is_dir() {
+                    if metadata.is_file() {
                         if let Some(name) = entry.file_name().to_str() {
-                            if path == name {
-                                //println!("This {} database is find!", path);
-                                return true;
+                            //println!("{}",name);
+                            if (path.to_owned() +".json") == name {
+                                return (format!("This {} database is find!", path),true);
                             }
                         }
                     }
                 }
             }
         } else {
-            eprintln!("Error reading directory '{}'", &mut self.system_path);
+            println!("Error reading directory '{}'", &mut self.system_path);
         }
-        false
+        return (format!("This {} database is not found!", path),false);
     }
     pub fn use_this_database(&mut self, path: &str) -> bool {
         if !self.db_select && self.initiate_lock {
@@ -115,5 +115,18 @@ impl BaseControl {
         ShowTable::default()
     }
 }
-
-//for showing table and also send logic to a client
+//for developer
+impl BaseControl {
+    pub fn check_database_selected(&self)->bool{
+        self.db_select
+    }
+    pub fn check_initiate(&self)->bool{
+        self.initiate_lock
+    }
+    pub fn set_db_true(&mut self){
+        self.db_select=true;
+    }
+    pub fn set_db_false(&mut self){
+        self.db_select=false;
+    }
+}

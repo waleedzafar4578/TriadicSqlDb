@@ -13,7 +13,7 @@ pub mod show_parse;
 pub mod insert_parse;
 pub mod select_parse;
 
-
+pub mod use_parse;
 #[derive(Debug)]
 pub struct CompilerTableParseEntry{
     pub name:String,

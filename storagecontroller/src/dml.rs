@@ -22,27 +22,27 @@ impl BaseControl {
         t_name: &str,
         col_name: Vec<String>,
         col_type: Vec<(AttributeType,Constraints)>,
-    ) -> bool {
+    ) -> String {
         //println!("Yes! Come in engine side.");
-         match self.db_select {
+        return match self.db_select {
             true => {
-                if self.search_table(t_name){
-                   return false; 
+                if self.search_table(t_name) {
+                    return format!("{} this table is already in database!", t_name);
                 }
                 let mut tb: Table = Table::new(t_name);
 
                 if col_name.len() == col_type.len() {
-                    for (i, (j,c)) in col_name.iter().zip(col_type.iter()) {
-                        tb.add_column(Column::new(i, j,c.clone()));
+                    for (i, (j, c)) in col_name.iter().zip(col_type.iter()) {
+                        tb.add_column(Column::new(i, j, c.clone()));
                     }
                     self.all_table.push(tb);
-                    return true;
+                    return format!("{} table is created in database!", t_name);
                 }
-                true
+                format!("Something wrong with this {}  \
+                or his column or datatype", t_name)
             }
             false => {
-                println!("\n\n\nError: Please first select database!");
-                false
+                "Error: Please first select database!".to_string()
             }
         }
     }

@@ -10,31 +10,13 @@
       "expiration_time": 1718007146
     },
     {
-      "token": "59947dd8bacc1ae545dd89a506ca64860d053bfd41d02d91a37babb77a4ed767",
-      "username": "subhankhaild",
-      "password": "$2b$10$9gps1czis9RuS.OpQNJDFeqMbgYg5e0RQK7Vx.bJyH0B3QZYdoA9K",
-      "unique_id": "AllUserData/subhankhaild/",
-      "selected_database": "",
-      "timestamp": 1715511065,
-      "expiration_time": 1715511665
-    },
-    {
-      "token": "",
+      "token": "7be96e004f5c3244864c1f339c426f1b844a1ad67d57c2958df594d5fcc35771",
       "username": "jawadali",
-      "password": "$2b$10$ZqxXrWu75fsHD/n1RM/UTOJpT8qtC93NOgvSMHY0Pd4H3T8x4be6S",
+      "password": "$2b$10$1bYZ7FvPZisLq447AeUTc.bdjxQMTD.NC1QeBr8NPfXQLytTJ4xUK",
       "unique_id": "AllUserData/jawadali/",
-      "selected_database": "",
-      "timestamp": 0,
-      "expiration_time": 0
-    },
-    {
-      "token": "b7c1c660412acc504fe2212ad703a302b3e3cb90911cb7a2b358fd0ea5070a4b",
-      "username": "jawadfarrukh",
-      "password": "$2b$10$pq6bYG1pKvd6qJ4HLCKu4.I5QbjFM0j0Nak0.GgM4rYUSZ0jK/jea",
-      "unique_id": "../../AllUserData/jawadfarrukh/",
-      "selected_database": "",
-      "timestamp": 1717870689,
-      "expiration_time": 1717870809
+      "selected_database": "nomi1",
+      "timestamp": 1718129764,
+      "expiration_time": 1718130364
     }
   ]
 }

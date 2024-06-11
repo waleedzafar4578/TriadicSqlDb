@@ -19,6 +19,7 @@ impl<'a> Parser<'a> {
                 "SEARCH" => self.parse_search_statement(),
                 "INSERT" => self.parse_insert_statement(),
                 "SELECT"=>self.parse_select_statement(),
+                "USE"=> self.parse_use_statement(),
                 _ => (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword)),
             }
         } else {

@@ -36,7 +36,8 @@ pub enum FrontSendCode {
     SysFound,
     SysNotFound,
     ValueDuplicate,
-    Table
+    Table,
+    Use
     
 }
 
@@ -59,6 +60,7 @@ impl Display for FrontSendCode {
             FrontSendCode::QueryCloseBracketMissing => {String::from("QueryCloseBracketMissing")}
             FrontSendCode::ValueDuplicate => {String::from("ValueDuplicated")}
             FrontSendCode::Table => {String::from("Table")}
+            FrontSendCode::Use => {String::from("Use")}
         };
         write!(f, "{}", str)
     }

@@ -5,8 +5,8 @@ pub struct User {
     token: String,
     username: String,
     password: String,
-    unique_id: String,
-    selected_database: String,
+    pub unique_id: String,
+    pub selected_database: String,
     timestamp: u64,
     expiration_time: u64,
 }

@@ -8,10 +8,10 @@ use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
 use user_auth::structure_of_server::{appuser_to_file, file_to_appuser};
 use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TokenResponse, User};
-
+use std::fs;
 
 #[get("/gdb")]
-async fn get_db(input: web::Json<GetDatabase>) -> HttpResponse {
+async fn get_db(input: Json<GetDatabase>) -> HttpResponse {
     println!("{:?}",input);
     let mut ret_ans:Vec<String> =vec![];
 
@@ -39,7 +39,7 @@ async fn get_db(input: web::Json<GetDatabase>) -> HttpResponse {
 
 
 #[post("/sdb")]
-async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
+async fn select_db(input: Json<SelectDatabaseJson>) -> HttpResponse {
     println!("{:?}",input);
     let mut ret_ans = SelectDatabaseRes {
         info: String::new(),
@@ -74,7 +74,7 @@ async fn select_db(input: web::Json<SelectDatabaseJson>) -> HttpResponse {
 }
 
 #[post("/ln")]
-async fn login(input: web::Json<LoginJson>) -> HttpResponse {
+async fn login(input: Json<LoginJson>) -> HttpResponse {
     println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount {
@@ -89,7 +89,7 @@ async fn login(input: web::Json<LoginJson>) -> HttpResponse {
     match user_data.check_username_exist(&input.username) {
         None => {
             ret_ans.related_info = "This username does not exist!".to_string();
-            Err("This username does not exist!".to_string())
+
         }
         Some(index) => {
             let user = user_data.users.get_mut(index).unwrap();
@@ -98,24 +98,20 @@ async fn login(input: web::Json<LoginJson>) -> HttpResponse {
                 user.generate_token();
                 ret_ans.token = user.cloned_token();
                 ret_ans.related_info="-1".to_string();
-                Ok(user.cloned_token())
             } else {
                 ret_ans.related_info = "Invalid password!".to_string();
-                Err("Invalid password!".to_string())
+
             }
         }
     }
-    .expect("TODO: panic message");
-
     appuser_to_file(user_data);
-
     HttpResponse::Ok()
         .content_type("application/json")
         .json(ret_ans)
 }
 
 #[post("/ca")]
-async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
+async fn create_account(input: Json<CreateAccountJson>) -> HttpResponse {
     println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount{
@@ -134,8 +130,18 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
             let mut temp_user = User::default();
             ret_ans.related_info = temp_user.set(&input.username, &input.password,&input.confirm);
 
-            user_data.users.push(temp_user);
-            appuser_to_file(user_data);
+            match fs::create_dir_all(&temp_user.unique_id){
+                Ok(_) => {
+                    println!("New user folder created");
+                    user_data.users.push(temp_user);
+                    appuser_to_file(user_data);
+                }
+                Err(_) => {
+                    println!("Facing issue to create user folder.");
+                    ret_ans.related_info = "Your account failed to create!System Error".to_string()
+                }
+            }
+
         }
         Some(_) => ret_ans.related_info = "This username is already exist!".to_string(),
     }
@@ -150,13 +156,22 @@ async fn create_account(input: web::Json<CreateAccountJson>) -> HttpResponse {
      
     let  mem: String ;
     let sts: FrontSendCode;
-    
-    let mut temp=con.load_to_file();
-    //println!("{:#?}",temp);
-    (sts, mem) = sql_runner(data,&mut temp);
-    //println!("{:#?}",con);
-    
-    temp.save_to_file();
+     //println!("{:#?}",con);
+
+     if con.check_database_selected(){
+         let mut temp=con.load_to_file();
+         temp.set_db_true();
+         //println!("----{:#?}",temp);
+         (sts, mem) = sql_runner(data,&mut temp);
+         //temp.save_to_file();
+     }
+     else {
+         let mut temp=con;
+         //println!("{:#?}",temp);
+         (sts, mem) = sql_runner(data,&mut temp);
+         //temp.save_to_file();
+     }
+
     // Create a modified OutputData with the reversed message
     OutputData {
         query_information: mem.to_string(),
@@ -175,7 +190,7 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
     //println!("{:?}",input);
     let mut base: BaseControl = BaseControl::new();
     //converting string to AppUser object
-    let user_data = file_to_appuser();
+    let mut user_data = file_to_appuser();
     match user_data.get_path_db(&input.token) {
         None => {
             println!("User Token is expired!");
@@ -188,6 +203,23 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
             }
             ret_ans = process_json_data(input.query.as_str(), &mut base);
         }
+    }
+    println!("{:?}",ret_ans);
+    if ret_ans.status =="Use".to_string(){
+       match  user_data.check_token(&input.token){
+           None => {}
+           Some(_index) => {
+               let user = user_data.users.get_mut(_index).unwrap();
+               if user.set_database(ret_ans.query_information.as_str()){
+                   ret_ans.query_information=format!("{} is selected!",ret_ans.query_information);
+                   ret_ans.status="QP".to_string();
+               }
+               else {
+                   ret_ans.query_information=format!("Failed to select this {}!",ret_ans.query_information);
+                   ret_ans.status="QP".to_string();
+               }
+           }
+       }
     }
     appuser_to_file(user_data);
 
