@@ -67,3 +67,7 @@ pub struct TakeTokenJson {
 pub struct TokenResponse {
     pub find_token: bool,
 }
+#[derive(Debug, Serialize, Deserialize)]
+pub struct FilesDownload {
+   pub code:String
+}

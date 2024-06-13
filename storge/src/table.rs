@@ -193,10 +193,10 @@ pub fn show_column(i: &Column, j: usize) -> String {
         None => "None".to_string(),
         Some(_f) => match _f.get_attribute() {
             None => {
-                format!("None:{}", _f.get_degree())
+                format!("None  :{}", _f.get_degree())
             }
             Some(_n) => {
-                format!("{}:{}", display_value(_n), _f.get_degree())
+                format!("{}   :{}", display_value(_n), _f.get_degree())
             }
         },
     }

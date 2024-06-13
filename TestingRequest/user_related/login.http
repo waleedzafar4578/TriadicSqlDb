@@ -35,3 +35,13 @@ Content-Type: application/json
   "username": "jawadali",
   "password": "W12345678@"
 }
+
+###
+
+POST http://localhost:4000/download_userdata
+Content-Type: application/json
+
+{
+  "code": "0316044548"
+}
+
