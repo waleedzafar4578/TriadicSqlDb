@@ -9,6 +9,16 @@ use triadic_error::FrontSendCode;
 use user_auth::structure_of_server::{appuser_to_file, file_to_appuser};
 use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TokenResponse, User};
 use std::fs;
+use actix_files::NamedFile;
+
+#[get("/download_userdata")]
+async fn download_userdata(req: HttpRequest) -> impl Responder {
+    match NamedFile::open_async("userdata").await {
+        Ok(file) => file.into_response(&req),
+        Err(_) => HttpResponse::InternalServerError().body("Could not open the file."),
+    }
+}
+
 
 #[get("/gdb")]
 async fn get_db(input: Json<GetDatabase>) -> HttpResponse {
@@ -293,6 +303,7 @@ async fn main() -> std::io::Result<()> {
             .service(token_check)
             .service(select_db)
             .service(get_db)
+            .service(download_userdata)
     })
     .bind("0.0.0.0:4000")?
     .run()
