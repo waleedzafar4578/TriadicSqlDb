@@ -33,13 +33,11 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/pq
+POST http://localhost:4000/gdb
 Content-Type: application/json
 
 {
-  "token": "55c79456e7cfdd1427a2c33bcef270c4617cfa803a32532284f6a05ce21bd2eb",
-  "query": "SELECT * FROM STUDENT;"
-
+  "token": "2828d0465c214a082ea8968e2a60bb626260b8a7f0cee2a72197377ae4c54938"
 }
 
 

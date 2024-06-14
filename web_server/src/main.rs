@@ -109,31 +109,26 @@ async fn download_userdata(req: HttpRequest,id: web::Path<(u32,)>) -> impl Respo
 }
 
 
-#[get("/gdb")]
+#[post("/gdb")]
 async fn get_db(input: Json<GetDatabase>) -> HttpResponse {
-    println!("{:?}",input);
-    let mut ret_ans:Vec<String> =vec![];
-
+    //println!("{:?}",input);
+    let mut ret_ans:String ="None".to_string();
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
     //checking this user is already exist or not.
     match user_data.check_token(&input.token) {
         None => {
-            ret_ans.push("Wrong Token!".to_string());
+            HttpResponse::InternalServerError().body("Token is wrong or expire.")
         }
         Some(index) => {
-            let user = user_data.users.get_mut(index).unwrap();
-            let mut t=BaseControl::new();
-            t.initiate_database(user.get_path().as_str());
-            ret_ans=t.list_down_the_name_database();
+            let  user = user_data.users.get_mut(index).unwrap();
+            ret_ans=user.selected_database.clone();
+            HttpResponse::Ok()
+                .content_type("application/json")
+                .json(ret_ans)
         }
     }
-    
-    //appuser_to_file(user_data);
 
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(ret_ans)
 }
 
 
