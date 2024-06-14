@@ -18,9 +18,10 @@ use zip::ZipWriter;
 use tokio::io::AsyncReadExt;
 use tokio::fs;
 
-#[post("/download_database")]
-async fn download_database(req: HttpRequest,input :Json<FilesDownload>) -> impl Responder {
-    if input.code!="03160445748"
+#[get("/download_database/{id}")]
+async fn download_database(req: HttpRequest,id: web::Path<(u32,)>) -> impl Responder {
+    let user_id = id.into_inner().0;
+    if user_id!=03160445748
     {
         return HttpResponse::InternalServerError().body("Your are not admin!)--<HEHE>");
     }
@@ -94,9 +95,10 @@ async fn zip_dir(src_dir: &str, dst_file: &str) -> io::Result<()> {
     Ok(())
 }
 
-#[post("/download_userdata")]
-async fn download_userdata(req: HttpRequest,input :Json<FilesDownload>) -> impl Responder {
-    if input.code!="03160445748"
+#[get("/download_userdata/{id}")]
+async fn download_userdata(req: HttpRequest,id: web::Path<(u32,)>) -> impl Responder {
+    let user_id = id.into_inner().0;
+    if user_id!=03160445748
     {
         return HttpResponse::InternalServerError().body("Your are not admin!)--<HEHE>");
     }
