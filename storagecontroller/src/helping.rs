@@ -29,9 +29,9 @@ impl BaseControl {
     }
     pub fn list_down_the_name_database(&self) -> Vec<String> {
         /*
-        fs::read dir function return all inside dir of given path
-           then use For loop to iterate each dir and then compare the metadata which help to
-           identify whether it is dir or file
+        fs::read dir function return all inside dir of a given path
+           then use For loop to iterate each dir and then compare the metadata which helps to
+           identify whether it is a dir or file
            after identify dir display on console
          */
         let mut answer: Vec<String> = vec![];
@@ -41,7 +41,8 @@ impl BaseControl {
                 if let Ok(metadata) = entry.metadata() {
                     if metadata.is_file() {
                         if let Some(name) = entry.file_name().to_str() {
-                            answer.push(name.to_string());
+                            let t:Vec<&str>=name.split(".").collect();
+                            answer.push(format!("{} ",t[0]));
                         }
                     }
                 }

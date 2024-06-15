@@ -37,7 +37,8 @@ pub enum FrontSendCode {
     SysNotFound,
     ValueDuplicate,
     Table,
-    Use
+    Use,
+    Db,
     
 }
 
@@ -61,6 +62,7 @@ impl Display for FrontSendCode {
             FrontSendCode::ValueDuplicate => {String::from("ValueDuplicated")}
             FrontSendCode::Table => {String::from("Table")}
             FrontSendCode::Use => {String::from("Use")}
+            FrontSendCode::Db => {String::from("Db")}
         };
         write!(f, "{}", str)
     }

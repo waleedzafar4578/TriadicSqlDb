@@ -120,7 +120,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
         AstNode::ShowDatabaseStatement => {
             let ans = controller.list_down_the_name_database();
             let ath = ans.join(" ");
-            return (FrontSendCode::QueryProcessed, ath);
+            return (FrontSendCode::Db, ath);
         }
         AstNode::UseDatabaseStatement(name) => {
             let (ans,con)=controller.find_this_database(name.as_str());

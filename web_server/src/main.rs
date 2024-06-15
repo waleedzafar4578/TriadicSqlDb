@@ -134,7 +134,7 @@ async fn get_db(input: Json<GetDatabase>) -> HttpResponse {
 
 #[post("/sdb")]
 async fn select_db(input: Json<SelectDatabaseJson>) -> HttpResponse {
-    println!("{:?}",input);
+    //println!("{:?}",input);
     let mut ret_ans = SelectDatabaseRes {
         info: String::new(),
     };
@@ -169,7 +169,7 @@ async fn select_db(input: Json<SelectDatabaseJson>) -> HttpResponse {
 
 #[post("/ln")]
 async fn login(input: Json<LoginJson>) -> HttpResponse {
-    println!("{:?}",input);
+    //println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount {
         related_info: String::new(),
@@ -206,13 +206,13 @@ async fn login(input: Json<LoginJson>) -> HttpResponse {
 
 #[post("/ca")]
 async fn create_account(input: Json<CreateAccountJson>) -> HttpResponse {
-    println!("{:?}",input);
+    //println!("{:?}",input);
     //set up the returning value structure
     let mut ret_ans = ClientResponseAccount{
         related_info: String::new(),
         token: String::new(),
     };
-    println!("{:?}",input);
+    //println!("{:?}",input);
     
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
@@ -323,7 +323,7 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
 }
 #[post("/checkt")]
 async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
-    println!("{:?}",input);
+    //println!("{:?}",input);
     let mut ret_ans  = TokenResponse{ find_token: false };
     //converting string to AppUser object
     let user_data = file_to_appuser();
@@ -335,7 +335,7 @@ async fn token_check(input: Json<TakeTokenJson>)->impl Responder{
             ret_ans.find_token=true;
         }
     }
-    println!("[Client Token:{}]<->[And server answer:{}]",input.token,ret_ans.find_token);
+    //println!("[Client Token:{}]<->[And server answer:{}]",input.token,ret_ans.find_token);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(ret_ans)
