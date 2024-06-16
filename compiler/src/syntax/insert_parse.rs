@@ -29,6 +29,7 @@ impl<'a> Parser<'a> {
                 self.advance();
             }
         }
+        //println!("{:?}",self.tokens.get(self.current_token));
         //println!("Table name is fetch:{}", getting_data.name.clone());
         match self.get_list_of_column() {
             None => {
@@ -53,7 +54,8 @@ impl<'a> Parser<'a> {
         while !self.terminate_with_semicolon() {
             match self.get_list_of_values() {
                 None => {
-                    return (AstNode::Nothing, Some(triadic_error::Compiler::MissColumnName));
+                    //println!("here");
+                    return (AstNode::Nothing, Some(triadic_error::Compiler::MissValue));
                 }
                 Some(_data) => {
                     //self.advance();

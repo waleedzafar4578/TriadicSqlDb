@@ -45,7 +45,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     let input = query.trim();
     let mut lexer = Lexer::new(input);
     let tokens = lexer.tokenize();
-    //println!("{:?}",tokens);
+    println!("{:?}",tokens);
 
     let mut parser = Parser::new(&tokens);
     let (ast, error_type) = parser.parse();
@@ -169,6 +169,9 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                     }
                     Compiler::MissCloseBracket => {
                         (FrontSendCode::QueryCloseBracketMissing, String::from(query))
+                    }
+                    Compiler::MissValue => {
+                        (FrontSendCode::Err, String::from("Error:Query value missing"))
                     }
                 }
             }

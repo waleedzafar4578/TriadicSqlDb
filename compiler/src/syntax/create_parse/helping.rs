@@ -104,6 +104,9 @@ impl<'a> Parser<'a> {
                 Literal::Boolean(_d) => Some(_d.clone()),
             };
         }
+        if let Some(Token::Identifier( next_keyword)) = self.tokens.get(self.current_token) {
+            return Some(next_keyword.to_string());
+        }
         None
     }
     pub fn get_value_degree(&self) -> Option<char> {
@@ -166,20 +169,22 @@ impl<'a> Parser<'a> {
     }
     pub fn get_list_of_column(&mut self) -> Option<Vec<String>> {
         //println!("Inside of list of column name");
+
         let mut column_name: Vec<String> = vec![];
         if !self.open_bracket_check() {
             return None;
         }
         self.advance();
+
         //println!("Open bracket find");
         while !self.close_bracket_check() {
             match self.extract_identifier() {
                 None => {
-                    //println!("column name not find");
+                    //println!("column name not finds");
                     return None;
                 }
                 Some(_column_name) => {
-                    //println!("column name :{}",_column_name.clone());
+                   // println!("column name :{}",_column_name.clone());
                     column_name.push(_column_name);
 
 

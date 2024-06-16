@@ -15,6 +15,7 @@ pub enum Compiler {
     MissSemicolon,
     MissOpenBracket,
     MissCloseBracket,
+    MissValue,
 }
 #[derive(Debug)]
 pub enum FrontSendCode {
@@ -39,6 +40,7 @@ pub enum FrontSendCode {
     Table,
     Use,
     Db,
+    Err,
     
 }
 
@@ -63,6 +65,7 @@ impl Display for FrontSendCode {
             FrontSendCode::Table => {String::from("Table")}
             FrontSendCode::Use => {String::from("Use")}
             FrontSendCode::Db => {String::from("Db")}
+            FrontSendCode::Err => {String::from("Err")}
         };
         write!(f, "{}", str)
     }
