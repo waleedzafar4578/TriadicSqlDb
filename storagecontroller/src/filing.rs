@@ -23,6 +23,14 @@ impl BaseControl {
             .expect("Failed to open file!");
         let mut streem = String::new();
         file.read_to_string(&mut streem).unwrap();
-        serde_json::from_str(&streem).unwrap()
+        return match serde_json::from_str(&streem) {
+            Ok(data) => {
+                data
+            }
+            Err(_) => {
+                println!("Something wrong when load file,now giving you fresh object!");
+                BaseControl::new()
+            }
+        }
     }
 }
