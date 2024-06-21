@@ -4,12 +4,12 @@ use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
 
 impl<'a> Parser<'a> {
-    pub fn primary_key(&mut self, start_constraint: &str) -> PRIMARYKEY {
-        //println!("coming:{}", start_constraint);
+    pub fn primary_key(&mut self, start_constraint: &str) -> Option<PRIMARYKEY> {
+        println!("coming:{}", start_constraint);
         let mut temp_primary_object=PRIMARYKEY::default();
         
         if start_constraint != "PRIMARY" {
-            return temp_primary_object;
+            return None;
         }
         self.advance();
         if let Some(Token::Keyword(ref inner_constrain)) =
@@ -19,10 +19,16 @@ impl<'a> Parser<'a> {
                 //println!("System: primary key found");
                 temp_primary_object.primary_key=true;
             }
+            else {
+                return None;
+            }
 
         }
+        else {
+            return None;
+        }
         if Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token+1) {
-            return temp_primary_object;
+            return Some(temp_primary_object);
         }
         else { 
             self.advance()
@@ -43,14 +49,14 @@ impl<'a> Parser<'a> {
 
         }
         else { 
-            panic!("You miss Degree of primary key")
+            return None;
         }
         self.advance();
         if !self.close_bracket_check() {
-            panic!("You miss close bracket")
+            return None;
         }
         
-        temp_primary_object
+        Some(temp_primary_object)
     }
     pub fn not_null(&mut self, start_constraint: &str) -> bool {
         //println!("coming:{}", start_constraint);

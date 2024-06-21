@@ -16,6 +16,7 @@ pub enum Compiler {
     MissOpenBracket,
     MissCloseBracket,
     MissValue,
+    ConstraintsPrimary
 }
 #[derive(Debug)]
 pub enum FrontSendCode {

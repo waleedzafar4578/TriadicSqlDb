@@ -70,7 +70,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                                 char_to_degree(value_degree),
                             ) {
                                 return (
-                                    FrontSendCode::ValueDuplicate,
+                                    FrontSendCode::Err,
                                     "Data is duplicate!".to_string(),
                                 );
                             }
@@ -142,36 +142,39 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             Some(ty) => {
                 return match ty {
                     Compiler::NotAKeyword => {
-                        (FrontSendCode::QueryKeywordMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Query must start from keyword!"))
                     }
                     Compiler::MissKeyword => {
-                        (FrontSendCode::QueryKeywordMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Missed somewhere keyword!"))
                     }
                     Compiler::MissIdentifier => {
-                        (FrontSendCode::QueryIdentifierMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Missed Somewhere identifier!"))
                     }
                     Compiler::MissSemicolon => {
-                        (FrontSendCode::QuerySemiColonMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Query must end with semicolon!"))
                     }
                     Compiler::Nothing => (FrontSendCode::QueryProcessed, String::from(query)),
                     Compiler::MissColumn => {
-                        (FrontSendCode::QueryColumnMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Table must have one column!"))
                     }
                     Compiler::MissColumnName => {
-                        (FrontSendCode::QueryColumnNameMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Missed Column name!"))
                     }
                     Compiler::MissColumnDatatype => (
-                        FrontSendCode::QueryColumnDatatypeMissing,
-                        String::from(query),
+                        FrontSendCode::Err,
+                        String::from("Error:Missed column datatype"),
                     ),
                     Compiler::MissOpenBracket => {
-                        (FrontSendCode::QueryOpenBracketMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Missed Somewhere open bracket!"))
                     }
                     Compiler::MissCloseBracket => {
-                        (FrontSendCode::QueryCloseBracketMissing, String::from(query))
+                        (FrontSendCode::Err, String::from("Error:Missed Somewhere close bracket!"))
                     }
                     Compiler::MissValue => {
                         (FrontSendCode::Err, String::from("Error:Query value missing"))
+                    }
+                    Compiler::ConstraintsPrimary => {
+                        (FrontSendCode::Err, String::from("Error:In Query somewhere use primary key,Issue in primary key!"))
                     }
                 }
             }

@@ -1,4 +1,4 @@
-use storge::column::Constraints;
+use storge::column::{Constraints, PRIMARYKEY};
 use crate::lexical::{Token};
 use crate::syntax::Parser;
 
@@ -28,7 +28,19 @@ impl<'a> Parser<'a>{
 
                 match _constrain.as_str() {
                     "PRIMARY"=>{
-                        stock_of_constraints.primary_key=self.primary_key(_constrain.as_str());
+                        //--------------------here
+
+                        match self.primary_key(_constrain.as_str()) {
+                            None => {
+                                println!("primary None");
+                                return None;
+                            }
+                            Some(_data) => {
+                                println!("primary in data");
+                                stock_of_constraints.primary_key=_data;
+                            }
+                        }
+
                     }
                     "NOT"=>{
                         stock_of_constraints.not_null=self.not_null(_constrain.as_str());

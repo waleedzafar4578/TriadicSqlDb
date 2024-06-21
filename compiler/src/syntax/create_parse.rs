@@ -135,10 +135,13 @@ impl<'a> Parser<'a> {
             //
             //
             match self.inline_column_constraints() {
-                None => {}
+                None => {
+                    return (AstNode::Nothing,
+                    Some(triadic_error::Compiler::ConstraintsPrimary))
+                }
                 Some(_constrains) => {
                     table_creation_attributes_result.type_plus_constraint.push((col_type,_constrains));
-                    //println!("System:Column Constraints:{:#?}", _constrains);
+                    println!("System:Column Constraints:");
                 }
             }
             //
