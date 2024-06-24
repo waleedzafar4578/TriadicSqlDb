@@ -153,7 +153,7 @@ impl Column {
                  //If not then
                  if let Some(primary_degree) = self.constraints.primary_key.degree {
                      if primary_degree != degree {
-                         //println!("Degree not the same, so push value");
+                         //println!("Degree different, so push value");
                          self.size_status += 1;
                          self.value.push(TriVar::t_int(value, degree));
                          return true;
@@ -216,22 +216,20 @@ impl Column {
     }
 
     pub fn set_string_cell(&mut self, value: String, d: Degree)->bool {
-        if self.type_status == AttributeType::TString {
+        return if self.type_status == AttributeType::TString {
             self.size_status += 1;
             self.value.push(TriVar::t_string(value.clone(), d));
-            return true
-        }
-        else if self.type_status == AttributeType::TText {
+            true
+        } else if self.type_status == AttributeType::TText {
             self.size_status += 1;
             self.value.push(TriVar::t_text(value.clone(), d));
-            return true
-        }
-        else {
+            true
+        } else {
             self.size_status += 1;
             self.value.push(TriVar::t_text(value.clone(), d));
-            return true
+            true
         }
-        false
+
     }
     pub fn set_varchar_cell(&mut self, value: String, size: usize, d: Degree) {
         if self.type_status == AttributeType::TVarChar {

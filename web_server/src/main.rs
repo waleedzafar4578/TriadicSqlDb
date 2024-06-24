@@ -7,7 +7,7 @@ use serde_json::json;
 use storagecontroller::BaseControl;
 use triadic_error::FrontSendCode;
 use user_auth::structure_of_server::{appuser_to_file, file_to_appuser};
-use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, FilesDownload, GetDatabase, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TokenResponse, User};
+use user_auth::{AppUsers, ClientResponseAccount, CreateAccountJson, GetDatabase, LoginJson, OutputData, PassQueryJson, SelectDatabaseJson, SelectDatabaseRes, TakeTokenJson, TokenResponse, User};
 use std::fs::File;
 use std::io::Write;
 use actix_files::NamedFile;
@@ -112,10 +112,10 @@ async fn download_userdata(req: HttpRequest,id: web::Path<(u32,)>) -> impl Respo
 #[post("/gdb")]
 async fn get_db(input: Json<GetDatabase>) -> HttpResponse {
     //println!("{:?}",input);
-    let mut ret_ans:String ="None".to_string();
+    let  ret_ans:String;
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
-    //checking this user is already exist or not.
+    //checking this user already exists or not.
     match user_data.check_token(&input.token) {
         None => {
             HttpResponse::InternalServerError().body("Token is wrong or expire.")
@@ -141,7 +141,7 @@ async fn select_db(input: Json<SelectDatabaseJson>) -> HttpResponse {
 
     //converting string to AppUser object
     let mut user_data: AppUsers = file_to_appuser();
-    //checking this user is already exist or not.
+    //checking this user already exists or not.
     match user_data.check_token(&input.token) {
         None => {
             ret_ans.info = "Wrong Token!".to_string();
@@ -370,7 +370,7 @@ async fn help() -> impl Responder {
 }
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> io::Result<()> {
     
     
     println!("Server start and on 0.0.0.0:4000");

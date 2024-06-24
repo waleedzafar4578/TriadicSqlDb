@@ -1,4 +1,4 @@
-use storge::column::{Constraints, PRIMARYKEY};
+use storge::column::{Constraints};
 use crate::lexical::{Token};
 use crate::syntax::Parser;
 
