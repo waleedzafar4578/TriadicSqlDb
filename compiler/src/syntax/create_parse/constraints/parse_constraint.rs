@@ -1,4 +1,4 @@
-use storge::column::PRIMARYKEY;
+use storge::column::{PRIMARYKEY, Unique};
 use triadic_logic::degree::Degree;
 use crate::lexical::{Literal, Token};
 use crate::syntax::Parser;
@@ -73,12 +73,47 @@ impl<'a> Parser<'a> {
         }
         false
     }
-    pub fn unique(&mut self, start_constraint: &str) -> bool {
-        if start_constraint == "UNIQUE" {
-           // println!("System:Unique constrain found.");
-            return true;
+    pub fn unique(&mut self, start_constraint: &str) -> Option<Unique> {
+        println!("coming:{}", start_constraint);
+        let mut temp_primary_object=Unique::default();
+
+        if start_constraint != "UNIQUE" {
+            return None;
         }
-        false
+        temp_primary_object.unique=true;
+        //self.advance();
+        println!("{:?}",self.tokens.get(self.current_token));
+        if Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token+1) {
+            return Some(temp_primary_object);
+        }
+        else {
+            self.advance()
+        }
+        self.advance();
+
+        if let Some(Token::Keyword(ref inner_constrain)) =
+            self.tokens.get(self.current_token)
+        {
+
+            match inner_constrain.as_str() {
+                "T"=>temp_primary_object.degree=Some(Degree::T),
+                "F"=>temp_primary_object.degree=Some(Degree::F),
+                "L"=>temp_primary_object.degree=Some(Degree::L),
+                &_ => {
+
+                }
+            }
+
+        }
+        else {
+            return None;
+        }
+        self.advance();
+        if !self.close_bracket_check() {
+            return None;
+        }
+
+        Some(temp_primary_object)
     }
     pub fn check(&mut self,start_constraint: &str)->(bool,String,String){
         if start_constraint == "CHECK" {

@@ -76,7 +76,7 @@ impl BaseControl {
                     return false
                 }
                 else {
-                    _tb.add_recheck_data();
+                    //_tb.add_recheck_data();
                 }
             }
         }

@@ -75,11 +75,15 @@ pub struct PRIMARYKEY {
     pub primary_key: bool,
     pub degree: Option<Degree>,
 }
-
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+pub struct Unique {
+    pub unique: bool,
+    pub degree: Option<Degree>,
+}
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Constraints {
     pub not_null: bool,
-    pub unique: bool,
+    pub unique: Unique,
     pub primary_key: PRIMARYKEY,
     pub foreign_key: bool,
     pub check: bool,
@@ -93,7 +97,7 @@ impl Constraints {
     pub fn new() -> Self {
         Self {
             not_null: false,
-            unique: false,
+            unique: Unique::default(),
             primary_key: PRIMARYKEY::default(),
             foreign_key: false,
             check: false,
@@ -119,7 +123,7 @@ pub struct Column {
 impl Column {
     //noinspection ALL
     pub fn new(n: &str, t: &AttributeType, constraints: Constraints) -> Self {
-        let temp = if constraints.primary_key.primary_key || constraints.unique {
+        let temp = if constraints.primary_key.primary_key || constraints.unique.unique {
             Some(TraidicTree::default())
         } else {
             None
@@ -148,11 +152,19 @@ impl Column {
         //datatype compare
         if self.type_status == AttributeType::TInt {
             //Here a primary key is need to check or not.
-             if self.constraints.primary_key.primary_key{
+             if self.constraints.primary_key.primary_key || self.constraints.unique.unique{
                  //Now find primary key has degree or not.
                  //If not then
                  if let Some(primary_degree) = self.constraints.primary_key.degree {
                      if primary_degree != degree {
+                         //println!("Degree different, so push value");
+                         self.size_status += 1;
+                         self.value.push(TriVar::t_int(value, degree));
+                         return true;
+                     }
+                 }
+                 if let Some(unique_degree) = self.constraints.unique.degree {
+                     if unique_degree != degree {
                          //println!("Degree different, so push value");
                          self.size_status += 1;
                          self.value.push(TriVar::t_int(value, degree));
@@ -200,34 +212,182 @@ impl Column {
     }
     pub fn set_float_cell(&mut self, value: f64, d: Degree)->bool {
         if self.type_status == AttributeType::TFloat {
-            self.size_status += 1;
-            self.value.push(TriVar::t_float(value, d));
-            return true
+            if self.constraints.primary_key.primary_key || self.constraints.unique.unique{
+                if let Some(primary_degree) = self.constraints.primary_key.degree {
+                    if primary_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_float(value, d));
+                        return true;
+                    }
+                }
+                if let Some(unique_degree) = self.constraints.unique.degree {
+                    if unique_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_float(value, d));
+                        return true;
+                    }
+                }
+                if let Some(tree) = self.index_tree.as_mut() {
+                    let for_index = ForIndex {
+                        value: Some(AttributeTypeValue::FloatIng(value)),
+                        index: self.size_status,
+                    };
+
+                    return if !tree.check_avl_insert(for_index) {
+                        false
+                    } else {
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_float(value, d));
+                        true
+                    }
+                }
+            }
+            else {
+                self.size_status += 1;
+                self.value.push(TriVar::t_float(value, d));
+                return true;
+            }
+
         }
         false
     }
     pub fn set_char_cell(&mut self, value: char, d: Degree)->bool {
         if self.type_status == AttributeType::TChar {
-            self.size_status += 1;
-            self.value.push(TriVar::t_char(value, d));
-            return true
+            //println!("Inside of TChar");
+            //println!("{}",self.constraints.primary_key.primary_key);
+            if self.constraints.primary_key.primary_key || self.constraints.unique.unique{
+                //println!("before the tree");
+                if let Some(primary_degree) = self.constraints.primary_key.degree {
+                    if primary_degree != d {
+                        //println!("Degree different, so push value IN CHAR");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_char(value, d));
+                        return true;
+                    }
+                }
+                if let Some(unique_degree) = self.constraints.unique.degree {
+                    if unique_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_char(value, d));
+                        return true;
+                    }
+                }
+                if let Some(tree) = self.index_tree.as_mut() {
+                    let for_index = ForIndex {
+                        value: Some(AttributeTypeValue::CharacterIng(value)),
+                        index: self.size_status,
+                    };
+                    //println!("Inside tree");
+                    return if !tree.check_avl_insert(for_index) {
+                        //println!("value not inserted in tree");
+                        false
+                    } else {
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_char(value, d));
+                        return true
+                    }
+                }
+            }
+            else {
+                self.size_status += 1;
+                self.value.push(TriVar::t_char(value, d));
+                return true
+            }
+
         }
         false
     }
 
     pub fn set_string_cell(&mut self, value: String, d: Degree)->bool {
+        if self.constraints.not_null && (value=="NULL" || value=="null")  {
+                return false;
+        }
         return if self.type_status == AttributeType::TString {
-            self.size_status += 1;
-            self.value.push(TriVar::t_string(value.clone(), d));
+            if self.constraints.primary_key.primary_key || self.constraints.unique.unique{
+                if let Some(primary_degree) = self.constraints.primary_key.degree {
+                    if primary_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_string(value.clone(), d));
+                        return true;
+                    }
+                }
+                if let Some(unique_degree) = self.constraints.unique.degree {
+                    if unique_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_string(value, d));
+                        return true;
+                    }
+                }
+                if let Some(tree) = self.index_tree.as_mut() {
+                    let for_index = ForIndex {
+                        value: Some(AttributeTypeValue::Stringing(value.clone())),
+                        index: self.size_status,
+                    };
+
+                    return if !tree.check_avl_insert(for_index) {
+                        false
+                    } else {
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_string(value.clone(), d));
+                        return true
+                    }
+                }
+            }
+            else {
+                self.size_status += 1;
+                self.value.push(TriVar::t_string(value.clone(), d));
+                return true
+            }
             true
         } else if self.type_status == AttributeType::TText {
+            if self.constraints.primary_key.primary_key || self.constraints.unique.unique{
+                if let Some(primary_degree) = self.constraints.primary_key.degree {
+                    if primary_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_text(value.clone(), d));
+                        return true;
+                    }
+                }
+                if let Some(unique_degree) = self.constraints.unique.degree {
+                    if unique_degree != d {
+                        //println!("Degree different, so push value");
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_text(value, d));
+                        return true;
+                    }
+                }
+                if let Some(tree) = self.index_tree.as_mut() {
+                    let for_index = ForIndex {
+                        value: Some(AttributeTypeValue::Texting(value.clone())),
+                        index: self.size_status,
+                    };
+
+                    return if !tree.check_avl_insert(for_index) {
+                        false
+                    } else {
+                        self.size_status += 1;
+                        self.value.push(TriVar::t_text(value.clone(), d));
+                        return true
+                    }
+                }
+            }
+            else {
+                self.size_status += 1;
+                self.value.push(TriVar::t_text(value.clone(), d));
+                return true
+            }
             self.size_status += 1;
             self.value.push(TriVar::t_text(value.clone(), d));
             true
-        } else {
-            self.size_status += 1;
-            self.value.push(TriVar::t_text(value.clone(), d));
-            true
+        }
+        else {
+            return false
         }
 
     }

@@ -1,4 +1,4 @@
-use storge::column::{Constraints};
+use storge::column::{Constraints, Unique};
 use crate::lexical::{Token};
 use crate::syntax::Parser;
 
@@ -45,7 +45,17 @@ impl<'a> Parser<'a>{
                         stock_of_constraints.not_null=self.not_null(_constrain.as_str());
                     }
                     "UNIQUE"=>{
-                        stock_of_constraints.unique=self.unique(_constrain.as_str());
+                        match self.unique(_constrain.as_str()) {
+                            None => {
+
+                                return None;
+                            }
+                            Some(_data) => {
+                                println!("{:?}",_data.clone());
+                                stock_of_constraints.unique=_data;
+                            }
+                        }
+
                     }
                     "CHECK" => {
                         (stock_of_constraints.check,stock_of_constraints.check_operator,stock_of_constraints.check_value)=self.check(_constrain.as_str());

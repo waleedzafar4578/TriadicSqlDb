@@ -1,0 +1,77 @@
+{
+  "system_path": "AllUserData/waleedzafar/",
+  "database_name": "UCP",
+  "db_select": true,
+  "initiate_lock": true,
+  "all_table": [
+    {
+      "table_name": "EX3",
+      "table_column": [
+        {
+          "name": "ID",
+          "type_status": "TFloat",
+          "size_status": 4,
+          "value": [
+            {
+              "value": {
+                "FloatIng": 12.2
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 12.2
+              },
+              "status": "L"
+            },
+            {
+              "value": {
+                "FloatIng": 12.2
+              },
+              "status": "L"
+            },
+            {
+              "value": {
+                "FloatIng": 12.3
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": true,
+              "degree": "T"
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": [
+            {
+              "value": {
+                "FloatIng": 12.2
+              },
+              "index": 0
+            },
+            {
+              "value": {
+                "FloatIng": 12.3
+              },
+              "index": 3
+            }
+          ]
+        }
+      ],
+      "global_index": 4
+    }
+  ]
+}
