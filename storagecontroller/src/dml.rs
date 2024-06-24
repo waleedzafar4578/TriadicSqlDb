@@ -75,6 +75,9 @@ impl BaseControl {
                 if !_tb.add_col_data(c_name, c_data, d_status) {
                     return false
                 }
+                else {
+                    _tb.add_recheck_data();
+                }
             }
         }
         true

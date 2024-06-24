@@ -28,7 +28,6 @@ impl<'a> Parser<'a>{
 
                 match _constrain.as_str() {
                     "PRIMARY"=>{
-                        //--------------------here
 
                         match self.primary_key(_constrain.as_str()) {
                             None => {

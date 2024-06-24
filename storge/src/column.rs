@@ -136,11 +136,13 @@ impl Column {
     }
 }
 impl Column {
-    pub fn set_bool_cell(&mut self, value: bool, d: Degree) {
+    pub fn set_bool_cell(&mut self, value: bool, d: Degree)->bool {
         if self.type_status == AttributeType::TBool {
             self.size_status += 1;
             self.value.push(TriVar::t_bool(value, d));
+            return true
         }
+        false
     }
     pub fn set_int_cell(&mut self, value: i32, degree: Degree)->bool {
         //datatype compare
@@ -151,7 +153,7 @@ impl Column {
                  //If not then
                  if let Some(primary_degree) = self.constraints.primary_key.degree {
                      if primary_degree != degree {
-                         println!("Degree not same ,so push value");
+                         //println!("Degree not the same, so push value");
                          self.size_status += 1;
                          self.value.push(TriVar::t_int(value, degree));
                          return true;
@@ -196,28 +198,40 @@ impl Column {
             self.value.push(TriVar::t_big_int(value, d))
         }
     }
-    pub fn set_float_cell(&mut self, value: f64, d: Degree) {
+    pub fn set_float_cell(&mut self, value: f64, d: Degree)->bool {
         if self.type_status == AttributeType::TFloat {
             self.size_status += 1;
-            self.value.push(TriVar::t_float(value, d))
+            self.value.push(TriVar::t_float(value, d));
+            return true
         }
+        false
     }
-    pub fn set_char_cell(&mut self, value: char, d: Degree) {
+    pub fn set_char_cell(&mut self, value: char, d: Degree)->bool {
         if self.type_status == AttributeType::TChar {
             self.size_status += 1;
-            self.value.push(TriVar::t_char(value, d))
+            self.value.push(TriVar::t_char(value, d));
+            return true
         }
+        false
     }
 
-    pub fn set_string_cell(&mut self, value: String, d: Degree) {
+    pub fn set_string_cell(&mut self, value: String, d: Degree)->bool {
         if self.type_status == AttributeType::TString {
             self.size_status += 1;
             self.value.push(TriVar::t_string(value.clone(), d));
+            return true
         }
-        if self.type_status == AttributeType::TText {
+        else if self.type_status == AttributeType::TText {
             self.size_status += 1;
-            self.value.push(TriVar::t_text(value.clone(), d))
+            self.value.push(TriVar::t_text(value.clone(), d));
+            return true
         }
+        else {
+            self.size_status += 1;
+            self.value.push(TriVar::t_text(value.clone(), d));
+            return true
+        }
+        false
     }
     pub fn set_varchar_cell(&mut self, value: String, size: usize, d: Degree) {
         if self.type_status == AttributeType::TVarChar {
