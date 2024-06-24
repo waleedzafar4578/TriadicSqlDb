@@ -11,7 +11,20 @@ impl<'a> Parser<'a> {
 
                 // Delegate to a separate function for parsing Search DATABASE
                 self.parse_show_database_statement()
-            } else {
+            }else if next_keyword == "TABLE" {
+                self.advance();
+                if let Some(Token::Punctuation(';')) = self.tokens.get(self.current_token) {
+                    // Successfully parsed a show Table statement
+                    return (AstNode::ShowTableStatement, None);
+                }
+                else {
+                    (
+                        AstNode::Nothing,
+                        Some(triadic_error::Compiler::MissSemicolon),
+                    )
+                }
+            }
+            else  {
                 (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword))
             };
         }

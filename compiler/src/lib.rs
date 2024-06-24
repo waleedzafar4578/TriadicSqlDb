@@ -191,6 +191,11 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             controller.save_to_file();
             return (FrontSendCode::QueryProcessed, answer);
         }
+        AstNode::ShowTableStatement => {
+            let ans = controller.list_of_tables();
+            let ath = ans.join(" ");
+            return (FrontSendCode::Tb, ath);
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }

@@ -39,6 +39,7 @@ pub enum AstNode {
     ShowDatabaseStatement,
     UseDatabaseStatement(String),
     SelectFullTable((Vec<String>,String)),
+    ShowTableStatement,
     Nothing,
     // ...Continue another Sql statement here.
 }

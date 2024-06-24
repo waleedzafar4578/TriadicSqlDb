@@ -52,10 +52,13 @@ impl BaseControl {
         }
         answer
     }
-    pub fn list_of_tables(&self) {
+    pub fn list_of_tables(&self)->Vec<String> {
+        let mut names:Vec<String>=vec![];
         for cl in &self.all_table {
-            println!("Table Name: {}", cl.get_table_name());
+            //println!("Table Name: {}", cl.get_table_name());
+            names.push(cl.get_table_name().to_string());
         }
+        return names
     }
     pub fn tables_name(self) -> Vec<String> {
         let mut ret: Vec<String> = Vec::new();
@@ -115,6 +118,8 @@ impl BaseControl {
         }
         ShowTable::default()
     }
+
+
 }
 //for developer
 impl BaseControl {

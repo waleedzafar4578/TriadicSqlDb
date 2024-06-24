@@ -42,6 +42,7 @@ pub enum FrontSendCode {
     Use,
     Db,
     Err,
+    Tb,
     
 }
 
@@ -67,6 +68,7 @@ impl Display for FrontSendCode {
             FrontSendCode::Use => {String::from("Use")}
             FrontSendCode::Db => {String::from("Db")}
             FrontSendCode::Err => {String::from("Err")}
+            FrontSendCode::Tb => {String::from("Tb")}
         };
         write!(f, "{}", str)
     }
