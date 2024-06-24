@@ -1,22 +1,3 @@
 {
-  "users": [
-    {
-      "token": "db70ef74cf804846319178b54e6e8acb435e36f31691d25e8a98283916d9cd24",
-      "username": "waleedzafar",
-      "password": "$2b$10$EBA8J5LqLWp3JGzruLb6aeKui4I1txYrOThNrF4hvdM3AWYWmp8gm",
-      "unique_id": "AllUserData/waleedzafar/",
-      "selected_database": "UCP",
-      "timestamp": 1719224567,
-      "expiration_time": 1719225167
-    },
-    {
-      "token": "7be96e004f5c3244864c1f339c426f1b844a1ad67d57c2958df594d5fcc35771",
-      "username": "jawadali",
-      "password": "$2b$10$1bYZ7FvPZisLq447AeUTc.bdjxQMTD.NC1QeBr8NPfXQLytTJ4xUK",
-      "unique_id": "AllUserData/jawadali/",
-      "selected_database": "nomi1",
-      "timestamp": 1718129764,
-      "expiration_time": 1718130364
-    }
-  ]
+  "users": []
 }
