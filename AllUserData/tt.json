@@ -1,7 +1,0 @@
-{
-  "system_path": "AllUserData/",
-  "database_name": "tt",
-  "db_select": false,
-  "initiate_lock": true,
-  "all_table": []
-}
