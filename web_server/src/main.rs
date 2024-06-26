@@ -217,7 +217,7 @@ async fn create_account(input: Json<CreateAccountJson>) -> HttpResponse {
     //converting string to AppUser object
     let mut user_data = file_to_appuser();
 
-    //checking this user is already exist or not.
+    //checking this user already exists or not.
     match user_data.check_username_exist(&input.username) {
         None => {
             //temporary object for access User functions
@@ -390,7 +390,7 @@ async fn main() -> io::Result<()> {
             .service(download_userdata)
             .service(download_database)
     })
-    .bind("0.0.0.0:4000")?
+    .bind("127.0.0.1:4000")?
     .run()
     .await
 }

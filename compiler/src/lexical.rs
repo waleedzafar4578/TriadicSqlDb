@@ -151,6 +151,7 @@ impl<'a> Lexer<'a> {
             "L",
             "F",
             "T",
+            "WHERE"
         ];
 
         let mut tokens = Vec::new();

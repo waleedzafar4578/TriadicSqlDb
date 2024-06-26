@@ -45,7 +45,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
     let input = query.trim();
     let mut lexer = Lexer::new(input);
     let tokens = lexer.tokenize();
-    //println!("{:?}",tokens);
+    println!("{:?}",tokens);
 
     let mut parser = Parser::new(&tokens);
     let (ast, error_type) = parser.parse();
@@ -179,10 +179,10 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 }
             }
         },
-        AstNode::SelectFullTable((_input, table_name)) => {
+        AstNode::SelectFullTable(_info) => {
             return (
                 FrontSendCode::Table,
-                serde_json::to_string_pretty(&controller.show_table(table_name.as_str(), _input))
+                serde_json::to_string_pretty(&controller.show_table(_info.name.as_str(), _info.column_name))
                     .unwrap(),
             )
         }

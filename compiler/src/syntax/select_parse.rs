@@ -1,14 +1,14 @@
-use crate::syntax::{AstNode, Parser};
+use crate::syntax::{AstNode, Parser, SelectEntry};
 
 impl<'a> Parser<'a> {
     pub fn parse_select_statement(&mut self) -> (AstNode, Option<triadic_error::Compiler>) {
-        let mut columns: Vec<String> = vec![];
+        let mut info_select: SelectEntry = SelectEntry::default();
         self.advance();
         if !self.check_operator("*") {
             match self.get_list_of_column() {
                 None => {}
                 Some(_list) => {
-                    columns = _list;
+                    info_select.column_name = _list;
                 }
             }
         } else {
@@ -20,25 +20,32 @@ impl<'a> Parser<'a> {
             return (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword));
         }
         self.advance();
-        match self.extract_identifier() {
-            None => (
+        if let Some(_table_name)=self.extract_identifier(){
+            info_select.name=_table_name;
+        }
+        else {
+            return (
                 AstNode::Nothing,
                 Some(triadic_error::Compiler::MissIdentifier),
-            ),
-            Some(_table_name) => {
-                self.advance();
-                if self.terminate_with_semicolon() {
-                    (
-                        AstNode::SelectFullTable((columns, _table_name)),
-                        Some(triadic_error::Compiler::Nothing),
-                    )
-                } else {
-                    (
-                        AstNode::Nothing,
-                        Some(triadic_error::Compiler::MissSemicolon),
-                    )
-                }
-            }
+            );
         }
+
+        self.advance();
+        if self.terminate_with_semicolon() {
+            return (
+                AstNode::SelectFullTable(info_select),
+                Some(triadic_error::Compiler::Nothing),
+            )
+
+        }
+
+        if !self.keyword_check("WHERE") {
+            return (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword));
+        }
+
+        (
+            AstNode::SelectFullTable(info_select),
+            Some(triadic_error::Compiler::Nothing),
+        )
     }
 }
