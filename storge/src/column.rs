@@ -112,9 +112,9 @@ impl Constraints {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Column {
     name: String,
-    type_status: AttributeType,
+    pub type_status: AttributeType,
     size_status: usize,
-    value: Vec<TriVar>,
+    pub value: Vec<TriVar>,
     constraints: Constraints,
     column_order: usize,
     index_tree: Option<TraidicTree>,

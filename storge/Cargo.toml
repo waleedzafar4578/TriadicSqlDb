@@ -10,3 +10,4 @@ triadic_logic = { version = "0.1.0", path = "../triadic_logic" }
 serde = { version="1.0.197" ,features = ["derive","default"]}
 serde_json = { version="1.0.114" ,features = ["default"]}
 avl = { version="0.7.1" ,features = ["consistency_check"]}
+common_structure = { version = "0.1.0", path = "../common_structure" }

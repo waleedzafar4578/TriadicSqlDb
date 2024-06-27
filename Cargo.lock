@@ -857,9 +857,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "common_structure"
+version = "0.1.0"
+dependencies = [
+ "triadic_logic",
+]
+
+[[package]]
 name = "compiler"
 version = "0.1.0"
 dependencies = [
+ "common_structure",
  "serde",
  "serde_json",
  "storagecontroller",
@@ -2301,6 +2309,7 @@ checksum = "213701ba3370744dcd1a12960caa4843b3d68b4d1c0a5d575e0d65b2ee9d16c0"
 name = "storagecontroller"
 version = "0.1.0"
 dependencies = [
+ "common_structure",
  "serde",
  "serde_json",
  "storge",
@@ -2313,6 +2322,7 @@ name = "storge"
 version = "0.1.0"
 dependencies = [
  "avl",
+ "common_structure",
  "serde",
  "serde_json",
  "triadic_logic",

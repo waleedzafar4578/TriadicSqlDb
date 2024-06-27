@@ -1,7 +1,8 @@
+use common_structure::{EqualOperator, GreaterEqualOperator, GreaterOperator, LessEqualOperator, LessOperator, NotEqualOperator, WhereClause};
 use triadic_error::Compiler;
 use crate::char_to_degree;
 use crate::lexical::Token;
-use crate::syntax::{AstNode, EqualOperator, GreaterEqualOperator, GreaterOperator, LessEqualOperator, LessOperator, NotEqualOperator, Parser, SelectEntry, WhereClause};
+use crate::syntax::{AstNode, Parser, SelectEntry};
 
 impl<'a> Parser<'a> {
     pub fn parse_select_statement(&mut self) -> (AstNode, Option<Compiler>) {
@@ -58,7 +59,7 @@ impl<'a> Parser<'a> {
 
 
     }
-    pub fn condition_extract(&mut self, mut info_select: &mut SelectEntry) -> Option<(AstNode, Option<Compiler>)> {
+    pub fn condition_extract(&mut self,  info_select: &mut SelectEntry) -> Option<(AstNode, Option<Compiler>)> {
 
         if !self.keyword_check("WHERE") {
             return Some((AstNode::Nothing, Some(Compiler::MissKeyword)));

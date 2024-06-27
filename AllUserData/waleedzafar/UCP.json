@@ -72,6 +72,374 @@
         }
       ],
       "global_index": 4
+    },
+    {
+      "table_name": "EX1",
+      "table_column": [
+        {
+          "name": "ID",
+          "type_status": "TInt",
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "status": "L"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": true,
+              "degree": "T"
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "index": 0
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "type_status": "TString",
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "Stringing": "Ali"
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "Stringing": "Ali"
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "Salary",
+          "type_status": "TFloat",
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "FloatIng": 123.3
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 123.3
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "Gender",
+          "type_status": "TChar",
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "CharacterIng": "M"
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "CharacterIng": "M"
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        }
+      ],
+      "global_index": 8
+    },
+    {
+      "table_name": "MARKS",
+      "table_column": [
+        {
+          "name": "ID",
+          "type_status": "TInt",
+          "size_status": 9,
+          "value": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 2
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 3
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 4
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 5
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 6
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 4
+              },
+              "status": "L"
+            },
+            {
+              "value": {
+                "IntIng": 4
+              },
+              "status": "L"
+            },
+            {
+              "value": {
+                "IntIng": 4
+              },
+              "status": "F"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": true,
+              "degree": "T"
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "index": 0
+            },
+            {
+              "value": {
+                "IntIng": 2
+              },
+              "index": 1
+            },
+            {
+              "value": {
+                "IntIng": 3
+              },
+              "index": 2
+            },
+            {
+              "value": {
+                "IntIng": 4
+              },
+              "index": 3
+            },
+            {
+              "value": {
+                "IntIng": 5
+              },
+              "index": 4
+            },
+            {
+              "value": {
+                "IntIng": 6
+              },
+              "index": 5
+            }
+          ]
+        },
+        {
+          "name": "Mark",
+          "type_status": "TFloat",
+          "size_status": 9,
+          "value": [
+            {
+              "value": {
+                "FloatIng": 90.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 80.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 70.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 60.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 50.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 40.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 30.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 80.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 10.0
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        }
+      ],
+      "global_index": 18
     }
   ]
 }

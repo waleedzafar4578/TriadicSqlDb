@@ -183,7 +183,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             println!("{:?}",_info);
             return (
                 FrontSendCode::Table,
-                serde_json::to_string_pretty(&controller.show_table(_info.name.as_str(), _info.column_name))
+                serde_json::to_string_pretty(&controller.show_table(_info))
                     .unwrap(),
             )
         }

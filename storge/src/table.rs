@@ -1,12 +1,15 @@
-use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
-//use serde_json::Value::String;
-use crate::column::Column;
 use std::string::String;
+
+use serde::{Deserialize, Serialize};
+
+use common_structure::SelectEntry;
 use triadic_logic::datatype::AttributeTypeValue;
 use triadic_logic::degree::Degree;
+
+use crate::column::Column;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Table {
@@ -49,26 +52,25 @@ impl Table {
             if i.clone().get_column_name() == &n.to_string() {
                 if let Ok(value) = string_to_integer(col) {
                     if i.set_int_cell(value, d) {
-                       self.global_index+=1;
+                        self.global_index += 1;
                         return true;
                     }
-
                 }
                 if let Ok(value) = string_to_float(col) {
-                    if i.set_float_cell(value, d){
-                       self.global_index+=1;
+                    if i.set_float_cell(value, d) {
+                        self.global_index += 1;
                         return true;
                     }
                 }
                 if let Ok(value) = string_to_char(col) {
-                    if i.set_char_cell(value, d){
-                        self.global_index+=1;
+                    if i.set_char_cell(value, d) {
+                        self.global_index += 1;
                         return true;
                     }
                 }
                 if let Ok(value) = string_to_bool(col) {
-                    if i.set_bool_cell(value, d){
-                        self.global_index+=1;
+                    if i.set_bool_cell(value, d) {
+                        self.global_index += 1;
                         return true;
                     }
                 }
@@ -77,39 +79,37 @@ impl Table {
                     true
                 } else {
                     false
-                }
+                };
             }
         }
         false
     }
-    pub fn add_recheck_data(&mut self)  {
+    pub fn add_recheck_data(&mut self) {
         for i in &mut self.table_column {
             loop {
-                if self.global_index > i.clone().get_size(){
-                    i.set_string_cell("NULL".to_string(),Degree::L);
-                }
-                else {
+                if self.global_index > i.clone().get_size() {
+                    i.set_string_cell("NULL".to_string(), Degree::L);
+                } else {
                     break;
                 }
             }
         }
-
     }
 }
 
-fn string_to_integer(s: &str) -> Result<i32, std::num::ParseIntError> {
+pub fn string_to_integer(s: &str) -> Result<i32, std::num::ParseIntError> {
     s.parse()
 }
-fn string_to_float(s: &str) -> Result<f64, std::num::ParseFloatError> {
+pub fn string_to_float(s: &str) -> Result<f64, std::num::ParseFloatError> {
     s.parse()
 }
-fn string_to_char(s: &str) -> Result<char, &'static str> {
+pub fn string_to_char(s: &str) -> Result<char, &'static str> {
     match s.chars().next() {
         Some(c) => Ok(c),
         None => Err("Empty String"),
     }
 }
-fn string_to_bool(s: &str) -> Result<bool, &'static str> {
+pub fn string_to_bool(s: &str) -> Result<bool, &'static str> {
     match s.to_lowercase().as_str() {
         "true" => Ok(true),
         "false" => Ok(false),
@@ -152,34 +152,107 @@ pub struct ShowTable {
     pub row: Vec<Vec<String>>,
 }
 impl Table {
-    pub fn show_table(&self, column_display: Vec<String>) -> ShowTable {
-        let mut display_constainer = ShowTable::default();
+    pub fn show_table(&self, info: &SelectEntry) -> ShowTable {
+        let mut display_container = ShowTable::default();
         let mut row: Vec<String>;
         let mut size = 0;
         for i in &self.table_column {
-            if column_display.is_empty() || column_display.contains(i.get_column_name()) {
+            if info.column_name.is_empty() || info.column_name.contains(i.get_column_name()) {
                 if size < i.clone().get_size() {
                     size = i.clone().get_size();
                 }
-                display_constainer
+                display_container
                     .column_name
                     .push(i.get_column_name().to_string());
             }
         }
         row = vec![];
         let mut j = 0;
-        while j < size {
-            for i in &self.table_column {
-                if column_display.is_empty() || column_display.contains(i.get_column_name()) {
-                    row.push(show_column(i, j));
+        let mut index_container: Vec<usize> = vec![];
+        match &info.where_clause {
+            None => {
+                while j < size {
+                    for i in &self.table_column {
+                        if info.column_name.is_empty()
+                            || info.column_name.contains(i.get_column_name())
+                        {
+                            row.push(show_column(i, j));
+                        }
+                    }
+                    display_container.row.push(row.clone());
+                    row = vec![];
+                    j += 1;
                 }
             }
-            display_constainer.row.push(row);
-            row = vec![];
-            j += 1;
+            Some(_condition) => {
+                match &_condition.equal_operator {
+                    None => {}
+                    Some(_va) => {
+                        for i in &self.table_column {
+                            if _va.column_name.eq(i.get_column_name()) {
+                                let mut index=0;
+                                for values in &i.value {
+                                    match values.get_attribute() {
+                                        None => {
+
+                                        }
+                                        Some(_b) => {
+                                            let t = display_value(_b);
+                                            //println!("Compare{}:{}",t,&_va.column_value);
+                                            if t.eq(&_va.column_value) {
+                                                match &_va.degree {
+                                                    None => {
+                                                        index_container.push(index);
+                                                    }
+                                                    Some(_degree) => {
+                                                        if values.get_degree_ori() == *_degree {
+                                                            println!("{}:{}",t,_degree);
+                                                            index_container.push(index);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    index+=1;
+                                }
+                            }
+                        }
+                    }
+                }
+                println!("{:?}",index_container);
+                row = vec![];
+
+                for _ggt in &index_container{
+                    for i in &self.table_column {
+                        if info.column_name.is_empty()
+                            || info.column_name.contains(i.get_column_name())
+                        {
+                            //row.push(show_column(i, index_container[*_ggt]));
+                            //println!("{}:{}",i.clone().get_size(),_ggt);
+                            println!("{:?}",i.get_column_data(*_ggt));
+                            let  val;
+                            match i.get_column_data(*_ggt) {
+                                None => val="None".to_string(),
+                                Some(_f) => match _f.get_attribute() {
+                                    None => {
+                                        val=format!("None  :{}", _f.get_degree())
+                                    }
+                                    Some(_n) => {
+                                        val=format!("{}   :{}", display_value(_n), _f.get_degree())
+                                    }
+                                }
+                            }
+                            row.push(val);
+                        }
+                    }
+                    display_container.row.push(row.clone());
+                    row = vec![];
+                }
+            }
         }
 
-        display_constainer
+        display_container
     }
 }
 pub fn show_column(i: &Column, j: usize) -> String {

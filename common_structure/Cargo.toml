@@ -1,0 +1,7 @@
+[package]
+name = "common_structure"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+triadic_logic = { version = "0.1.0", path = "../triadic_logic" }

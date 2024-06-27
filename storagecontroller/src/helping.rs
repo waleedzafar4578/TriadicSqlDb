@@ -1,6 +1,7 @@
 use crate::BaseControl;
 use std::fs;
 use std::path::Path;
+use common_structure::SelectEntry;
 use storge::table::{ShowTable};
 
 impl Default for BaseControl {
@@ -108,11 +109,11 @@ impl BaseControl {
         }
         false
     }
-    pub fn show_table(&self, name: &str,column:Vec<String>) -> ShowTable {
+    pub fn show_table(&self,info:SelectEntry) -> ShowTable {
         for i in self.all_table.clone() {
-            if i.clone().table_name() == name {
-                let mut t = i.show_table(column.clone());
-                t.table_name=name.to_string();
+            if i.clone().table_name() == info.name {
+                let mut t = i.show_table(&info);
+                t.table_name=info.name;
                 return t;
             }
         }

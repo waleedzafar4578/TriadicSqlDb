@@ -1,4 +1,4 @@
 [workspace]
-members = [ "user_auth","compiler", "storagecontroller", "storge", "triadic_error", "triadic_logic", "web_server"]
+members = [ "user_auth","compiler", "storagecontroller", "storge", "triadic_error", "triadic_logic", "web_server", "common_structure"]
 resolver = "2"
 

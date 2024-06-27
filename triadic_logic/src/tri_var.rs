@@ -44,6 +44,9 @@ impl TriVar {
             }
         }
     }
+    pub fn get_degree_ori(&self) -> Degree {
+         self.status.clone()
+    }
     pub fn t_bool(v: bool, s: Degree) -> Self {
         Self {
             value: Option::from(AttributeTypeValue::BoolIng(v)),
@@ -131,6 +134,7 @@ impl TriVar {
     pub fn get_attribute(&self) -> Option<&AttributeTypeValue> {
         self.value.as_ref()
     }
+
 }
 /*
 impl fmt::Display for TriData {
