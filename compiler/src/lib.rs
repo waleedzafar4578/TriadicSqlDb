@@ -67,7 +67,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                                 table_data.name.as_str(),
                                 nm.as_str(),
                                 value.as_str(),
-                                char_to_degree(value_degree),
+                                char_to_degree(*value_degree),
                             ) {
                                 return (
                                     FrontSendCode::Err,
@@ -180,6 +180,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             }
         },
         AstNode::SelectFullTable(_info) => {
+            println!("{:?}",_info);
             return (
                 FrontSendCode::Table,
                 serde_json::to_string_pretty(&controller.show_table(_info.name.as_str(), _info.column_name))
@@ -230,7 +231,7 @@ fn engine_error(engine_error: EngineError) -> (FrontSendCode, String) {
     }
 }
 
-fn char_to_degree(input: &char) -> Degree {
+pub fn char_to_degree(input: char) -> Degree {
     match input {
         'T' => Degree::T,
         'L' => Degree::L,

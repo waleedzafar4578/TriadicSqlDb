@@ -298,7 +298,7 @@ async fn process_query(input: Json<PassQueryJson>) -> HttpResponse {
             ret_ans = process_json_data(input.query.as_str(), &mut base);
         }
     }
-    println!("{:?}",ret_ans);
+    //println!("{:?}",ret_ans);
     if ret_ans.status =="Use".to_string(){
        match  user_data.check_token(&input.token){
            None => {}
