@@ -121,7 +121,7 @@ impl User {
         self.timestamp = current_time;
 
         // Set expiration time (10 minutes from current time)
-        self.expiration_time = current_time + 600; // 600 seconds = 10 minutes
+        self.expiration_time = current_time + 1200; // 600 seconds = 10 minutes
 
         // Concatenate user properties and timestamp to create input for hashing
         let input = format!(
