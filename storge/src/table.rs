@@ -34,6 +34,9 @@ impl Table {
     pub fn set_table_name(&mut self,new_name: &String){
         self.table_name= new_name.to_string()
     }
+    pub fn truncate_table(&mut self){
+        self.table_column.clear()
+    }
     pub fn get_full_column(&self, name: String) -> Option<&Column> {
         for col in &self.table_column {
             if name == *col.get_column_name() {

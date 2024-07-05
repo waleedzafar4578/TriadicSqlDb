@@ -216,6 +216,30 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 )
             }
         }
+        AstNode::TruncateDatabaseStatement => {
+                controller.truncate_database();
+            return (
+                FrontSendCode::QueryProcessed,
+                "Truncate the selected database.".to_string()
+            )
+        }
+        AstNode::TruncateTableStatement(_name) => {
+            return if controller.truncate_table(_name.clone()) {
+                controller.save_to_file();
+                (
+                    FrontSendCode::QueryProcessed,
+                    format!("{_name} is truncate.")
+                )
+            } else {
+                (
+                    FrontSendCode::Err,
+                    format!("\
+                    When try to truncate the table {_name} some issue occur,which are table not in
+                    database.
+                    ")
+                )
+            }
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }

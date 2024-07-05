@@ -82,4 +82,17 @@ impl BaseControl {
         }
          
     }
+    pub fn truncate_database(&mut self){
+        self.all_table.clear();
+        self.save_to_file();
+    }
+    pub fn truncate_table(&mut self,name:String)->bool{
+        for mut _tb in &mut self.all_table {
+            if _tb.get_table_name() == name.as_str()  {
+                _tb.truncate_table();
+                return true
+            }
+        }
+        false
+    }
 }

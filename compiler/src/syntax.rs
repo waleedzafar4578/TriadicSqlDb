@@ -14,6 +14,8 @@ pub mod show_parse;
 pub mod insert_parse;
 pub mod select_parse;
 
+pub mod truncate_parse;
+
 pub mod use_parse;
 #[derive(Debug, Default)]
 pub struct CompilerTableParseEntry {
@@ -35,6 +37,8 @@ pub enum AstNode {
     InsertTableStatement(CompilerTableDataEntry),
     CreateDatabaseStatement(String),
     DropDatabaseStatement(String),
+    TruncateDatabaseStatement,
+    TruncateTableStatement(String),
     SearchDatabaseStatement(String),
     RenameDatabaseStatement(String, String),
     RenameTableStatement(String, String),
