@@ -46,8 +46,9 @@
 
 use std::cmp::Ordering;
 use serde::{Deserialize, Serialize};
-#[derive(Serialize, Deserialize, Clone, PartialEq,Debug)]
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug, Default)]
 pub enum AttributeType {
+    #[default]
     TBool,
     TInt,
     TSmallInt,

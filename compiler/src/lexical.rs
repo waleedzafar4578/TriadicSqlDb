@@ -151,6 +151,7 @@ impl<'a> Lexer<'a> {
             "L",
             "F",
             "T",
+            "ADD",
             "WHERE"
         ];
 

@@ -21,6 +21,7 @@ impl<'a> Parser<'a> {
                 "SELECT"=>self.parse_select_statement(),
                 "USE"=> self.parse_use_statement(),
                 "TRUNCATE"=>self.parse_truncate_statement(),
+                "ALTER"=>self.parse_alter_statement(),
                 _ => (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword)),
             }
         } else {

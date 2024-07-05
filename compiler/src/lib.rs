@@ -240,6 +240,25 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 )
             }
         }
+        AstNode::AlterTableStatement(_data) => {
+            println!("{:#?}", _data);
+            return match controller.add_column_into_table(_data.name.as_str(), _data.column_name.clone(), _data.data_type) {
+                true => {
+                    controller.save_to_file();
+                    (
+                        FrontSendCode::QueryProcessed,
+                        format!("table altered and column is added with the name of {}", _data.column_name)
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::Err,
+                        format!("Failed to alter the table and not able to add this {} column.", _data.name)
+                    )
+                }
+            }
+
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }

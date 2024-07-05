@@ -15,7 +15,7 @@ pub mod insert_parse;
 pub mod select_parse;
 
 pub mod truncate_parse;
-
+pub mod alter_parse;
 pub mod use_parse;
 #[derive(Debug, Default)]
 pub struct CompilerTableParseEntry {
@@ -28,6 +28,13 @@ pub struct CompilerTableDataEntry {
     pub name: String,
     pub column_name: Vec<String>,
     pub column_data: Vec<Vec<(String, char)>>,
+}
+
+#[derive(Debug, Default)]
+pub struct AlterTableData {
+    pub name: String,
+    pub column_name: String,
+    pub data_type: AttributeType,
 }
 
 #[derive(Debug)]
@@ -47,6 +54,7 @@ pub enum AstNode {
     SelectFullTable(SelectEntry),
     ShowTableStatement,
     Nothing,
+    AlterTableStatement(AlterTableData)
     // ...Continue another Sql statement here.
 }
 pub struct Parser<'a> {
