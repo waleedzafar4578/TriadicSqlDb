@@ -37,6 +37,7 @@ pub enum AstNode {
     DropDatabaseStatement(String),
     SearchDatabaseStatement(String),
     RenameDatabaseStatement(String, String),
+    RenameTableStatement(String, String),
     ShowDatabaseStatement,
     UseDatabaseStatement(String),
     SelectFullTable(SelectEntry),

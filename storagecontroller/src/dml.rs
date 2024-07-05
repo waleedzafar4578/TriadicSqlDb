@@ -82,4 +82,18 @@ impl BaseControl {
         }
         true
     }
+    pub fn rename_table_name(&mut self, old_name: &String, new_name:&String) ->bool{
+        for mut _tb in &mut self.all_table {
+            if _tb.get_table_name() == new_name.as_str()  {
+                return false
+            }
+        }
+        for mut _tb in &mut self.all_table {
+            if _tb.get_table_name() == old_name.as_str()  {
+                _tb.set_table_name(new_name);
+                return true
+            }
+        }
+        false
+    }
 }

@@ -81,6 +81,13 @@ pub struct Unique {
     pub degree: Option<Degree>,
 }
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
+pub struct FOREIGNKEY {
+    pub foreign_key: bool,
+    pub degree: Option<Degree>,
+}
+
+
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Constraints {
     pub not_null: bool,
     pub unique: Unique,

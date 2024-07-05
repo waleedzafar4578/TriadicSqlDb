@@ -7,12 +7,7 @@ pub mod parse_constraint;
 
 impl<'a> Parser<'a>{
     pub(crate) fn inline_column_constraints(&mut self) -> Option<Constraints> {
-        //
-        //
-        //
         let mut stock_of_constraints: Constraints = Constraints::new();
-        //
-        //
         //println!("Inline Constrains:{:?}", self.tokens.get(self.current_token));
         while self.tokens.get(self.current_token) != Some(&Token::Punctuation(',')) {
             //println!("Inline Constrains:{:?}", self.tokens.get(self.current_token));

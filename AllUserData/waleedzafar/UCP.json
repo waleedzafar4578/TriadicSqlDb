@@ -74,7 +74,7 @@
       "global_index": 4
     },
     {
-      "table_name": "EX1",
+      "table_name": "Example",
       "table_column": [
         {
           "name": "ID",
@@ -440,6 +440,204 @@
         }
       ],
       "global_index": 18
+    },
+    {
+      "table_name": "AGENTS",
+      "table_column": [
+        {
+          "name": "AGENT_CODE",
+          "type_status": "TInt",
+          "size_status": 1,
+          "value": [
+            {
+              "value": {
+                "IntIng": 7
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": true,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": true,
+              "degree": "T"
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": [
+            {
+              "value": {
+                "IntIng": 7
+              },
+              "index": 0
+            }
+          ]
+        },
+        {
+          "name": "AGENT_NAME",
+          "type_status": "TString",
+          "size_status": 1,
+          "value": [
+            {
+              "value": {
+                "Stringing": "Ramasundar"
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "WORKING_AREA",
+          "type_status": "TString",
+          "size_status": 1,
+          "value": [
+            {
+              "value": {
+                "Stringing": "Bangalore"
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "COMMISSION",
+          "type_status": "TFloat",
+          "size_status": 1,
+          "value": [
+            {
+              "value": {
+                "FloatIng": 0.15
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "PHONE_NO",
+          "type_status": "TString",
+          "size_status": 1,
+          "value": [
+            {
+              "value": {
+                "Stringing": "077-25814763"
+              },
+              "status": "T"
+            }
+          ],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        },
+        {
+          "name": "COUNTRY",
+          "type_status": "TString",
+          "size_status": 0,
+          "value": [],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        }
+      ],
+      "global_index": 5
     }
   ]
 }

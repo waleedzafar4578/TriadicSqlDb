@@ -197,6 +197,25 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             let ath = ans.join(" ");
             return (FrontSendCode::Tb, ath);
         }
+        AstNode::RenameTableStatement(old_name, new_name) => {
+            println!("In rename:{old_name}:{new_name}");
+            return if controller.rename_table_name(&old_name, &new_name) {
+                //println!("{:#?}",controller);
+                controller.save_to_file();
+                (
+                    FrontSendCode::QueryProcessed,
+                    format!("Table name changed {old_name} to {new_name}.")
+                )
+            } else {
+                (
+                    FrontSendCode::Err,
+                    format!("\
+                    1:{old_name} table not found in database.      \
+                    2:Not two table have same name.
+                    ")
+                )
+            }
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }
