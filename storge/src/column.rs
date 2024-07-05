@@ -118,7 +118,7 @@ impl Constraints {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Column {
-    name: String,
+    pub name: String,
     pub type_status: AttributeType,
     size_status: usize,
     pub value: Vec<TriVar>,

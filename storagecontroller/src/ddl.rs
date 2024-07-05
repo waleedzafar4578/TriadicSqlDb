@@ -143,4 +143,17 @@ impl BaseControl {
         }
         false
     }
+    pub fn drop_column_into_table(
+        &mut self,
+        t_name: &str,
+        col_name: String,
+    ) ->bool
+    {
+        for mut _tb in &mut self.all_table {
+            if _tb.get_table_name() == t_name {
+                return  _tb.drop_column(col_name)
+            }
+        }
+        false
+    }
 }

@@ -5,7 +5,7 @@ use std::string::String;
 
 use serde::{Deserialize, Serialize};
 
-use common_structure::{EqualOperator, GreaterEqualOperator, GreaterOperator, LessEqualOperator, LessOperator, NotEqualOperator, SelectEntry, WhereClause};
+use common_structure::{EqualOperator, GreaterEqualOperator, GreaterOperator, LessEqualOperator, LessOperator, NotEqualOperator, SelectEntry};
 use triadic_logic::datatype::{AttributeType, AttributeTypeValue};
 use triadic_logic::degree::Degree;
 
@@ -52,6 +52,21 @@ impl Table {
     }
     pub fn add_column(&mut self, col: Column) {
         self.table_column.push(col);
+    }
+    pub fn drop_column(&mut self, col_name: String)->bool {
+        let mut j:i32=-1;
+        for i in &mut self.table_column{
+            if col_name==i.name{
+                break;
+            }
+            j+=1;
+        }
+        if j>=0{
+            j+=1;
+            self.table_column.remove(j as usize);
+            return  true
+        }
+        false
     }
     pub fn add_col_data(&mut self, n: &str, col: &str, d: Degree) -> bool {
         for i in &mut self.table_column {

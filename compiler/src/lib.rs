@@ -240,8 +240,8 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 )
             }
         }
-        AstNode::AlterTableStatement(_data) => {
-            println!("{:#?}", _data);
+        AstNode::AlterTableAddStatement(_data) => {
+            //println!("{:#?}", _data);
             return match controller.add_column_into_table(_data.name.as_str(), _data.column_name.clone(), _data.data_type) {
                 true => {
                     controller.save_to_file();
@@ -258,6 +258,23 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 }
             }
 
+        }
+        AstNode::AlterTableDropStatement(_data) => {
+            return match controller.drop_column_into_table(_data.name.as_str(), _data.column_name) {
+                true => {
+                    controller.save_to_file();
+                    (
+                        FrontSendCode::QueryProcessed,
+                        "table altered and column is dropped ".to_string()
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::QueryProcessed,
+                        "table altered and column is dropped ".to_string()
+                    )
+                }
+            }
         }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())

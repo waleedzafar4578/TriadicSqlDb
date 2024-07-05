@@ -54,7 +54,8 @@ pub enum AstNode {
     SelectFullTable(SelectEntry),
     ShowTableStatement,
     Nothing,
-    AlterTableStatement(AlterTableData)
+    AlterTableAddStatement(AlterTableData),
+    AlterTableDropStatement(AlterTableData)
     // ...Continue another Sql statement here.
 }
 pub struct Parser<'a> {

@@ -5,144 +5,6 @@
   "initiate_lock": true,
   "all_table": [
     {
-      "table_name": "MARKS",
-      "table_column": [
-        {
-          "name": "ID",
-          "type_status": "TInt",
-          "size_status": 3,
-          "value": [
-            {
-              "value": {
-                "IntIng": 4
-              },
-              "status": "L"
-            },
-            {
-              "value": {
-                "IntIng": 4
-              },
-              "status": "L"
-            },
-            {
-              "value": {
-                "IntIng": 4
-              },
-              "status": "F"
-            }
-          ],
-          "constraints": {
-            "not_null": false,
-            "unique": {
-              "unique": false,
-              "degree": null
-            },
-            "primary_key": {
-              "primary_key": true,
-              "degree": "T"
-            },
-            "foreign_key": false,
-            "check": false,
-            "check_operator": "",
-            "check_value": "",
-            "default": false,
-            "default_value": ""
-          },
-          "column_order": 0,
-          "index_tree": []
-        },
-        {
-          "name": "Mark",
-          "type_status": "TFloat",
-          "size_status": 3,
-          "value": [
-            {
-              "value": {
-                "FloatIng": 30.0
-              },
-              "status": "T"
-            },
-            {
-              "value": {
-                "FloatIng": 80.0
-              },
-              "status": "T"
-            },
-            {
-              "value": {
-                "FloatIng": 10.0
-              },
-              "status": "T"
-            }
-          ],
-          "constraints": {
-            "not_null": false,
-            "unique": {
-              "unique": false,
-              "degree": null
-            },
-            "primary_key": {
-              "primary_key": false,
-              "degree": null
-            },
-            "foreign_key": false,
-            "check": false,
-            "check_operator": "",
-            "check_value": "",
-            "default": false,
-            "default_value": ""
-          },
-          "column_order": 0,
-          "index_tree": null
-        },
-        {
-          "name": "NAME",
-          "type_status": "TString",
-          "size_status": 3,
-          "value": [
-            {
-              "value": {
-                "Stringing": "ALI"
-              },
-              "status": "L"
-            },
-            {
-              "value": {
-                "Stringing": "WALEED"
-              },
-              "status": "L"
-            },
-            {
-              "value": {
-                "Stringing": "AWAIS"
-              },
-              "status": "F"
-            }
-          ],
-          "constraints": {
-            "not_null": false,
-            "unique": {
-              "unique": false,
-              "degree": null
-            },
-            "primary_key": {
-              "primary_key": false,
-              "degree": null
-            },
-            "foreign_key": false,
-            "check": false,
-            "check_operator": "",
-            "check_value": "",
-            "default": false,
-            "default_value": ""
-          },
-          "column_order": 0,
-          "index_tree": null
-        }
-      ],
-      "global_index": 9
-    },
-    {
       "table_name": "STUDENT",
       "table_column": [
         {
@@ -4504,6 +4366,62 @@
         }
       ],
       "global_index": 600
+    },
+    {
+      "table_name": "MARKS",
+      "table_column": [
+        {
+          "name": "ID",
+          "type_status": "TInt",
+          "size_status": 0,
+          "value": [],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": true,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": []
+        },
+        {
+          "name": "Mark",
+          "type_status": "TFloat",
+          "size_status": 0,
+          "value": [],
+          "constraints": {
+            "not_null": false,
+            "unique": {
+              "unique": false,
+              "degree": null
+            },
+            "primary_key": {
+              "primary_key": false,
+              "degree": null
+            },
+            "foreign_key": false,
+            "check": false,
+            "check_operator": "",
+            "check_value": "",
+            "default": false,
+            "default_value": ""
+          },
+          "column_order": 0,
+          "index_tree": null
+        }
+      ],
+      "global_index": 0
     }
   ]
 }
