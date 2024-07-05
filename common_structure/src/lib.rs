@@ -3,12 +3,12 @@ use triadic_logic::degree::Degree;
 #[derive(Debug, Default, Clone)]
 pub struct EqualOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 
 impl EqualOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String,value:Option<String>,deg:Option<Degree>)->Self{
         Self{
             column_name:col_name,
             column_value:value,
@@ -19,11 +19,11 @@ impl EqualOperator {
 #[derive(Debug, Default, Clone)]
 pub struct NotEqualOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 impl NotEqualOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String, value: Option<String>, deg:Option<Degree>) ->Self{
         Self{
             column_name:col_name,
             column_value:value,
@@ -34,11 +34,11 @@ impl NotEqualOperator {
 #[derive(Debug, Default, Clone)]
 pub struct GreaterEqualOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 impl GreaterEqualOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String, value: Option<String>, deg:Option<Degree>) ->Self{
         Self{
             column_name:col_name,
             column_value:value,
@@ -49,11 +49,11 @@ impl GreaterEqualOperator {
 #[derive(Debug, Default, Clone)]
 pub struct LessEqualOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 impl LessEqualOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String, value: Option<String>, deg:Option<Degree>) ->Self{
         Self{
             column_name:col_name,
             column_value:value,
@@ -64,11 +64,11 @@ impl LessEqualOperator {
 #[derive(Debug, Default, Clone)]
 pub struct GreaterOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 impl GreaterOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String, value: Option<String>, deg:Option<Degree>) ->Self{
         Self{
             column_name:col_name,
             column_value:value,
@@ -79,11 +79,11 @@ impl GreaterOperator {
 #[derive(Debug, Default, Clone)]
 pub struct LessOperator {
     pub column_name: String,
-    pub column_value: String,
+    pub column_value: Option<String>,
     pub degree: Option<Degree>,
 }
 impl LessOperator {
-    pub fn set(col_name:String,value:String,deg:Option<Degree>)->Self{
+    pub fn set(col_name:String, value: Option<String>, deg:Option<Degree>) ->Self{
         Self{
             column_name:col_name,
             column_value:value,

@@ -96,7 +96,7 @@ impl<'a> Lexer<'a> {
     fn read_operator(&mut self) -> String {
         let mut operator = String::new();
         while let Some(ch) = self.peek() {
-            if "+_*/=&|<>".contains(ch) {
+            if "+_*/=&|<>!".contains(ch) {
                 operator.push(ch);
                 self.advance();
             } else {
@@ -179,7 +179,7 @@ impl<'a> Lexer<'a> {
             } else if ch == '\'' {
                 let string_literal = self.read_string_literal();
                 tokens.push(Token::Literal(Literal::String(string_literal)));
-            } else if "+-*/=<>&|".contains(ch) {
+            } else if "+-*/=<>&|!".contains(ch) {
                 let operator = self.read_operator();
                 tokens.push(Token::Operator(operator));
             } else if ",;()".contains(ch) {

@@ -5,7 +5,7 @@ use std::string::String;
 
 use serde::{Deserialize, Serialize};
 
-use common_structure::SelectEntry;
+use common_structure::{EqualOperator, NotEqualOperator, SelectEntry, WhereClause};
 use triadic_logic::datatype::AttributeTypeValue;
 use triadic_logic::degree::Degree;
 
@@ -159,6 +159,7 @@ pub struct ShowTable {
 }
 impl Table {
     pub fn show_table(&self, info: &SelectEntry) -> ShowTable {
+        //variable to container which uses for send data o the front end.
         let mut display_container = ShowTable::default();
         let mut row: Vec<String>;
         let mut size = 0;
@@ -191,40 +192,11 @@ impl Table {
                 }
             }
             Some(_condition) => {
-                match &_condition.equal_operator {
-                    None => {}
-                    Some(_va) => {
-                        for i in &self.table_column {
-                            if _va.column_name.eq(i.get_column_name()) {
-                                let mut index=0;
-                                for values in &i.value {
-                                    match values.get_attribute() {
-                                        None => {
-
-                                        }
-                                        Some(_b) => {
-                                            let t = display_value(_b);
-                                            //println!("Compare{}:{}",t,&_va.column_value);
-                                            if t.eq(&_va.column_value) {
-                                                match &_va.degree {
-                                                    None => {
-                                                        index_container.push(index);
-                                                    }
-                                                    Some(_degree) => {
-                                                        if values.get_degree_ori() == *_degree {
-                                                            println!("{}:{}",t,_degree);
-                                                            index_container.push(index);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    index+=1;
-                                }
-                            }
-                        }
-                    }
+                if let Some(_va)=&_condition.equal_operator{
+                    index_container= self.where_index_equal(_va);
+                }
+                if let Some(_va)=&_condition.not_equal_operator{
+                    index_container= self.where_index_not_equal(_va);
                 }
                 println!("{:?}",index_container);
                 row = vec![];
@@ -259,6 +231,121 @@ impl Table {
         }
 
         display_container
+    }
+
+    pub fn where_index_equal(&self, _va: &EqualOperator) ->Vec<usize>{
+        let mut index_container: Vec<usize> = vec![];
+        for i in &self.table_column {
+            if _va.column_name.eq(i.get_column_name()) {
+                let mut index=0;
+                for values in &i.value {
+                    match values.get_attribute() {
+                        None => {
+
+                        }
+                        Some(_b) => {
+                            let t = display_value(_b);
+                            //println!("Compare{}:{}",t,&_va.column_value);
+
+                            match &_va.column_value {
+                                None => {
+
+                                    match &_va.degree {
+                                        None => {
+                                            index_container.push(index);
+                                        }
+                                        Some(_degree) => {
+                                            if values.get_degree_ori() == *_degree {
+                                                println!("{}:{}",t,_degree);
+                                                index_container.push(index);
+                                            }
+                                        }
+                                    }
+
+                                }
+                                Some(_compare_value) => {
+                                    if t.eq(_compare_value) {
+                                        match &_va.degree {
+                                            None => {
+                                                index_container.push(index);
+                                            }
+                                            Some(_degree) => {
+                                                if values.get_degree_ori() == *_degree {
+                                                    println!("{}:{}",t,_degree);
+                                                    index_container.push(index);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+
+                        }
+                    }
+                    index+=1;
+                }
+            }
+        }
+        index_container
+    }
+    pub fn where_index_not_equal(&self, _va: &NotEqualOperator) ->Vec<usize>{
+        let mut index_container: Vec<usize> = vec![];
+        for i in &self.table_column {
+            if _va.column_name.eq(i.get_column_name()) {
+                let mut index=0;
+                for values in &i.value {
+                    match values.get_attribute() {
+                        None => {
+
+                        }
+                        Some(_b) => {
+                            let t = display_value(_b);
+                            //println!("Compare{}:{}",t,&_va.column_value);
+
+                            match &_va.column_value {
+                                None => {
+
+                                    match &_va.degree {
+                                        None => {
+                                            index_container.push(index);
+                                        }
+                                        Some(_degree) => {
+                                            if values.get_degree_ori() != *_degree {
+                                                println!("{}:{}",t,_degree);
+                                                index_container.push(index);
+                                            }
+                                        }
+                                    }
+
+                                }
+                                Some(_compare_value) => {
+                                    if !t.eq(_compare_value) {
+                                        match &_va.degree {
+                                            None => {
+                                                index_container.push(index);
+                                            }
+                                            Some(_degree) => {
+                                                if values.get_degree_ori() != *_degree {
+                                                    println!("{}:{}",t,_degree);
+                                                    index_container.push(index);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+
+
+                        }
+                    }
+                    index+=1;
+                }
+            }
+        }
+        index_container
     }
 }
 pub fn show_column(i: &Column, j: usize) -> String {

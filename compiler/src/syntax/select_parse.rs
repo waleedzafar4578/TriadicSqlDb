@@ -81,20 +81,29 @@ impl<'a> Parser<'a> {
                     self.advance();
                     if let Some(deg)=self.get_value_degree(){
                         self.advance();
-                        info_select.where_clause=self.operator_to_clause(col_name,operator.as_str(),val,Some(deg));
+                        info_select.where_clause=self.operator_to_clause(col_name,operator.as_str(),Some(val),Some(deg));
                         if !self.close_bracket_check(){
                             return Some((AstNode::Nothing, Some(Compiler::MissCloseBracket)));
                         }
                     }
                     else {
-                        info_select.where_clause=self.operator_to_clause(col_name,operator.as_str(),val,None);
+                        info_select.where_clause=self.operator_to_clause(col_name,operator.as_str(),Some(val),None);
                         if !self.close_bracket_check(){
                             return Some((AstNode::Nothing, Some(Compiler::MissCloseBracket)));
                         }
                     }
                 }
                 else {
-                    return Some((AstNode::Nothing, Some(Compiler::MissValue)));
+                    if let Some(deg)=self.get_value_degree(){
+                        self.advance();
+                        info_select.where_clause=self.operator_to_clause(col_name,operator.as_str(),None,Some(deg));
+                        if !self.close_bracket_check(){
+                            return Some((AstNode::Nothing, Some(Compiler::MissCloseBracket)));
+                        }
+                    }
+                    else {
+                        return Some((AstNode::Nothing, Some(Compiler::MissValue)));
+                    }
                 }
             }
             else {
@@ -109,7 +118,7 @@ impl<'a> Parser<'a> {
         }
         None
     }
-    pub fn operator_to_clause(&self,col_name:String,operator:&str,value:String,deg:Option<char>)->Option<WhereClause>{
+    pub fn operator_to_clause(&self,col_name:String,operator:&str,value:Option<String>,deg:Option<char>)->Option<WhereClause>{
         let mut get_condition=WhereClause::default();
         match operator {
             "="=>{
