@@ -126,12 +126,18 @@ impl AttributeTypeValue {
             None
         }
     }
+    pub fn set_bool(&mut self,value:bool)  {
+        AttributeTypeValue::BoolIng(value);
+    }
     pub fn get_int(&self) -> Option<i32> {
         if let AttributeTypeValue::IntIng(val) = self {
             Some(*val)
         } else {
             None
         }
+    }
+    pub fn set_int(&mut self,value:i32)  {
+        AttributeTypeValue::IntIng(value);
     }
     pub fn get_small_int(&self) -> Option<i16> {
         if let AttributeTypeValue::SmallINT(val) = self {
@@ -154,6 +160,10 @@ impl AttributeTypeValue {
             None
         }
     }
+    pub fn set_float(&mut self,value:f64) {
+        AttributeTypeValue::FloatIng(value);
+
+    }
     pub fn get_char(&self) -> Option<char> {
         if let AttributeTypeValue::CharacterIng(val) = self {
             Some(*val)
@@ -161,12 +171,18 @@ impl AttributeTypeValue {
             None
         }
     }
+    pub fn set_char(&mut self,val:char)  {
+        AttributeTypeValue::CharacterIng(val) ;
+    }
     pub fn get_string(&self) -> Option<String> {
         if let AttributeTypeValue::Stringing(val) = self {
             Some(val.to_string())
         } else {
             None
         }
+    }
+    pub fn set_string(&mut self,val:String) {
+        AttributeTypeValue::Stringing(val) ;
     }
     pub fn get_varchar(&self) -> Option<(String,usize)> {
         if let AttributeTypeValue::VarCharacterIng(val,size) = self {
@@ -181,6 +197,9 @@ impl AttributeTypeValue {
         } else {
             None
         }
+    }
+    pub fn set_text(&mut self,val:String) {
+        AttributeTypeValue::Texting(val) ;
     }
     pub fn get_date(&self) -> Option<Date> {
         if let AttributeTypeValue::Dating(val) = self {

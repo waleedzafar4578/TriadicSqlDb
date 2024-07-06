@@ -294,6 +294,24 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 }
             }
         }
+        AstNode::UpdateTableStatement(_info) => {
+            //println!("{:#?}",_info);
+            return match controller.update_table(&_info) {
+                true => {
+                    controller.save_to_file();
+                    (
+                        FrontSendCode::QueryProcessed,
+                        "Table data is updated.".to_string()
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::Err,
+                        "Field to update data in table ".to_string()
+                    )
+                }
+            }
+        }
     }
     (FrontSendCode::QueryEmpty, "Error".to_string())
 }

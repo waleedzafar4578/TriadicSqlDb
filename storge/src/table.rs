@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use common_structure::{
     EqualOperator, GreaterEqualOperator, GreaterOperator, LessEqualOperator, LessOperator,
-    NotEqualOperator, SelectEntry,
+    NotEqualOperator, SelectEntry, UpdateTableDataEntry,
 };
 use triadic_logic::datatype::{AttributeType, AttributeTypeValue};
 use triadic_logic::degree::Degree;
@@ -180,7 +180,7 @@ impl Table {
         let mut index_container: Vec<usize> = vec![];
         match &info.where_clause {
             None => {
-                for mut i in &mut self.table_column {
+                for  i in &mut self.table_column {
                     i.value.clear();
                     i.size_status = 0;
                     match &mut i.index_tree {
@@ -214,8 +214,8 @@ impl Table {
                 }
                 //println!("{:?}",index_container);
                 for _ggt in index_container.iter().rev() {
-                    let mut index=_ggt ;
-                    for  mut i in &mut self.table_column {
+                    let  index = _ggt;
+                    for  i in &mut self.table_column {
                         //println!("{:?}",_ggt);
                         if let Some(val) = i.value.get(*index) {
                             // Clone the value to use it later
@@ -323,6 +323,80 @@ impl Table {
         }
 
         display_container
+    }
+    pub fn update_table(&mut self, info: &UpdateTableDataEntry) -> bool {
+        let mut index_container: Vec<usize> = vec![];
+        match &info.where_clause {
+            None => {
+            }
+            Some(_condition) => {
+                if let Some(_va) = &_condition.equal_operator {
+                    index_container = self.where_index_equal(_va);
+                }
+                if let Some(_va) = &_condition.not_equal_operator {
+                    index_container = self.where_index_not_equal(_va);
+                }
+                if let Some(_va) = &_condition.less_operator {
+                    index_container = self.where_index_less(_va);
+                }
+                if let Some(_va) = &_condition.less_equal_operator {
+                    index_container = self.where_index_less_eq(_va);
+                }
+                if let Some(_va) = &_condition.greater_operator {
+                    index_container = self.where_index_greater(_va);
+                }
+                if let Some(_va) = &_condition.greater_equal_operator {
+                    index_container = self.where_index_greater_eq(_va);
+                }
+
+                for _ggt in &index_container {
+                    for i in &mut self.table_column {
+                        if info.column_name==i.get_column_name().as_str()
+                        {
+                            match i.type_status{
+                                AttributeType::TBool => {
+                                    let (vl,de)=&info.column_data;
+                                    if let Ok(val) =string_to_bool(vl.as_str()){
+                                        return    i.set_column_data_bool(*_ggt,val,char_to_degree(*de));
+                                    }
+                                }
+                                AttributeType::TInt => {
+                                    let (vl,de)=&info.column_data;
+                                    if let Ok(val) =string_to_integer(vl.as_str()){
+                                        return    i.set_column_data_int(*_ggt,val,char_to_degree(*de));
+                                    }
+                                }
+                                AttributeType::TFloat => {
+                                    let (vl,de)=&info.column_data;
+                                    if let Ok(val) =string_to_float(vl.as_str()){
+                                        return  i.set_column_data_float(*_ggt,val,char_to_degree(*de));
+                                    }
+                                }
+                                AttributeType::TChar => {
+                                    let (vl,de)=&info.column_data;
+                                    if let Ok(val) =string_to_char(vl.as_str()){
+                                        return   i.set_column_data_char(*_ggt,val,char_to_degree(*de));
+                                    }
+                                }
+                                AttributeType::TString => {
+                                    let (vl,de)=&info.column_data;
+                                    return  i.set_column_data_string(*_ggt,vl,char_to_degree(*de));
+
+                                }
+                                AttributeType::TText => {
+                                    let (vl,de)=&info.column_data;
+                                    return i.set_column_data_text(*_ggt,vl,char_to_degree(*de));
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        false
     }
 
     pub fn where_index_equal(&self, _va: &EqualOperator) -> Vec<usize> {
@@ -735,5 +809,13 @@ pub fn display_value(_n: &AttributeTypeValue) -> String {
         }
 
         _ => "None".to_string(),
+    }
+}
+pub fn char_to_degree(input: char) -> Degree {
+    match input {
+        'T' => Degree::T,
+        'L' => Degree::L,
+        'F' => Degree::F,
+        _ => Degree::L,
     }
 }

@@ -153,7 +153,8 @@ impl<'a> Lexer<'a> {
             "T",
             "ADD",
             "WHERE",
-            "COLUMN"
+            "COLUMN",
+            "SET"
         ];
 
         let mut tokens = Vec::new();

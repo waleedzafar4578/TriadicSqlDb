@@ -106,3 +106,10 @@ pub struct SelectEntry {
     pub column_name: Vec<String>,
     pub where_clause: Option<WhereClause>,
 }
+#[derive(Debug, Default)]
+pub struct UpdateTableDataEntry {
+    pub name: String,
+    pub column_name: String,
+    pub column_data: (String, char),
+    pub where_clause: Option<WhereClause>,
+}

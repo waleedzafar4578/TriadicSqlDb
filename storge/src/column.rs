@@ -444,6 +444,54 @@ impl Column {
     pub fn get_column_data(&self, index: usize) -> Option<&TriVar> {
         self.value.get(index)
     }
+    pub fn set_column_data_bool(&mut self, index: usize,value: bool, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::BoolIng(value));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
+    pub fn set_column_data_int(&mut self, index: usize,value: i32, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::IntIng(value));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
+    pub fn set_column_data_float(&mut self, index: usize,value: f64, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::FloatIng(value));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
+    pub fn set_column_data_char(&mut self, index: usize,value: char, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::CharacterIng(value));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
+    pub fn set_column_data_string(&mut self, index: usize, value: &String, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::Stringing(String::from(value)));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
+    pub fn set_column_data_text(&mut self, index: usize, value: &String, d: Degree) -> bool {
+        if let Some(obj)=self.value.get_mut(index){
+            obj.value=Some(AttributeTypeValue::Texting(String::from(value)));
+            obj.status=d;
+            return true;
+        }
+        false
+    }
     pub fn get_size(self) -> usize {
         self.size_status
     }

@@ -23,6 +23,7 @@ impl<'a> Parser<'a> {
                 "TRUNCATE"=>self.parse_truncate_statement(),
                 "ALTER"=>self.parse_alter_statement(),
                 "DELETE"=>self.parse_delete_statement(),
+                "UPDATE"=>self.parse_update_statement(),
                 _ => (AstNode::Nothing, Some(triadic_error::Compiler::NotAKeyword)),
             }
         } else {

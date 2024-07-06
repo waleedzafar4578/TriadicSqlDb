@@ -1,4 +1,4 @@
-use common_structure::SelectEntry;
+use common_structure::{SelectEntry, UpdateTableDataEntry};
 use storge::column::Constraints;
 use triadic_logic::datatype::AttributeType;
 
@@ -19,6 +19,7 @@ pub mod alter_parse;
 pub mod use_parse;
 
 pub mod delete_parse;
+pub mod update_parse;
 #[derive(Debug, Default)]
 pub struct CompilerTableParseEntry {
     pub name: String,
@@ -58,7 +59,8 @@ pub enum AstNode {
     ShowTableStatement,
     Nothing,
     AlterTableAddStatement(AlterTableData),
-    AlterTableDropStatement(AlterTableData)
+    AlterTableDropStatement(AlterTableData),
+    UpdateTableStatement(UpdateTableDataEntry)
     // ...Continue another Sql statement here.
 }
 pub struct Parser<'a> {

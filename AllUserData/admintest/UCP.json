@@ -4428,15 +4428,15 @@
           "value": [
             {
               "value": {
-                "FloatIng": 90.0
+                "FloatIng": 10.5
               },
-              "status": "T"
+              "status": "L"
             },
             {
               "value": {
-                "FloatIng": 80.0
+                "FloatIng": 100.0
               },
-              "status": "T"
+              "status": "L"
             }
           ],
           "constraints": {

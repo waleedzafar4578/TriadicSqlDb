@@ -120,7 +120,7 @@ impl BaseControl {
         ShowTable::default()
     }
     pub fn delete_table(&mut self,info:SelectEntry) -> bool {
-        for mut i in &mut self.all_table {
+        for  i in &mut self.all_table {
             if i.clone().table_name() == info.name {
                 return i.delete_table(&info);
             }

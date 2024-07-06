@@ -1,8 +1,9 @@
-use crate::BaseControl;
-use storge::column::{Column, Constraints};
+use common_structure::UpdateTableDataEntry;
+use storge::column::Column;
 use storge::table::Table;
-use triadic_logic::datatype::AttributeType;
 use triadic_logic::degree::Degree;
+
+use crate::BaseControl;
 
 impl BaseControl {
     pub fn get_table(&self, name: String) -> Option<&Table> {
@@ -64,6 +65,14 @@ impl BaseControl {
             if _tb.get_table_name() == old_name.as_str()  {
                 _tb.set_table_name(new_name);
                 return true
+            }
+        }
+        false
+    }
+    pub fn update_table(&mut self,info:&UpdateTableDataEntry) -> bool {
+        for mut _tb in &mut self.all_table {
+            if _tb.get_table_name() == &info.name.as_str() {
+                return _tb.update_table(info);
             }
         }
         false
