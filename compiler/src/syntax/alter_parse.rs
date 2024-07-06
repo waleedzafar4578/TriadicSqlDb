@@ -79,7 +79,6 @@ impl<'a> Parser<'a> {
                 )
             }
             self.advance();
-            self.show_current_token("after COLUMN");
             match self.extract_identifier() {
                 None => {
                     return (
@@ -107,7 +106,8 @@ impl<'a> Parser<'a> {
                     )
                 }
             }
-        } else {
+        }
+        else {
             (AstNode::Nothing, Some(triadic_error::Compiler::MissKeyword))
         }
 

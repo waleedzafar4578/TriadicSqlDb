@@ -120,11 +120,11 @@ impl Constraints {
 pub struct Column {
     pub name: String,
     pub type_status: AttributeType,
-    size_status: usize,
+    pub size_status: usize,
     pub value: Vec<TriVar>,
     constraints: Constraints,
     column_order: usize,
-    index_tree: Option<TraidicTree>,
+    pub index_tree: Option<TraidicTree>,
 }
 
 impl Column {

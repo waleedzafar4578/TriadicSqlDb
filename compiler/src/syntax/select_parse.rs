@@ -45,14 +45,14 @@ impl<'a> Parser<'a> {
 
         return match self.condition_extract(&mut info_select) {
             None => {
-                println!("i am in where clause(None)");
+                //println!("i am in where clause(None)");
                 (
                     AstNode::SelectFullTable(info_select),
                     Some(Compiler::Nothing),
                 )
             }
             Some(_er) => {
-                println!("i am in where clause(Some(Err))");
+                //println!("i am in where clause(Some(Err))");
                 _er
             }
         }

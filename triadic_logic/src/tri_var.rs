@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct TriVar {
-    value: Option<AttributeTypeValue>,
-    status: Degree,
+    pub value: Option<AttributeTypeValue>,
+    pub status: Degree,
 }
 impl Ord for TriVar {
     fn cmp(&self, other: &Self) -> Ordering {

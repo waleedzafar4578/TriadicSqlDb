@@ -17,6 +17,8 @@ pub mod select_parse;
 pub mod truncate_parse;
 pub mod alter_parse;
 pub mod use_parse;
+
+pub mod delete_parse;
 #[derive(Debug, Default)]
 pub struct CompilerTableParseEntry {
     pub name: String,
@@ -52,6 +54,7 @@ pub enum AstNode {
     ShowDatabaseStatement,
     UseDatabaseStatement(String),
     SelectFullTable(SelectEntry),
+    DeleteTable(SelectEntry),
     ShowTableStatement,
     Nothing,
     AlterTableAddStatement(AlterTableData),

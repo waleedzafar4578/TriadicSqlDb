@@ -82,7 +82,7 @@ impl<'a> Parser<'a> {
         }
         temp_primary_object.unique=true;
         //self.advance();
-        println!("{:?}",self.tokens.get(self.current_token));
+
         if Some(&Token::Punctuation('(')) != self.tokens.get(self.current_token+1) {
             return Some(temp_primary_object);
         }

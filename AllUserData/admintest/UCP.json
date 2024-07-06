@@ -4373,8 +4373,21 @@
         {
           "name": "ID",
           "type_status": "TInt",
-          "size_status": 0,
-          "value": [],
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "IntIng": 2
+              },
+              "status": "L"
+            }
+          ],
           "constraints": {
             "not_null": false,
             "unique": {
@@ -4393,13 +4406,39 @@
             "default_value": ""
           },
           "column_order": 0,
-          "index_tree": []
+          "index_tree": [
+            {
+              "value": {
+                "IntIng": 1
+              },
+              "index": 0
+            },
+            {
+              "value": {
+                "IntIng": 2
+              },
+              "index": 1
+            }
+          ]
         },
         {
           "name": "Mark",
           "type_status": "TFloat",
-          "size_status": 0,
-          "value": [],
+          "size_status": 2,
+          "value": [
+            {
+              "value": {
+                "FloatIng": 90.0
+              },
+              "status": "T"
+            },
+            {
+              "value": {
+                "FloatIng": 80.0
+              },
+              "status": "T"
+            }
+          ],
           "constraints": {
             "not_null": false,
             "unique": {
@@ -4421,7 +4460,7 @@
           "index_tree": null
         }
       ],
-      "global_index": 0
+      "global_index": 12
     }
   ]
 }

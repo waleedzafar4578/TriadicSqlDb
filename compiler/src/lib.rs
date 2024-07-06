@@ -180,7 +180,7 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
             }
         },
         AstNode::SelectFullTable(_info) => {
-            println!("{:?}",_info);
+            //println!("{:?}",_info);
             return (
                 FrontSendCode::Table,
                 serde_json::to_string_pretty(&controller.show_table(_info))
@@ -270,8 +270,26 @@ pub fn sql_runner(query: &str, controller: &mut BaseControl) -> (FrontSendCode, 
                 }
                 false => {
                     (
+                        FrontSendCode::Err,
+                        "Field to alter table".to_string()
+                    )
+                }
+            }
+        }
+        AstNode::DeleteTable(_data) => {
+            println!("{:#?}",_data);
+            return match controller.delete_table(_data) {
+                true => {
+                    controller.save_to_file();
+                    (
                         FrontSendCode::QueryProcessed,
-                        "table altered and column is dropped ".to_string()
+                        "Data deleted from table".to_string()
+                    )
+                }
+                false => {
+                    (
+                        FrontSendCode::Err,
+                        "Field to delete data from table table".to_string()
                     )
                 }
             }
