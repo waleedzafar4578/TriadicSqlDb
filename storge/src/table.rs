@@ -53,8 +53,14 @@ impl Table {
     pub fn table_name(self) -> String {
         self.table_name
     }
-    pub fn add_column(&mut self, col: Column) {
+    pub fn add_column(&mut self, col: Column)->bool {
+        for con in &self.table_column{
+            if con.name==col.name{
+                return false;
+            }
+        }
         self.table_column.push(col);
+        true
     }
     pub fn drop_column(&mut self, col_name: String) -> bool {
         let mut j: i32 = -1;

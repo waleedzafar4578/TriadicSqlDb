@@ -137,8 +137,7 @@ impl BaseControl {
     {
         for mut _tb in &mut self.all_table {
             if _tb.get_table_name() == t_name {
-                _tb.add_column(Column::new(col_name.as_str(), &col_type, Default::default()));
-                return true;
+                return _tb.add_column(Column::new(col_name.as_str(), &col_type, Default::default()));
             }
         }
         false
